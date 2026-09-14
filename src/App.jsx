@@ -8,10 +8,11 @@ import Login from './pages/Login';
 import Convocatorias from './pages/Convocatorias';
 import MisInscripciones from './pages/MisInscripciones';
 import DetalleConvocatoria from './pages/DetalleConvocatoria';
+import Perfil from './pages/Perfil';
 
 function AppContent() {
   const { modoEmpatico, setModoEmpatico } = useContext(ModoEmpaticContext);
-  
+
   const [textScale, setTextScale] = useState(() => {
     return localStorage.getItem('textScale') || 'normal';
   });
@@ -52,6 +53,7 @@ function AppContent() {
           <Route path="/convocatorias" element={<Convocatorias />} />
           <Route path="/mis-inscripciones" element={<MisInscripciones />} />
           <Route path="/convocatoria/:id" element={<DetalleConvocatoria />} />
+          <Route path="/perfil" element={<Perfil />} />
         </Routes>
       </Router>
     </div>
