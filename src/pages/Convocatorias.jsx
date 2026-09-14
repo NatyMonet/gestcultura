@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ModoEmpaticContext } from '../context/ModoEmpatico';
+import { CONVOCATORIAS_DATA } from '../data/mockData'; // ✅ IMPORT
 import Swal from 'sweetalert2';
 import {
   Search,
@@ -32,62 +33,39 @@ export default function Convocatorias() {
   const [detailModalConv, setDetailModalConv] = useState(null);
   const [inscribiendose, setInscribiendose] = useState(false);
 
-  const categories = ['Todas', 'Ficción', 'Impacto Social', 'Apreciación', 'Creación', 'Literatura'];
+  const categories = ['Todas', 'Ficción', 'Impacto Social', 'Apreciación', 'Artes Visuales', 'Literatura'];
 
+  // ✅ NUEVO: Usa mockData.ts directamente
   useEffect(() => {
-    const fetchConvocatorias = async () => {
-      try {
-        const response = await fetch('http://localhost:5000/api/convocatorias');
-        const data = await response.json();
+    try {
+      const convocatoriasFormateadas = CONVOCATORIAS_DATA.map((conv) => ({
+        id: conv.id,
+        idConvocatoria: conv.id,
+        title: conv.title,
+        description: conv.description,
+        fullDescription: conv.fullDescription,
+        category: conv.category,
+        imageUrl: conv.imageUrl, // ✅ IMÁGENES UNSPLASH
+        closeDate: conv.closeDate,
+        cupos: conv.cupos,
+        budget: conv.budget,
+        requirements: conv.requirements,
+        stages: conv.stages,
+        estado: 'activa',
+        fechaCierre: conv.closeDate,
+      }));
 
-        if (data.success) {
-          const convocatoriasFormateadas = data.data.map((conv) => ({
-            id: conv.idConvocatoria,
-            idConvocatoria: conv.idConvocatoria,
-            title: conv.nombre,
-            description: conv.descripcion || 'Convocatoria de inscripción abierta',
-            fullDescription: conv.descripcion || 'Detalles de la convocatoria',
-            category: 'Ficción',
-            imageUrl: null,
-            closeDate: new Date(conv.fechaCierre).toLocaleDateString('es-CO'),
-            cupos: conv.cupos || 'Varios',
-            budget: 'Por definir',
-            requirements: [
-              'Ser mayor de 18 años',
-              'Cumplir con los requisitos específicos de la convocatoria',
-              'Enviar la documentación solicitada',
-            ],
-            stages: [
-              'Inscripción',
-              'Revisión de documentos',
-              'Selección',
-              'Comunicación de resultados',
-            ],
-            estado: conv.estado,
-            fechaCierre: conv.fechaCierre,
-          }));
-
-          setConvocatorias(convocatoriasFormateadas);
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'No se pudieron cargar las convocatorias',
-          });
-        }
-      } catch (error) {
-        console.error('Error fetching convocatorias:', error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error de conexión',
-          text: 'No se pudo conectar al servidor',
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchConvocatorias();
+      setConvocatorias(convocatoriasFormateadas);
+    } catch (error) {
+      console.error('Error loading convocatorias:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No se pudieron cargar las convocatorias',
+      });
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   const filteredConvocatorias = convocatorias.filter((conv) => {
@@ -165,6 +143,7 @@ export default function Convocatorias() {
 
   return (
     <div className="space-y-8 pb-12">
+      {/* Hero Banner */}
       <section
         aria-label="Presentación del portal"
         className={`p-6 sm:p-10 rounded-3xl border-3 shadow-sm relative overflow-hidden transition-all ${
@@ -183,7 +162,7 @@ export default function Convocatorias() {
             }`}
           >
             <Sparkles className={`w-4 h-4 ${isWarm ? 'text-[#C75000]' : 'text-[#4A148C]'}`} />
-            <span>Convocatorias Abiertas 2026</span>
+            <span>Convocatorias Abiertas Ciclo 2026</span>
           </div>
 
           <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
@@ -201,6 +180,7 @@ export default function Convocatorias() {
         </div>
       </section>
 
+      {/* Búsqueda y Filtros */}
       <section aria-label="Búsqueda y filtros de convocatorias" className="space-y-4">
         <div className="flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between">
           <div className="relative flex-1 max-w-xl">
@@ -234,7 +214,7 @@ export default function Convocatorias() {
           </div>
 
           <div
-            className={`text-xs font-black px-3 py-2 rounded-xl border-2 self-start md:self-center ${
+            className={`text-xs font-black px-3.5 py-2.5 rounded-xl border-2 self-start md:self-center ${
               isWarm ? 'border-[#2B1600] bg-white text-[#2B1600]' : 'border-current/20'
             }`}
           >
@@ -242,6 +222,7 @@ export default function Convocatorias() {
           </div>
         </div>
 
+        {/* Botones de Categoría */}
         <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-thin" role="tablist">
           {categories.map((cat) => {
             const isSelected = selectedCategory === cat;
@@ -265,7 +246,7 @@ export default function Convocatorias() {
                 {cat === 'Ficción' && <Film className="w-4 h-4" />}
                 {cat === 'Impacto Social' && <Heart className="w-4 h-4" />}
                 {cat === 'Apreciación' && <BookOpen className="w-4 h-4" />}
-                {cat === 'Creación' && <Palette className="w-4 h-4" />}
+                {cat === 'Artes Visuales' && <Palette className="w-4 h-4" />}
                 {cat === 'Literatura' && <FileCheck2 className="w-4 h-4" />}
                 {cat === 'Todas' && <Sparkles className="w-4 h-4" />}
                 <span>{cat}</span>
@@ -275,41 +256,51 @@ export default function Convocatorias() {
         </div>
       </section>
 
+      {/* Grid de Tarjetas 3 Columnas */}
       <section
         aria-label="Lista de convocatorias disponibles"
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
       >
         {filteredConvocatorias.map((conv) => (
           <article
             key={conv.id}
-            className={`rounded-2xl border-3 flex flex-col overflow-hidden transition-all hover:shadow-lg ${
+            className={`rounded-3xl border-3 overflow-hidden flex flex-col justify-between transition-all duration-200 hover:-translate-y-1 hover:shadow-xl ${
               isWarm
                 ? 'bg-white border-[#2B1600] text-[#2B1600]'
                 : 'bg-white border-purple-200 text-purple-950'
             }`}
             style={{ borderWidth: '3px' }}
           >
-            <div
-              className={`h-40 relative flex items-center justify-center text-4xl font-extrabold ${
-                isWarm
-                  ? 'bg-[#FFF7EF] border-b-3 border-[#2B1600]'
-                  : 'bg-gradient-to-br from-purple-100 to-purple-50 border-b-3 border-purple-200'
-              }`}
-            >
-              <div className="text-center space-y-1">
-                <div className={`text-5xl ${isWarm ? 'text-[#C75000]' : 'text-purple-600'}`}>🎬</div>
-                <p className="text-xs font-bold opacity-75">{conv.category}</p>
+            {/* Imagen de Portada */}
+            <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-stone-200">
+              <img
+                src={conv.imageUrl}
+                alt={conv.title}
+                className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+              />
+              <div className="absolute top-3 left-3">
+                <span className={`px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider border-2 shadow-sm ${
+                  isWarm
+                    ? 'bg-[#C75000] text-white border-[#2B1600]'
+                    : 'bg-[#7C3AED] text-white border-white'
+                }`}>
+                  {conv.category}
+                </span>
               </div>
             </div>
 
+            {/* Cuerpo de la Tarjeta */}
             <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-4">
               <div className="space-y-2">
-                <h3 className="text-lg sm:text-xl font-extrabold leading-tight">{conv.title}</h3>
+                <h3 className="font-heading text-lg sm:text-xl font-extrabold leading-tight">
+                  {conv.title}
+                </h3>
                 <p className="text-xs sm:text-sm opacity-85 line-clamp-3 font-medium leading-relaxed">
                   {conv.description}
                 </p>
               </div>
 
+              {/* Metadatos */}
               <div className="space-y-2 pt-2 border-t border-current/10 text-xs font-bold">
                 <div className="flex items-center gap-2">
                   <Calendar
@@ -324,7 +315,7 @@ export default function Convocatorias() {
                     className={`w-4 h-4 ${isWarm ? 'text-[#C75000]' : 'text-purple-600'} shrink-0`}
                   />
                   <span>
-                    Cupos: <strong>{conv.cupos}</strong>
+                    Cupos: <strong>{conv.cupos} participantes</strong>
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -337,6 +328,7 @@ export default function Convocatorias() {
                 </div>
               </div>
 
+              {/* Botones de Acción */}
               <div className="pt-3 space-y-2">
                 <button
                   onClick={() => handleInscribirse(conv)}
@@ -349,7 +341,7 @@ export default function Convocatorias() {
                   style={{ borderWidth: '3px' }}
                   aria-label={`Inscribirme a la convocatoria ${conv.title}`}
                 >
-                  <span>Inscribirme</span>
+                  <span>Inscribirme / Postularse</span>
                   <ArrowRight className="w-5 h-5" />
                 </button>
 
@@ -362,7 +354,7 @@ export default function Convocatorias() {
                   }`}
                 >
                   <BookOpen className="w-3.5 h-3.5" />
-                  <span>Ver requisitos</span>
+                  <span>Ver requisitos completos</span>
                 </button>
               </div>
             </div>
@@ -376,6 +368,7 @@ export default function Convocatorias() {
         </div>
       )}
 
+      {/* Modal de Detalles */}
       {detailModalConv && (
         <div
           className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto"

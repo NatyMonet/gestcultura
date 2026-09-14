@@ -1,5 +1,6 @@
 import { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { Eye, EyeOff } from 'lucide-react';
 import Swal from 'sweetalert2';
 import { ModoEmpaticContext } from '../context/ModoEmpatico';
 
@@ -9,6 +10,7 @@ export default function Login() {
     contrasena: '',
   });
   const [cargando, setCargando] = useState(false);
+  const [verContrasena, setVerContrasena] = useState(false);
   const navigate = useNavigate();
   const { setModoEmpatico } = useContext(ModoEmpaticContext);
 
@@ -155,21 +157,44 @@ export default function Login() {
           <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
             Contraseña:
           </label>
-          <input
-            type="password"
-            name="contrasena"
-            value={formData.contrasena}
-            onChange={handleChange}
-            placeholder="Tu contraseña"
-            style={{
-              width: '100%',
-              padding: '10px',
-              boxSizing: 'border-box',
-              borderRadius: '4px',
-              border: '1px solid #ccc',
-              fontSize: '14px',
-            }}
-          />
+          <div style={{ position: 'relative' }}>
+            <input
+              type={verContrasena ? 'text' : 'password'}
+              name="contrasena"
+              value={formData.contrasena}
+              onChange={handleChange}
+              placeholder="Tu contraseña"
+              style={{
+                width: '100%',
+                padding: '10px',
+                paddingRight: '40px',
+                boxSizing: 'border-box',
+                borderRadius: '4px',
+                border: '1px solid #ccc',
+                fontSize: '14px',
+              }}
+            />
+            <button
+              type="button"
+              onClick={() => setVerContrasena(!verContrasena)}
+              style={{
+                position: 'absolute',
+                right: '10px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: 0,
+                display: 'flex',
+                color: '#666',
+              }}
+              title={verContrasena ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+              aria-label={verContrasena ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+            >
+              {verContrasena ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
         </div>
 
         <button

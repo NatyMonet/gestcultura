@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ModoEmpaticProvider, ModoEmpaticContext } from './context/ModoEmpatico';
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
+import { AccessibilityToolbar } from './components/AccessibilityToolbar';
 import Registro from './pages/Registro';
 import Login from './pages/Login';
 import Convocatorias from './pages/Convocatorias';
@@ -9,15 +10,40 @@ import MisInscripciones from './pages/MisInscripciones';
 import DetalleConvocatoria from './pages/DetalleConvocatoria';
 
 function AppContent() {
-  const { modoEmpatico } = useContext(ModoEmpaticContext);
+  const { modoEmpatico, setModoEmpatico } = useContext(ModoEmpaticContext);
+  
+  const [textScale, setTextScale] = useState(() => {
+    return localStorage.getItem('textScale') || 'normal';
+  });
+
+  const [isMonetOpen, setIsMonetOpen] = useState(false);
+  const [isReading, setIsReading] = useState(false);
+
+  useEffect(() => {
+    document.documentElement.className = `text-scale-${textScale}`;
+    localStorage.setItem('textScale', textScale);
+  }, [textScale]);
+
+  const handleToggleRead = () => {
+    setIsReading(!isReading);
+  };
 
   return (
     <div className={`min-h-screen transition-colors duration-200 ${
       modoEmpatico
-        ? 'bg-[#FFF7EF] text-[#2B1600]'  // Empático (caramelo)
-        : 'bg-[#FAF5FF] text-[#2E1065]'  // Normal (morado)
+        ? 'bg-[#FFF7EF] text-[#2B1600]'
+        : 'bg-[#FAF5FF] text-[#2E1065]'
     }`}>
       <Router>
+        <AccessibilityToolbar 
+          modoEmpatico={modoEmpatico}
+          setModoEmpatico={setModoEmpatico}
+          textScale={textScale}
+          setTextScale={setTextScale}
+          isReading={isReading}
+          onToggleRead={handleToggleRead}
+          onOpenMonet={() => setIsMonetOpen(true)}
+        />
         <Navbar />
         <Routes>
           <Route path="/registro" element={<Registro />} />

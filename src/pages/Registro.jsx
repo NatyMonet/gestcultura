@@ -1,7 +1,11 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Eye, EyeOff } from 'lucide-react';
 import Swal from 'sweetalert2';
 
 export default function Registro() {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     nombre: '',
     correo: '',
@@ -10,6 +14,9 @@ export default function Registro() {
     contrasena: '',
     confirmContrasena: '',
   });
+
+  const [verContrasena, setVerContrasena] = useState(false);
+  const [verConfirm, setVerConfirm] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -87,12 +94,15 @@ export default function Registro() {
       const data = await response.json();
 
       if (response.ok) {
+        setFormData({ nombre: '', correo: '', telefono: '', fechaNacimiento: '', contrasena: '', confirmContrasena: '' });
         Swal.fire({
           icon: 'success',
           title: 'Registro exitoso',
           text: 'Tu cuenta ha sido creada correctamente',
+          confirmButtonText: 'Ir a iniciar sesión',
+        }).then(() => {
+          navigate('/login');
         });
-        setFormData({ nombre: '', correo: '', telefono: '', fechaNacimiento: '', contrasena: '', confirmContrasena: '' });
       } else {
         Swal.fire({
           icon: 'error',
@@ -107,6 +117,19 @@ export default function Registro() {
         text: 'No se pudo conectar al servidor',
       });
     }
+  };
+
+  const ojoBtnStyle = {
+    position: 'absolute',
+    right: '8px',
+    top: '50%',
+    transform: 'translateY(-50%)',
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    padding: 0,
+    display: 'flex',
+    color: '#666',
   };
 
   return (
@@ -158,25 +181,47 @@ export default function Registro() {
         </div>
         <div style={{ marginBottom: '15px' }}>
           <label>Contraseña:</label>
-          <input
-            type="password"
-            name="contrasena"
-            value={formData.contrasena}
-            onChange={handleChange}
-            placeholder="Mínimo 8 caracteres"
-            style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
-          />
+          <div style={{ position: 'relative' }}>
+            <input
+              type={verContrasena ? 'text' : 'password'}
+              name="contrasena"
+              value={formData.contrasena}
+              onChange={handleChange}
+              placeholder="Mínimo 8 caracteres"
+              style={{ width: '100%', padding: '8px', paddingRight: '38px', boxSizing: 'border-box' }}
+            />
+            <button
+              type="button"
+              onClick={() => setVerContrasena(!verContrasena)}
+              style={ojoBtnStyle}
+              title={verContrasena ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+              aria-label={verContrasena ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+            >
+              {verContrasena ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
         </div>
         <div style={{ marginBottom: '15px' }}>
           <label>Confirmar Contraseña:</label>
-          <input
-            type="password"
-            name="confirmContrasena"
-            value={formData.confirmContrasena}
-            onChange={handleChange}
-            placeholder="Repite tu contraseña"
-            style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
-          />
+          <div style={{ position: 'relative' }}>
+            <input
+              type={verConfirm ? 'text' : 'password'}
+              name="confirmContrasena"
+              value={formData.confirmContrasena}
+              onChange={handleChange}
+              placeholder="Repite tu contraseña"
+              style={{ width: '100%', padding: '8px', paddingRight: '38px', boxSizing: 'border-box' }}
+            />
+            <button
+              type="button"
+              onClick={() => setVerConfirm(!verConfirm)}
+              style={ojoBtnStyle}
+              title={verConfirm ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+              aria-label={verConfirm ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+            >
+              {verConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
         </div>
         <button type="submit" style={{ width: '100%', padding: '10px', backgroundColor: '#007bff', color: 'white', border: 'none', cursor: 'pointer', borderRadius: '4px' }}>
           Registrarse

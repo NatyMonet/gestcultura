@@ -67,10 +67,24 @@ html.theme-warm-empathic select:focus {
 }
 
 /* ===== ACCESIBILIDAD ===== */
+/* ===== ACCESIBILIDAD ===== */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Escala de texto accesible */
+html.text-scale-normal {
+  font-size: 100%;
+}
+
+html.text-scale-large {
+  font-size: 118%;
+}
+
+html.text-scale-xlarge {
+  font-size: 135%;
 }
