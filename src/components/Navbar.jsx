@@ -36,7 +36,7 @@ const Navbar = () => {
     });
   };
 
-  const rutasNavbar = ['/convocatorias', '/mis-inscripciones', '/convocatoria', '/perfil'];
+  const rutasNavbar = ['/convocatorias', '/mis-inscripciones', '/convocatoria', '/perfil', '/login', '/registro'];
   const mostrarNavbar = rutasNavbar.some((ruta) => location.pathname.startsWith(ruta));
 
   if (!mostrarNavbar) {
@@ -94,19 +94,6 @@ const Navbar = () => {
     };
   };
 
-  const getToggleBtnStyle = () => {
-    if (!modoEmpatico) return null;
-    return {
-      backgroundColor: colorsPaleta.btnActivoBg,
-      color: colorsPaleta.btnActivo,
-      border: `3px solid ${colorsPaleta.btnActivo}`,
-      borderRadius: '8px',
-      padding: '8px 12px',
-      fontWeight: '600',
-      cursor: 'pointer',
-    };
-  };
-
   const getLogoutBtnStyle = () => {
     if (!modoEmpatico) return null;
     return {
@@ -145,6 +132,18 @@ const Navbar = () => {
     flexShrink: 0,
   };
 
+  const portalBadgeStyle = {
+    fontSize: '10px',
+    fontWeight: 'bold',
+    letterSpacing: '0.5px',
+    padding: '2px 8px',
+    borderRadius: '9999px',
+    background: modoEmpatico ? '#C75000' : 'rgba(255,255,255,0.22)',
+    color: modoEmpatico ? '#FFF7EF' : '#ffffff',
+    border: modoEmpatico ? '2px solid #2B1600' : '1px solid rgba(255,255,255,0.4)',
+    whiteSpace: 'nowrap',
+  };
+
   return (
     <nav
       style={getNavStyle()}
@@ -162,11 +161,14 @@ const Navbar = () => {
               <HeartHandshake className={modoEmpatico ? 'w-7 h-7' : 'w-6 h-6'} />
             </span>
             <div style={modoEmpatico ? { color: colorsPaleta.texto } : {}}>
-              <div className={`font-bold ${modoEmpatico ? 'text-xl' : 'text-lg'} leading-tight`}>
-                Gestión Empática
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className={`font-bold ${modoEmpatico ? 'text-xl' : 'text-lg'} leading-tight`}>
+                  Gestión Empática
+                </span>
+                <span style={portalBadgeStyle}>PORTAL OFICIAL</span>
               </div>
               <div className="text-xs font-semibold" style={modoEmpatico ? { color: colorsPaleta.texto, opacity: 0.7 } : {}}>
-                GestCultura SENA
+                Becas y Estímulos Culturales para Todos
               </div>
             </div>
           </div>
