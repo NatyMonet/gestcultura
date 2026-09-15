@@ -19,6 +19,8 @@ import {
   X,
   Clock,
   Loader,
+  Drama,
+  Music,
 } from 'lucide-react';
 
 export default function Convocatorias() {
@@ -33,7 +35,7 @@ export default function Convocatorias() {
   const [detailModalConv, setDetailModalConv] = useState(null);
   const [inscribiendose, setInscribiendose] = useState(false);
 
-  const categories = ['Todas', 'Ficción', 'Impacto Social', 'Apreciación', 'Artes Visuales', 'Literatura'];
+  const categories = ['Todas', 'Ficción', 'Impacto Social', 'Apreciación', 'Artes Visuales', 'Literatura', 'Teatro', 'Música'];
 
   // ✅ NUEVO: Usa mockData.ts directamente
   useEffect(() => {
@@ -248,6 +250,8 @@ export default function Convocatorias() {
                 {cat === 'Apreciación' && <BookOpen className="w-4 h-4" />}
                 {cat === 'Artes Visuales' && <Palette className="w-4 h-4" />}
                 {cat === 'Literatura' && <FileCheck2 className="w-4 h-4" />}
+                {cat === 'Teatro' && <Drama className="w-4 h-4" />}
+                {cat === 'Música' && <Music className="w-4 h-4" />}
                 {cat === 'Todas' && <Sparkles className="w-4 h-4" />}
                 <span>{cat}</span>
               </button>
