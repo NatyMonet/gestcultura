@@ -149,8 +149,9 @@ export const AccessibilityToolbar = ({
                 : 'bg-[#6D28D9] text-white border-[#4A148C] hover:opacity-90'
             }`}
           >
-            <Sparkles className="w-4 h-4" />
+                        <Sparkles className="w-4 h-4" />
             <span>Asistente Monet</span>
+            <Sparkles className="w-3.5 h-3.5 text-yellow-300 fill-yellow-300 animate-spin" />
           </button>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ModoEmpaticProvider, ModoEmpaticContext } from './context/ModoEmpatico';
 import { useContext, useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
@@ -47,9 +47,9 @@ function AppContent() {
         />
         <Navbar />
         <Routes>
+          <Route path="/" element={<Navigate to="/convocatorias" replace />} />
           <Route path="/registro" element={<Registro />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Login />} />
           <Route path="/convocatorias" element={<Convocatorias />} />
           <Route path="/mis-inscripciones" element={<MisInscripciones />} />
           <Route path="/convocatoria/:id" element={<DetalleConvocatoria />} />

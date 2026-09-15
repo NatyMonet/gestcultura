@@ -8,7 +8,7 @@ const Navbar = () => {
   const location = useLocation();
   const { modoEmpatico, toggleModo } = useContext(ModoEmpaticContext);
   const [menuOpen, setMenuOpen] = useState(false);
-  
+
   const usuarioGuardado = localStorage.getItem('usuario');
   const usuario = usuarioGuardado ? JSON.parse(usuarioGuardado) : null;
 
@@ -29,16 +29,16 @@ const Navbar = () => {
           text: 'Hasta luego, ' + (usuario?.nombre || 'Usuario'),
           confirmButtonText: 'OK',
         }).then(() => {
-          navigate('/login');
+          navigate('/convocatorias');
         });
       }
     });
   };
 
-  const rutasProtegidas = ['/convocatorias', '/mis-inscripciones', '/convocatoria', '/perfil'];
-  const mostrarNavbar = rutasProtegidas.some(ruta => location.pathname.startsWith(ruta));
+  const rutasNavbar = ['/convocatorias', '/mis-inscripciones', '/convocatoria', '/perfil'];
+  const mostrarNavbar = rutasNavbar.some((ruta) => location.pathname.startsWith(ruta));
 
-  if (!mostrarNavbar || !usuario) {
+  if (!mostrarNavbar) {
     return null;
   }
 
@@ -79,12 +79,12 @@ const Navbar = () => {
     };
   };
 
-  const getBtnStyle = (isActive) => {
+  const getBtnStyle = (activo) => {
     if (!modoEmpatico) return null;
     return {
-      color: isActive ? colorsPaleta.btnActivo : colorsPaleta.btnInactivo,
-      backgroundColor: isActive ? colorsPaleta.btnActivoBg : 'transparent',
-      border: `3px solid ${isActive ? colorsPaleta.btnActivo : colorsPaleta.btnInactivo}`,
+      color: activo ? colorsPaleta.btnActivo : colorsPaleta.btnInactivo,
+      backgroundColor: activo ? colorsPaleta.btnActivoBg : 'transparent',
+      border: `3px solid ${activo ? colorsPaleta.btnActivo : colorsPaleta.btnInactivo}`,
       borderRadius: '8px',
       padding: '8px 12px',
       fontWeight: '600',
@@ -119,6 +119,19 @@ const Navbar = () => {
     };
   };
 
+  const getIngresarBtnStyle = () => {
+    if (!modoEmpatico) return null;
+    return {
+      backgroundColor: colorsPaleta.btnActivo,
+      color: '#FFF7EF',
+      border: '3px solid #2B1600',
+      borderRadius: '8px',
+      padding: '8px 12px',
+      fontWeight: '600',
+      cursor: 'pointer',
+    };
+  };
+
   return (
     <nav
       style={getNavStyle()}
@@ -126,8 +139,8 @@ const Navbar = () => {
     >
       <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${modoEmpatico ? 'py-3' : 'py-0'}`}>
         <div className={`flex justify-between items-center ${modoEmpatico ? 'h-20' : 'h-16'}`}>
-          
-          <div 
+
+          <div
             onClick={() => navigate('/convocatorias')}
             style={getLogoStyle()}
             className={!modoEmpatico ? 'flex items-center cursor-pointer hover:opacity-80 transition rounded-lg px-3 py-2' : ''}
@@ -154,32 +167,28 @@ const Navbar = () => {
               📋 Convocatorias
             </button>
 
-            <button
-              onClick={() => navigate('/mis-inscripciones')}
-              style={getBtnStyle(isActive('/mis-inscripciones'))}
-              className={!modoEmpatico ? `px-4 py-2 rounded-lg font-semibold transition ${isActive('/mis-inscripciones') ? 'bg-white text-purple-600' : 'text-white hover:bg-purple-500'}` : ''}
-            >
-              📊 Mis Inscripciones
-            </button>
+            {usuario && (
+              <>
+                <button
+                  onClick={() => navigate('/mis-inscripciones')}
+                  style={getBtnStyle(isActive('/mis-inscripciones'))}
+                  className={!modoEmpatico ? `px-4 py-2 rounded-lg font-semibold transition ${isActive('/mis-inscripciones') ? 'bg-white text-purple-600' : 'text-white hover:bg-purple-500'}` : ''}
+                >
+                  📊 Mis Inscripciones
+                </button>
 
-            <button
-              onClick={() => navigate('/perfil')}
-              style={getBtnStyle(isActive('/perfil'))}
-              className={!modoEmpatico ? `px-4 py-2 rounded-lg font-semibold transition ${isActive('/perfil') ? 'bg-white text-purple-600' : 'text-white hover:bg-purple-500'}` : ''}
-            >
-              👤 Perfil
-            </button>
+                <button
+                  onClick={() => navigate('/perfil')}
+                  style={getBtnStyle(isActive('/perfil'))}
+                  className={!modoEmpatico ? `px-4 py-2 rounded-lg font-semibold transition ${isActive('/perfil') ? 'bg-white text-purple-600' : 'text-white hover:bg-purple-500'}` : ''}
+                >
+                  👤 Perfil
+                </button>
+              </>
+            )}
           </div>
 
           <div className="hidden md:flex items-center gap-4">
-            <div style={modoEmpatico ? { color: colorsPaleta.texto } : { color: 'white' }} className={`${modoEmpatico ? 'text-base' : 'text-sm'}`}>
-              <p className="font-semibold">{usuario?.nombre || 'Usuario'}</p>
-              <p className={`${modoEmpatico ? 'text-sm font-semibold' : 'text-xs'}`}
-                 style={modoEmpatico ? { color: colorsPaleta.texto, opacity: 0.7 } : {}}>
-                {usuario?.correo || 'usuario@example.com'}
-              </p>
-            </div>
-
             <button
               onClick={toggleModo}
               style={getToggleBtnStyle()}
@@ -188,13 +197,33 @@ const Navbar = () => {
               {modoEmpatico ? '👁️ ON' : '👁️ OFF'}
             </button>
 
-            <button
-              onClick={handleLogout}
-              style={getLogoutBtnStyle()}
-              className={!modoEmpatico ? 'bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold transition' : ''}
-            >
-              🚪 Logout
-            </button>
+            {usuario ? (
+              <>
+                <div style={modoEmpatico ? { color: colorsPaleta.texto } : { color: 'white' }} className={`${modoEmpatico ? 'text-base' : 'text-sm'}`}>
+                  <p className="font-semibold">{usuario?.nombre || 'Usuario'}</p>
+                  <p className={`${modoEmpatico ? 'text-sm font-semibold' : 'text-xs'}`}
+                     style={modoEmpatico ? { color: colorsPaleta.texto, opacity: 0.7 } : {}}>
+                    {usuario?.correo || 'usuario@example.com'}
+                  </p>
+                </div>
+
+                <button
+                  onClick={handleLogout}
+                  style={getLogoutBtnStyle()}
+                  className={!modoEmpatico ? 'bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold transition' : ''}
+                >
+                  🚪 Logout
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => navigate('/login')}
+                style={getIngresarBtnStyle()}
+                className={!modoEmpatico ? 'bg-white text-purple-700 px-4 py-2 rounded-lg font-semibold hover:opacity-80 transition' : ''}
+              >
+                🔓 Ingresar
+              </button>
+            )}
           </div>
 
           <div className="md:hidden flex items-center space-x-2">
@@ -218,7 +247,7 @@ const Navbar = () => {
         </div>
 
         {menuOpen && (
-          <div 
+          <div
             style={modoEmpatico ? {
               backgroundColor: colorsPaleta.btnActivoBg,
               borderRadius: '8px',
@@ -229,53 +258,53 @@ const Navbar = () => {
             className={!modoEmpatico ? 'bg-purple-500 rounded-lg mt-2 p-4 space-y-2' : 'space-y-2'}
           >
             <button
-              onClick={() => {
-                navigate('/convocatorias');
-                setMenuOpen(false);
-              }}
+              onClick={() => { navigate('/convocatorias'); setMenuOpen(false); }}
               style={getBtnStyle(isActive('/convocatorias'))}
               className={!modoEmpatico ? `w-full text-left px-4 py-2 rounded-lg font-semibold transition ${isActive('/convocatorias') ? 'bg-white text-purple-600' : 'text-white hover:bg-purple-600'}` : 'w-full text-left'}
             >
               📋 Convocatorias
             </button>
 
-            <button
-              onClick={() => {
-                navigate('/mis-inscripciones');
-                setMenuOpen(false);
-              }}
-              style={getBtnStyle(isActive('/mis-inscripciones'))}
-              className={!modoEmpatico ? `w-full text-left px-4 py-2 rounded-lg font-semibold transition ${isActive('/mis-inscripciones') ? 'bg-white text-purple-600' : 'text-white hover:bg-purple-600'}` : 'w-full text-left'}
-            >
-              📊 Mis Inscripciones
-            </button>
+            {usuario ? (
+              <>
+                <button
+                  onClick={() => { navigate('/mis-inscripciones'); setMenuOpen(false); }}
+                  style={getBtnStyle(isActive('/mis-inscripciones'))}
+                  className={!modoEmpatico ? `w-full text-left px-4 py-2 rounded-lg font-semibold transition ${isActive('/mis-inscripciones') ? 'bg-white text-purple-600' : 'text-white hover:bg-purple-600'}` : 'w-full text-left'}
+                >
+                  📊 Mis Inscripciones
+                </button>
 
-            <button
-              onClick={() => {
-                navigate('/perfil');
-                setMenuOpen(false);
-              }}
-              style={getBtnStyle(isActive('/perfil'))}
-              className={!modoEmpatico ? `w-full text-left px-4 py-2 rounded-lg font-semibold transition ${isActive('/perfil') ? 'bg-white text-purple-600' : 'text-white hover:bg-purple-600'}` : 'w-full text-left'}
-            >
-              👤 Perfil
-            </button>
+                <button
+                  onClick={() => { navigate('/perfil'); setMenuOpen(false); }}
+                  style={getBtnStyle(isActive('/perfil'))}
+                  className={!modoEmpatico ? `w-full text-left px-4 py-2 rounded-lg font-semibold transition ${isActive('/perfil') ? 'bg-white text-purple-600' : 'text-white hover:bg-purple-600'}` : 'w-full text-left'}
+                >
+                  👤 Perfil
+                </button>
 
-            <div className="border-t pt-2 mt-2" style={modoEmpatico ? { borderTopColor: colorsPaleta.btnInactivo } : {}}>
-              <p className="text-sm font-semibold px-4" style={modoEmpatico ? { color: colorsPaleta.texto } : { color: 'white' }}>
-                {usuario?.nombre}
-              </p>
+                <div className="border-t pt-2 mt-2" style={modoEmpatico ? { borderTopColor: colorsPaleta.btnInactivo } : {}}>
+                  <p className="text-sm font-semibold px-4" style={modoEmpatico ? { color: colorsPaleta.texto } : { color: 'white' }}>
+                    {usuario?.nombre}
+                  </p>
+                  <button
+                    onClick={() => { handleLogout(); setMenuOpen(false); }}
+                    style={getLogoutBtnStyle()}
+                    className={!modoEmpatico ? 'w-full text-left px-4 py-2 mt-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold transition' : 'w-full text-left mt-2 rounded-lg'}
+                  >
+                    🚪 Logout
+                  </button>
+                </div>
+              </>
+            ) : (
               <button
-                onClick={() => {
-                  handleLogout();
-                  setMenuOpen(false);
-                }}
-                style={getLogoutBtnStyle()}
-                className={!modoEmpatico ? 'w-full text-left px-4 py-2 mt-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold transition' : 'w-full text-left mt-2 rounded-lg'}
+                onClick={() => { navigate('/login'); setMenuOpen(false); }}
+                style={getIngresarBtnStyle()}
+                className={!modoEmpatico ? 'w-full text-left px-4 py-2 mt-2 bg-white text-purple-700 rounded-lg font-semibold transition' : 'w-full text-left mt-2 rounded-lg'}
               >
-                🚪 Logout
+                🔓 Ingresar
               </button>
-            </div>
+            )}
           </div>
         )}
       </div>

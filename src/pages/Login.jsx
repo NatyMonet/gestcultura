@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, HeartHandshake } from 'lucide-react';
 import Swal from 'sweetalert2';
 import { ModoEmpaticContext } from '../context/ModoEmpatico';
 
@@ -127,9 +127,24 @@ export default function Login() {
         boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
       }}
     >
-      <h2 style={{ textAlign: 'center', marginBottom: '30px' }}>
-        🎬 Gestión Empática
-      </h2>
+      <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+        <div
+          style={{
+            width: '56px',
+            height: '56px',
+            borderRadius: '14px',
+            background: '#6A1B9A',
+            color: '#fff',
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: '10px',
+          }}
+        >
+          <HeartHandshake size={32} />
+        </div>
+        <h2 style={{ margin: 0 }}>Gestión Empática</h2>
+      </div>
 
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: '15px' }}>
