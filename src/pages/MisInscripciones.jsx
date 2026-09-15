@@ -88,8 +88,8 @@ const MisInscripciones = () => {
       <div className={`min-h-screen ${pageBg} flex items-center justify-center px-4`}>
         <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md w-full text-center">
           <div className="text-4xl mb-4">📋</div>
-          <h1 className={`text-2xl font-bold ${headText} mb-2`}>Sin inscripciones</h1>
-          <p className="text-gray-600 mb-6">Aún no te has inscrito en ninguna convocatoria</p>
+          <h1 className={`text-2xl font-bold ${headText} mb-2`}>Sin solicitudes</h1>
+          <p className="text-gray-600 mb-6">Aún no tienes solicitudes registradas convocatoria</p>
           <a href="/convocatorias" className={`inline-block ${btnColor} text-white py-2 px-6 rounded-lg transition font-medium`}>
             Ver Convocatorias
           </a>
@@ -102,7 +102,7 @@ const MisInscripciones = () => {
     <div className={`min-h-screen ${pageBg} py-12 px-4`}>
       <div className="max-w-6xl mx-auto">
         <div className="mb-10">
-          <h1 className={`text-4xl font-bold ${headText} mb-2`}>Mis Inscripciones</h1>
+          <h1 className={`text-4xl font-bold ${headText} mb-2`}>Mis Solicitudes</h1>
           <p className="text-gray-600 text-lg">Aquí puedes ver todas las convocatorias en las que te has inscrito</p>
         </div>
 

@@ -177,7 +177,7 @@ const Navbar = () => {
               style={getBtnStyle(isActive('/convocatorias'))}
               className={!modoEmpatico ? `px-4 py-2 rounded-lg font-semibold transition ${isActive('/convocatorias') ? 'bg-white text-purple-600' : 'text-white hover:bg-purple-500'}` : ''}
             >
-              📋 Convocatorias
+              Convocatorias
             </button>
 
             {usuario && (
@@ -187,7 +187,7 @@ const Navbar = () => {
                   style={getBtnStyle(isActive('/mis-inscripciones'))}
                   className={!modoEmpatico ? `px-4 py-2 rounded-lg font-semibold transition ${isActive('/mis-inscripciones') ? 'bg-white text-purple-600' : 'text-white hover:bg-purple-500'}` : ''}
                 >
-                  📊 Mis Inscripciones
+                  Mis Solicitudes
                 </button>
 
                 <button
@@ -195,7 +195,7 @@ const Navbar = () => {
                   style={getBtnStyle(isActive('/perfil'))}
                   className={!modoEmpatico ? `px-4 py-2 rounded-lg font-semibold transition ${isActive('/perfil') ? 'bg-white text-purple-600' : 'text-white hover:bg-purple-500'}` : ''}
                 >
-                  👤 Perfil
+                  Perfil
                 </button>
               </>
             )}
@@ -263,7 +263,7 @@ const Navbar = () => {
               style={getBtnStyle(isActive('/convocatorias'))}
               className={!modoEmpatico ? `w-full text-left px-4 py-2 rounded-lg font-semibold transition ${isActive('/convocatorias') ? 'bg-white text-purple-600' : 'text-white hover:bg-purple-600'}` : 'w-full text-left'}
             >
-              📋 Convocatorias
+              Convocatorias
             </button>
 
             {usuario ? (
@@ -273,7 +273,7 @@ const Navbar = () => {
                   style={getBtnStyle(isActive('/mis-inscripciones'))}
                   className={!modoEmpatico ? `w-full text-left px-4 py-2 rounded-lg font-semibold transition ${isActive('/mis-inscripciones') ? 'bg-white text-purple-600' : 'text-white hover:bg-purple-600'}` : 'w-full text-left'}
                 >
-                  📊 Mis Inscripciones
+                  Mis Solicitudes
                 </button>
 
                 <button
@@ -281,7 +281,7 @@ const Navbar = () => {
                   style={getBtnStyle(isActive('/perfil'))}
                   className={!modoEmpatico ? `w-full text-left px-4 py-2 rounded-lg font-semibold transition ${isActive('/perfil') ? 'bg-white text-purple-600' : 'text-white hover:bg-purple-600'}` : 'w-full text-left'}
                 >
-                  👤 Perfil
+                  Perfil
                 </button>
 
                 <div className="border-t pt-2 mt-2" style={modoEmpatico ? { borderTopColor: colorsPaleta.btnInactivo } : {}}>
