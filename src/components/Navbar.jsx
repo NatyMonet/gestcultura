@@ -195,7 +195,27 @@ const Navbar = () => {
                   style={getBtnStyle(isActive('/perfil'))}
                   className={!modoEmpatico ? `px-4 py-2 rounded-lg font-semibold transition ${isActive('/perfil') ? 'bg-white text-purple-600' : 'text-white hover:bg-purple-500'}` : ''}
                 >
-                  Perfil
+                  <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+                    <span
+                      style={{
+                        width: '26px',
+                        height: '26px',
+                        borderRadius: '50%',
+                        background: modoEmpatico ? '#C75000' : '#ffffff',
+                        color: modoEmpatico ? '#ffffff' : '#6A1B9A',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '12px',
+                        fontWeight: 'bold',
+                        marginRight: '8px',
+                        flexShrink: 0,
+                      }}
+                    >
+                      {(usuario?.nombre || 'U').charAt(0).toUpperCase()}
+                    </span>
+                    Perfil
+                  </span>
                 </button>
               </>
             )}
