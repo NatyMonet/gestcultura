@@ -1,5 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useContext, useState } from 'react';
+import { HeartHandshake } from 'lucide-react';
 import Swal from 'sweetalert2';
 import { ModoEmpaticContext } from '../context/ModoEmpatico';
 
@@ -132,6 +133,18 @@ const Navbar = () => {
     };
   };
 
+  const logoBadgeStyle = {
+    width: modoEmpatico ? '44px' : '40px',
+    height: modoEmpatico ? '44px' : '40px',
+    borderRadius: '12px',
+    background: modoEmpatico ? '#C75000' : 'rgba(255,255,255,0.18)',
+    color: '#fff',
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
+  };
+
   return (
     <nav
       style={getNavStyle()}
@@ -143,10 +156,10 @@ const Navbar = () => {
           <div
             onClick={() => navigate('/convocatorias')}
             style={getLogoStyle()}
-            className={!modoEmpatico ? 'flex items-center cursor-pointer hover:opacity-80 transition rounded-lg px-3 py-2' : ''}
+            className={!modoEmpatico ? 'flex items-center gap-3 cursor-pointer hover:opacity-80 transition rounded-lg px-3 py-2' : ''}
           >
-            <span className={modoEmpatico ? 'text-4xl' : 'text-3xl'}>
-              {modoEmpatico ? '💛' : '💜'}
+            <span style={logoBadgeStyle}>
+              <HeartHandshake className={modoEmpatico ? 'w-7 h-7' : 'w-6 h-6'} />
             </span>
             <div style={modoEmpatico ? { color: colorsPaleta.texto } : {}}>
               <div className={`font-bold ${modoEmpatico ? 'text-xl' : 'text-lg'} leading-tight`}>
@@ -189,13 +202,7 @@ const Navbar = () => {
           </div>
 
           <div className="hidden md:flex items-center gap-4">
-            <button
-              onClick={toggleModo}
-              style={getToggleBtnStyle()}
-              className={!modoEmpatico ? 'bg-purple-500 text-white px-3 py-1 text-xs rounded-lg hover:opacity-80 transition' : ''}
-            >
-              {modoEmpatico ? '👁️ ON' : '👁️ OFF'}
-            </button>
+
 
             {usuario ? (
               <>
@@ -227,13 +234,7 @@ const Navbar = () => {
           </div>
 
           <div className="md:hidden flex items-center space-x-2">
-            <button
-              onClick={toggleModo}
-              style={getToggleBtnStyle()}
-              className={!modoEmpatico ? 'text-white hover:opacity-80 p-2 rounded-lg transition' : ''}
-            >
-              👁️
-            </button>
+
             <button
               onClick={() => setMenuOpen(!menuOpen)}
               className="hover:opacity-80 p-2 rounded-lg transition"
