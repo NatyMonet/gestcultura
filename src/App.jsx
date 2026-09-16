@@ -9,6 +9,7 @@ import Convocatorias from './pages/Convocatorias';
 import MisInscripciones from './pages/MisInscripciones';
 import DetalleConvocatoria from './pages/DetalleConvocatoria';
 import Perfil from './pages/Perfil';
+import MonetAssistant from './components/MonetAssistant';
 
 function AppContent() {
   const { modoEmpatico, setModoEmpatico } = useContext(ModoEmpaticContext);
@@ -55,6 +56,7 @@ function AppContent() {
           <Route path="/convocatoria/:id" element={<DetalleConvocatoria />} />
           <Route path="/perfil" element={<Perfil />} />
         </Routes>
+        <MonetAssistant isMonetOpen={isMonetOpen} setIsMonetOpen={setIsMonetOpen} />
       </Router>
     </div>
   );
