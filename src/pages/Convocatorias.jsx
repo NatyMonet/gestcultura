@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ModoEmpaticContext } from '../context/ModoEmpatico';
-import { CONVOCATORIAS_DATA } from '../data/mockData'; // ✅ IMPORT
+import { CONVOCATORIAS_DATA } from '../data/mockData';
 import Swal from 'sweetalert2';
 import {
   Search,
@@ -23,6 +23,39 @@ import {
   Music,
 } from 'lucide-react';
 
+// Convierte una fecha (Date o texto) a un formato bonito: "15 de marzo, 2026"
+const formatearFecha = (fecha) => {
+  if (!fecha) return '';
+  let s = typeof fecha === 'string' ? fecha : '';
+  if (!s) {
+    try { s = new Date(fecha).toISOString(); } catch (e) { return String(fecha); }
+  }
+  const parte = s.slice(0, 10);
+  const [y, m, d] = parte.split('-');
+  if (!y || !m || !d) return String(fecha);
+  const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+  return `${parseInt(d, 10)} de ${meses[parseInt(m, 10) - 1]}, ${y}`;
+};
+
+// Datos locales de respaldo (por si el backend no responde)
+const mapearLocal = () =>
+  CONVOCATORIAS_DATA.map((conv) => ({
+    id: conv.id,
+    idConvocatoria: conv.id,
+    title: conv.title,
+    description: conv.description,
+    fullDescription: conv.fullDescription,
+    category: conv.category,
+    imageUrl: conv.imageUrl,
+    closeDate: conv.closeDate,
+    cupos: conv.cupos,
+    budget: conv.budget,
+    requirements: conv.requirements,
+    stages: conv.stages,
+    estado: 'activa',
+    fechaCierre: conv.closeDate,
+  }));
+
 export default function Convocatorias() {
   const { modoEmpatico } = useContext(ModoEmpaticContext);
   const isWarm = modoEmpatico;
@@ -37,37 +70,44 @@ export default function Convocatorias() {
 
   const categories = ['Todas', 'Ficción', 'Impacto Social', 'Apreciación', 'Artes Visuales', 'Literatura', 'Teatro', 'Música'];
 
-  // ✅ NUEVO: Usa mockData.ts directamente
+  // ✅ Carga las convocatorias DESDE LA BASE DE DATOS (con imágenes/categorías del archivo local)
   useEffect(() => {
-    try {
-      const convocatoriasFormateadas = CONVOCATORIAS_DATA.map((conv) => ({
-        id: conv.id,
-        idConvocatoria: conv.id,
-        title: conv.title,
-        description: conv.description,
-        fullDescription: conv.fullDescription,
-        category: conv.category,
-        imageUrl: conv.imageUrl, // ✅ IMÁGENES UNSPLASH
-        closeDate: conv.closeDate,
-        cupos: conv.cupos,
-        budget: conv.budget,
-        requirements: conv.requirements,
-        stages: conv.stages,
-        estado: 'activa',
-        fechaCierre: conv.closeDate,
-      }));
-
-      setConvocatorias(convocatoriasFormateadas);
-    } catch (error) {
-      console.error('Error loading convocatorias:', error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'No se pudieron cargar las convocatorias',
-      });
-    } finally {
-      setLoading(false);
-    }
+    const cargar = async () => {
+      try {
+        const res = await fetch('http://localhost:5000/api/convocatorias');
+        const json = await res.json();
+        if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+          const formateadas = json.data.map((c) => {
+            const extra = CONVOCATORIAS_DATA.find((m) => m.title === c.nombre) || {};
+            return {
+              id: c.idConvocatoria,
+              idConvocatoria: c.idConvocatoria,
+              title: c.nombre,
+              description: c.descripcion,
+              fullDescription: extra.fullDescription || c.descripcion,
+              category: extra.category || 'General',
+              imageUrl: extra.imageUrl || 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=800&auto=format&fit=crop',
+              closeDate: formatearFecha(c.fechaCierre),
+              cupos: c.cupos,
+              budget: extra.budget || 'Por definir',
+              requirements: extra.requirements || [],
+              stages: extra.stages || [],
+              estado: 'activa',
+              fechaCierre: c.fechaCierre,
+            };
+          });
+          setConvocatorias(formateadas);
+        } else {
+          setConvocatorias(mapearLocal());
+        }
+      } catch (error) {
+        console.error('Error cargando convocatorias desde la BD, usando datos locales:', error);
+        setConvocatorias(mapearLocal());
+      } finally {
+        setLoading(false);
+      }
+    };
+    cargar();
   }, []);
 
   const filteredConvocatorias = convocatorias.filter((conv) => {
@@ -145,7 +185,6 @@ export default function Convocatorias() {
 
   return (
     <div className="space-y-8 pb-12">
-      {/* Hero Banner */}
       <section
         aria-label="Presentación del portal"
         className={`p-6 sm:p-10 rounded-3xl border-3 shadow-sm relative overflow-hidden transition-all ${
@@ -182,7 +221,6 @@ export default function Convocatorias() {
         </div>
       </section>
 
-      {/* Búsqueda y Filtros */}
       <section aria-label="Búsqueda y filtros de convocatorias" className="space-y-4">
         <div className="flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between">
           <div className="relative flex-1 max-w-xl">
@@ -224,7 +262,6 @@ export default function Convocatorias() {
           </div>
         </div>
 
-        {/* Botones de Categoría */}
         <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-thin" role="tablist">
           {categories.map((cat) => {
             const isSelected = selectedCategory === cat;
@@ -260,7 +297,6 @@ export default function Convocatorias() {
         </div>
       </section>
 
-      {/* Grid de Tarjetas 3 Columnas */}
       <section
         aria-label="Lista de convocatorias disponibles"
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
@@ -275,7 +311,6 @@ export default function Convocatorias() {
             }`}
             style={{ borderWidth: '3px' }}
           >
-            {/* Imagen de Portada */}
             <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-stone-200">
               <img
                 src={conv.imageUrl}
@@ -293,7 +328,6 @@ export default function Convocatorias() {
               </div>
             </div>
 
-            {/* Cuerpo de la Tarjeta */}
             <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-4">
               <div className="space-y-2">
                 <h3 className="font-heading text-lg sm:text-xl font-extrabold leading-tight">
@@ -304,35 +338,21 @@ export default function Convocatorias() {
                 </p>
               </div>
 
-              {/* Metadatos */}
               <div className="space-y-2 pt-2 border-t border-current/10 text-xs font-bold">
                 <div className="flex items-center gap-2">
-                  <Calendar
-                    className={`w-4 h-4 ${isWarm ? 'text-[#C75000]' : 'text-purple-600'} shrink-0`}
-                  />
-                  <span>
-                    Cierre: <strong className="font-extrabold">{conv.closeDate}</strong>
-                  </span>
+                  <Calendar className={`w-4 h-4 ${isWarm ? 'text-[#C75000]' : 'text-purple-600'} shrink-0`} />
+                  <span>Cierre: <strong className="font-extrabold">{conv.closeDate}</strong></span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Users
-                    className={`w-4 h-4 ${isWarm ? 'text-[#C75000]' : 'text-purple-600'} shrink-0`}
-                  />
-                  <span>
-                    Cupos: <strong>{conv.cupos} participantes</strong>
-                  </span>
+                  <Users className={`w-4 h-4 ${isWarm ? 'text-[#C75000]' : 'text-purple-600'} shrink-0`} />
+                  <span>Cupos: <strong>{conv.cupos} participantes</strong></span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Award
-                    className={`w-4 h-4 ${isWarm ? 'text-[#C75000]' : 'text-purple-600'} shrink-0`}
-                  />
-                  <span className="truncate">
-                    Estímulo: <strong>{conv.budget}</strong>
-                  </span>
+                  <Award className={`w-4 h-4 ${isWarm ? 'text-[#C75000]' : 'text-purple-600'} shrink-0`} />
+                  <span className="truncate">Estímulo: <strong>{conv.budget}</strong></span>
                 </div>
               </div>
 
-              {/* Botones de Acción */}
               <div className="pt-3 space-y-2">
                 <button
                   onClick={() => handleInscribirse(conv)}
@@ -372,7 +392,6 @@ export default function Convocatorias() {
         </div>
       )}
 
-      {/* Modal de Detalles */}
       {detailModalConv && (
         <div
           className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto"
@@ -415,46 +434,50 @@ export default function Convocatorias() {
               <p className="opacity-90">{detailModalConv.fullDescription}</p>
             </div>
 
-            <div className="space-y-3">
-              <h4 className="font-extrabold text-base flex items-center gap-2">
-                <FileCheck2 className={`w-5 h-5 ${isWarm ? 'text-[#C75000]' : 'text-purple-600'}`} />
-                <span>Requisitos de Postulación</span>
-              </h4>
-              <ul className="space-y-2 text-sm font-medium">
-                {detailModalConv.requirements.map((req, idx) => (
-                  <li key={idx} className="flex items-start gap-2.5">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                    <span>{req}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {detailModalConv.requirements && detailModalConv.requirements.length > 0 && (
+              <div className="space-y-3">
+                <h4 className="font-extrabold text-base flex items-center gap-2">
+                  <FileCheck2 className={`w-5 h-5 ${isWarm ? 'text-[#C75000]' : 'text-purple-600'}`} />
+                  <span>Requisitos de Postulación</span>
+                </h4>
+                <ul className="space-y-2 text-sm font-medium">
+                  {detailModalConv.requirements.map((req, idx) => (
+                    <li key={idx} className="flex items-start gap-2.5">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                      <span>{req}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
-            <div className="space-y-3">
-              <h4 className="font-extrabold text-base flex items-center gap-2">
-                <Clock className={`w-5 h-5 ${isWarm ? 'text-[#C75000]' : 'text-purple-600'}`} />
-                <span>Etapas del Proceso</span>
-              </h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-bold">
-                {detailModalConv.stages.map((stage, idx) => (
-                  <div
-                    key={idx}
-                    className={`p-3 rounded-xl border-2 flex items-center gap-2 ${
-                      isWarm ? 'bg-white border-[#2B1600]' : 'bg-black/5 border-current/20'
-                    }`}
-                  >
-                    <span
-                      className={`w-5 h-5 rounded-full text-white flex items-center justify-center text-xs font-black shrink-0 ${
-                        isWarm ? 'bg-[#C75000]' : 'bg-purple-600'
+            {detailModalConv.stages && detailModalConv.stages.length > 0 && (
+              <div className="space-y-3">
+                <h4 className="font-extrabold text-base flex items-center gap-2">
+                  <Clock className={`w-5 h-5 ${isWarm ? 'text-[#C75000]' : 'text-purple-600'}`} />
+                  <span>Etapas del Proceso</span>
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-bold">
+                  {detailModalConv.stages.map((stage, idx) => (
+                    <div
+                      key={idx}
+                      className={`p-3 rounded-xl border-2 flex items-center gap-2 ${
+                        isWarm ? 'bg-white border-[#2B1600]' : 'bg-black/5 border-current/20'
                       }`}
                     >
-                      {idx + 1}
-                    </span>
-                    <span>{stage}</span>
-                  </div>
-                ))}
+                      <span
+                        className={`w-5 h-5 rounded-full text-white flex items-center justify-center text-xs font-black shrink-0 ${
+                          isWarm ? 'bg-[#C75000]' : 'bg-purple-600'
+                        }`}
+                      >
+                        {idx + 1}
+                      </span>
+                      <span>{stage}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="pt-4 border-t border-current/15 flex flex-col sm:flex-row gap-3 justify-end">
               <button
