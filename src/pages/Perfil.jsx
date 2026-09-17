@@ -95,7 +95,7 @@ export default function Perfil() {
 
       <div style={{ display: 'flex', gap: '10px', marginTop: '24px', flexWrap: 'wrap' }}>
         <button onClick={() => navigate('/convocatorias')} style={{ flex: 1, minWidth: '140px', padding: '12px', background: acento, color: '#fff', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>
-          Ver Convocatorias
+          Explorar Convocatorias
         </button>
         <button onClick={() => navigate('/mis-inscripciones')} style={{ flex: 1, minWidth: '140px', padding: '12px', background: '#fff', color: acento, border: `2px solid ${acento}`, borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>
           Mis Inscripciones
