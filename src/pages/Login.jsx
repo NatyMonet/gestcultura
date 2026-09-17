@@ -9,7 +9,8 @@ export default function Login() {
   const [cargando, setCargando] = useState(false);
   const [verContrasena, setVerContrasena] = useState(false);
   const navigate = useNavigate();
-  const { setModoEmpatico } = useContext(ModoEmpaticContext);
+  const { modoEmpatico, setModoEmpatico } = useContext(ModoEmpaticContext);
+  const isWarm = modoEmpatico;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -71,16 +72,50 @@ export default function Login() {
     }
   };
 
+  // Paleta según el Modo Empático
+  const C = isWarm
+    ? {
+        header: 'linear-gradient(135deg, #C75000, #2B1600)',
+        label: '#2B1600',
+        inputBg: '#FFFDF9',
+        inputBorder: '#2B1600',
+        focus: '#C75000',
+        button: 'linear-gradient(135deg, #C75000, #A93F00)',
+        buttonLoading: '#D98A5A',
+        link: '#C75000',
+        help: '#5C4636',
+      }
+    : {
+        header: 'linear-gradient(135deg, #7C3AED, #4A148C)',
+        label: '#4A148C',
+        inputBg: '#FAF7FE',
+        inputBorder: '#E6D9F5',
+        focus: '#7C3AED',
+        button: 'linear-gradient(135deg, #7C3AED, #4A148C)',
+        buttonLoading: '#9E7BC7',
+        link: '#7C3AED',
+        help: '#555',
+      };
+
+  const fsLabel = isWarm ? 16 : 14;
+  const fsInput = isWarm ? 16 : 14;
+  const fsBtn = isWarm ? 18 : 16;
+
   const inputStyle = {
     width: '100%',
     padding: '11px 12px',
     boxSizing: 'border-box',
     borderRadius: '10px',
-    border: '2px solid #E6D9F5',
-    fontSize: '14px',
+    border: `2px solid ${C.inputBorder}`,
+    fontSize: `${fsInput}px`,
     outline: 'none',
-    background: '#FAF7FE',
+    background: C.inputBg,
   };
+
+  const onFocusInput = (e) => (e.target.style.border = `2px solid ${C.focus}`);
+  const onBlurInput = (e) => (e.target.style.border = `2px solid ${C.inputBorder}`);
+
+  const labelStyle = { display: 'block', marginBottom: '6px', fontWeight: 'bold', color: C.label, fontSize: `${fsLabel}px` };
 
   return (
     <div
@@ -93,8 +128,7 @@ export default function Login() {
         background: '#fff',
       }}
     >
-      {/* Header morado con logo */}
-      <div style={{ background: 'linear-gradient(135deg, #7C3AED, #4A148C)', padding: '30px 24px', textAlign: 'center', color: '#fff' }}>
+      <div style={{ background: C.header, padding: '30px 24px', textAlign: 'center', color: '#fff' }}>
         <div
           style={{
             width: '62px',
@@ -109,18 +143,15 @@ export default function Login() {
         >
           <HeartHandshake size={34} />
         </div>
-        <h2 style={{ margin: 0, fontSize: '22px', fontWeight: 800 }}>Gestión Empática</h2>
-        <p style={{ margin: '6px 0 0', fontSize: '13px', opacity: 0.9 }}>
+        <h2 style={{ margin: 0, fontSize: isWarm ? '24px' : '22px', fontWeight: 800 }}>Gestión Empática</h2>
+        <p style={{ margin: '6px 0 0', fontSize: isWarm ? '14px' : '13px', opacity: 0.9 }}>
           Ingresa para continuar con tus postulaciones
         </p>
       </div>
 
-      {/* Formulario */}
       <form onSubmit={handleSubmit} style={{ padding: '26px 24px' }}>
         <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', marginBottom: '6px', fontWeight: 'bold', color: '#4A148C' }}>
-            Correo:
-          </label>
+          <label style={labelStyle}>Correo:</label>
           <input
             type="email"
             name="correo"
@@ -128,15 +159,13 @@ export default function Login() {
             onChange={handleChange}
             placeholder="tu@email.com"
             style={inputStyle}
-            onFocus={(e) => (e.target.style.border = '2px solid #7C3AED')}
-            onBlur={(e) => (e.target.style.border = '2px solid #E6D9F5')}
+            onFocus={onFocusInput}
+            onBlur={onBlurInput}
           />
         </div>
 
         <div style={{ marginBottom: '22px' }}>
-          <label style={{ display: 'block', marginBottom: '6px', fontWeight: 'bold', color: '#4A148C' }}>
-            Contraseña:
-          </label>
+          <label style={labelStyle}>Contraseña:</label>
           <div style={{ position: 'relative' }}>
             <input
               type={verContrasena ? 'text' : 'password'}
@@ -145,8 +174,8 @@ export default function Login() {
               onChange={handleChange}
               placeholder="Tu contraseña"
               style={{ ...inputStyle, paddingRight: '42px' }}
-              onFocus={(e) => (e.target.style.border = '2px solid #7C3AED')}
-              onBlur={(e) => (e.target.style.border = '2px solid #E6D9F5')}
+              onFocus={onFocusInput}
+              onBlur={onBlurInput}
             />
             <button
               type="button"
@@ -161,7 +190,7 @@ export default function Login() {
                 cursor: 'pointer',
                 padding: 0,
                 display: 'flex',
-                color: '#7C3AED',
+                color: C.focus,
               }}
               title={verContrasena ? 'Ocultar contraseña' : 'Mostrar contraseña'}
               aria-label={verContrasena ? 'Ocultar contraseña' : 'Mostrar contraseña'}
@@ -177,12 +206,12 @@ export default function Login() {
           style={{
             width: '100%',
             padding: '13px',
-            background: cargando ? '#9E7BC7' : 'linear-gradient(135deg, #7C3AED, #4A148C)',
+            background: cargando ? C.buttonLoading : C.button,
             color: 'white',
             border: 'none',
             cursor: cargando ? 'not-allowed' : 'pointer',
             borderRadius: '10px',
-            fontSize: '16px',
+            fontSize: `${fsBtn}px`,
             fontWeight: 'bold',
             boxShadow: '0 4px 14px rgba(124,58,237,0.35)',
           }}
@@ -192,9 +221,9 @@ export default function Login() {
       </form>
 
       <div style={{ textAlign: 'center', padding: '0 24px 24px' }}>
-        <p style={{ margin: 0, color: '#555' }}>
+        <p style={{ margin: 0, color: C.help, fontSize: isWarm ? '14px' : '13px' }}>
           ¿No tienes cuenta?{' '}
-          <Link to="/registro" style={{ color: '#7C3AED', textDecoration: 'none', fontWeight: 'bold' }}>
+          <Link to="/registro" style={{ color: C.link, textDecoration: 'none', fontWeight: 'bold' }}>
             Regístrate aquí
           </Link>
         </p>
