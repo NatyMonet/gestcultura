@@ -30,7 +30,7 @@ const Navbar = () => {
   const usuarioGuardado = localStorage.getItem('usuario');
   const usuario = usuarioGuardado ? JSON.parse(usuarioGuardado) : null;
 
-  const rutasNavbar = ['/convocatorias', '/mis-inscripciones', '/convocatoria', '/perfil', '/login', '/registro'];
+  const rutasNavbar = ['/convocatorias', '/mis-inscripciones', '/convocatoria', '/perfil', '/login', '/registro', '/panel-evaluacion'];
   const mostrarNavbar = rutasNavbar.some((ruta) => location.pathname.startsWith(ruta));
 
   useEffect(() => {
@@ -165,7 +165,7 @@ const Navbar = () => {
             </button>
 
             <button
-              onClick={() => proximamente('Panel de Evaluación')}
+              onClick={() => irA('/panel-evaluacion')}
               className={`px-3 py-2 rounded-xl text-sm font-extrabold flex items-center gap-2 transition-all border-2 ${
                 isWarm ? 'border-transparent hover:border-[#2B1600]/30 hover:bg-black/5 text-[#2B1600]' : 'border-transparent hover:bg-purple-100/50 text-purple-950 opacity-85'
               }`}
@@ -295,7 +295,7 @@ const Navbar = () => {
 
               <button
                 role="menuitem"
-                onClick={() => proximamente('Panel de Evaluación')}
+                onClick={() => irA('/panel-evaluacion')}
                 className={`w-full text-left p-3.5 rounded-xl flex items-center justify-between border-2 transition-all group ${
                   isWarm ? 'bg-white border-transparent hover:border-[#2B1600] hover:bg-[#FFF7EF]' : 'bg-white border-transparent hover:border-purple-300 hover:bg-purple-50'
                 }`}

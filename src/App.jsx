@@ -9,6 +9,7 @@ import Convocatorias from './pages/Convocatorias';
 import MisInscripciones from './pages/MisInscripciones';
 import DetalleConvocatoria from './pages/DetalleConvocatoria';
 import Perfil from './pages/Perfil';
+import PanelEvaluacion from './pages/PanelEvaluacion';
  import MonetAssistant from './components/MonetAssistant';
 import Footer from './components/Footer';
 
@@ -56,6 +57,7 @@ function AppContent() {
           <Route path="/mis-inscripciones" element={<MisInscripciones />} />
           <Route path="/convocatoria/:id" element={<DetalleConvocatoria />} />
           <Route path="/perfil" element={<Perfil />} />
+          <Route path="/panel-evaluacion" element={<PanelEvaluacion />} />
         </Routes>
         <Footer />
         <MonetAssistant isMonetOpen={isMonetOpen} setIsMonetOpen={setIsMonetOpen} />
