@@ -22,11 +22,13 @@ export default function Registro() {
   const [verContrasena, setVerContrasena] = useState(false);
   const [verConfirm, setVerConfirm] = useState(false);
 
-  // Activa el Modo Empático automáticamente cuando la edad es 50 o más
+  // Activa el Modo Empático con 50+ y lo desactiva con menos de 50
   useEffect(() => {
     const n = parseInt(formData.edad, 10);
     if (!isNaN(n) && n >= 50) {
       setModoEmpatico(true);
+    } else {
+      setModoEmpatico(false);
     }
   }, [formData.edad, setModoEmpatico]);
 
