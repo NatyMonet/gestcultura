@@ -132,6 +132,27 @@ export default function Convocatorias() {
       return;
     }
 
+    // Preguntar la motivación de la persona con un cuadro de SweetAlert2
+    const { value: motivacion, isConfirmed } = await Swal.fire({
+      title: `Postularte a: ${convocatoria.title}`,
+      input: 'textarea',
+      inputLabel: '¿Por qué quieres participar en esta convocatoria?',
+      inputPlaceholder: 'Cuéntanos brevemente tu motivación...',
+      inputAttributes: { 'aria-label': 'Escribe tu motivación' },
+      showCancelButton: true,
+      confirmButtonText: 'Enviar postulación',
+      cancelButtonText: 'Cancelar',
+      inputValidator: (value) => {
+        if (!value || value.trim().length < 10) {
+          return 'Por favor cuéntanos tu motivación (mínimo 10 caracteres).';
+        }
+      },
+    });
+
+    if (!isConfirmed) {
+      return;
+    }
+
     setInscribiendose(true);
 
     try {
@@ -141,7 +162,7 @@ export default function Convocatorias() {
         body: JSON.stringify({
           idUsuario: usuario.idUsuario,
           idConvocatoria: convocatoria.idConvocatoria,
-          motivacion: '',
+          motivacion: motivacion,
         }),
       });
 

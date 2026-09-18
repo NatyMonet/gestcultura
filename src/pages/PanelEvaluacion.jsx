@@ -60,7 +60,7 @@ export default function PanelEvaluacion() {
         <p style={{ color: C.texto, fontSize: fs }}>Todavía no hay postulaciones registradas.</p>
       ) : (
         <div style={{ overflowX: 'auto', border: `2px solid ${C.borde}`, borderRadius: '12px', background: C.bg, boxShadow: '0 2px 12px rgba(0,0,0,0.08)' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '640px' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '820px' }}>
             <thead>
               <tr style={{ background: C.acento, color: '#fff' }}>
                 <th style={thStyle(fs)}>#</th>
@@ -68,6 +68,7 @@ export default function PanelEvaluacion() {
                 <th style={thStyle(fs)}>Cédula</th>
                 <th style={thStyle(fs)}>Correo</th>
                 <th style={thStyle(fs)}>Convocatoria</th>
+                <th style={thStyle(fs)}>Motivación</th>
                 <th style={thStyle(fs)}>Fecha</th>
               </tr>
             </thead>
@@ -79,6 +80,7 @@ export default function PanelEvaluacion() {
                   <td style={tdStyle(C, fs)}>{ins.cedula || '—'}</td>
                   <td style={tdStyle(C, fs)}>{ins.correo}</td>
                   <td style={tdStyle(C, fs)}>{ins.convocatoria}</td>
+                  <td style={{ ...tdStyle(C, fs), maxWidth: '260px' }}>{ins.motivacion || '—'}</td>
                   <td style={tdStyle(C, fs)}>{formatearFecha(ins.fecha)}</td>
                 </tr>
               ))}
