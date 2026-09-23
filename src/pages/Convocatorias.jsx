@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ModoEmpaticContext } from '../context/ModoEmpatico';
 import { CONVOCATORIAS_DATA } from '../data/mockData';
 import Swal from 'sweetalert2';
@@ -60,6 +60,7 @@ export default function Convocatorias() {
   const { modoEmpatico } = useContext(ModoEmpaticContext);
   const isWarm = modoEmpatico;
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const [convocatorias, setConvocatorias] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -109,6 +110,18 @@ export default function Convocatorias() {
     };
     cargar();
   }, []);
+
+  // 👉 Si Monet envió a la persona a una convocatoria puntual (?ver=Título),
+  // abre directamente la ficha de esa convocatoria (sin ocultar las demás).
+  useEffect(() => {
+    const verTitulo = searchParams.get('ver');
+    if (verTitulo && convocatorias.length > 0) {
+      const encontrada = convocatorias.find(
+        (c) => c.title.toLowerCase() === verTitulo.toLowerCase()
+      );
+      if (encontrada) setDetailModalConv(encontrada);
+    }
+  }, [searchParams, convocatorias]);
 
   const filteredConvocatorias = convocatorias.filter((conv) => {
     const matchesCat = selectedCategory === 'Todas' || conv.category === selectedCategory;

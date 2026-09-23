@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   X,
   Volume2,
@@ -99,6 +99,17 @@ const respuestaClave = (lower) => {
   return '¡Con gusto te acompaño! Puedes preguntarme cómo inscribirte, qué documentos necesitas o qué convocatoria te conviene. 🐾';
 };
 
+// ⏱️ TEMPORIZADOR DE INACTIVIDAD ("Modo Acompañado")
+// Si la persona se queda detenida sin hacer nada mientras se postula,
+// Monet se abre solo y le ofrece ayuda paso a paso.
+// Puedes cambiar estos segundos a tu gusto (están en milisegundos: 1000 = 1 segundo):
+const INACTIVIDAD_EMPATICO_MS = 20000; // 20 s cuando el Modo Empático está activo (adultos mayores)
+const INACTIVIDAD_NORMAL_MS = 45000;   // 45 s en modo normal
+// Páginas donde Monet vigila la inactividad (donde la persona se postula):
+const RUTAS_VIGILADAS = ['/convocatorias', '/convocatoria', '/registro'];
+const MENSAJE_AYUDA_PROACTIVA =
+  'Veo que llevas un ratito por aquí. 🐾 ¿Quieres que te ayude a postularte paso a paso? Escríbeme tu duda o dime qué convocatoria te interesa y te guío con calma.';
+
 const MonetFace = ({ className, style }) => {
   const [error, setError] = useState(false);
   if (error) {
@@ -126,6 +137,14 @@ const MonetAssistant = ({ isMonetOpen, setIsMonetOpen }) => {
   const { modoEmpatico } = useContext(ModoEmpaticContext);
   const isWarm = modoEmpatico;
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Recuerda si Monet está abierto y si ya ofreció ayuda en esta página
+  const monetOpenRef = useRef(isMonetOpen);
+  const yaOfreciAyudaRef = useRef(false);
+  useEffect(() => {
+    monetOpenRef.current = isMonetOpen;
+  }, [isMonetOpen]);
 
   const [activeTab, setActiveTab] = useState('guia');
   const [chatMessages, setChatMessages] = useState([]);
@@ -177,6 +196,55 @@ const MonetAssistant = ({ isMonetOpen, setIsMonetOpen }) => {
     setIsMonetOpen(false);
     navigate('/convocatorias');
   };
+
+  // 👉 BOTÓN DIRECTO: lleva a la persona directamente a la convocatoria elegida
+  // (abre la ficha de detalle de esa convocatoria, sin ocultar las demás)
+  const irAConvocatoriaEspecifica = (c) => {
+    setIsMonetOpen(false);
+    navigate(`/convocatorias?ver=${encodeURIComponent(c.title)}`);
+  };
+
+  // Muestra un mensaje de ayuda proactiva y abre a Monet
+  const ofrecerAyudaProactiva = () => {
+    setChatMessages((prev) => {
+      if (prev.some((m) => m.id === 'ayuda-proactiva')) return prev; // no repetir
+      return [...prev, { id: 'ayuda-proactiva', sender: 'monet', text: MENSAJE_AYUDA_PROACTIVA, time: horaAhora() }];
+    });
+    setActiveTab('chat');
+    setIsMonetOpen(true);
+  };
+
+  // ⏱️ Temporizador de inactividad del Modo Acompañado
+  useEffect(() => {
+    const rutaVigilada = RUTAS_VIGILADAS.some((r) => location.pathname.startsWith(r));
+    if (!rutaVigilada) return;
+
+    // Al cambiar de página, Monet puede volver a ofrecer ayuda una vez
+    yaOfreciAyudaRef.current = false;
+
+    const espera = isWarm ? INACTIVIDAD_EMPATICO_MS : INACTIVIDAD_NORMAL_MS;
+    let temporizador;
+
+    const reiniciar = () => {
+      clearTimeout(temporizador);
+      if (yaOfreciAyudaRef.current) return;
+      temporizador = setTimeout(() => {
+        // Solo ofrece ayuda si Monet está cerrado y no lo ha hecho ya
+        if (yaOfreciAyudaRef.current || monetOpenRef.current) return;
+        yaOfreciAyudaRef.current = true;
+        ofrecerAyudaProactiva();
+      }, espera);
+    };
+
+    const eventos = ['mousemove', 'mousedown', 'keydown', 'scroll', 'touchstart', 'click'];
+    eventos.forEach((ev) => window.addEventListener(ev, reiniciar, { passive: true }));
+    reiniciar();
+
+    return () => {
+      clearTimeout(temporizador);
+      eventos.forEach((ev) => window.removeEventListener(ev, reiniciar));
+    };
+  }, [location.pathname, isWarm]);
 
   const enviarMensaje = async (textoForzado) => {
     const message = (textoForzado || inputText).trim();
@@ -404,7 +472,7 @@ const MonetAssistant = ({ isMonetOpen, setIsMonetOpen }) => {
                             </div>
                             <div className="flex gap-1.5 mt-2">
                               <button
-                                onClick={irAConvocatorias}
+                                onClick={() => irAConvocatoriaEspecifica(c)}
                                 className={`flex-1 py-1.5 px-2 rounded-lg text-[11px] font-black flex items-center justify-center gap-1 border-2 ${
                                   isWarm ? 'bg-[#C75000] text-white border-[#2B1600] hover:bg-[#A93F00]' : 'bg-[#7C3AED] text-white border-[#6D28D9] hover:bg-[#6D28D9]'
                                 }`}
@@ -413,7 +481,7 @@ const MonetAssistant = ({ isMonetOpen, setIsMonetOpen }) => {
                                 <ArrowRight className="w-3 h-3" />
                               </button>
                               <button
-                                onClick={irAConvocatorias}
+                                onClick={() => irAConvocatoriaEspecifica(c)}
                                 className={`py-1.5 px-2 rounded-lg text-[11px] font-bold flex items-center justify-center gap-1 border-2 ${
                                   isWarm ? 'border-[#2B1600] bg-white text-[#2B1600] hover:bg-amber-50' : 'border-purple-300 bg-white text-purple-900 hover:bg-purple-50'
                                 }`}
