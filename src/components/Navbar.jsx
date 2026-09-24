@@ -88,6 +88,7 @@ const Navbar = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         localStorage.removeItem('usuario');
+        localStorage.removeItem('token');
         Swal.fire({
           icon: 'success',
           title: 'Sesión cerrada',

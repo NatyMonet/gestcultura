@@ -112,17 +112,19 @@ export default function PanelAdmin() {
     if (!datos) return;
 
     try {
+      const token = localStorage.getItem('token') || '';
+      const authHeaders = { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` };
       let r;
       if (esEditar) {
         r = await fetch(`${API}/${conv.idConvocatoria}`, {
           method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
+          headers: authHeaders,
           body: JSON.stringify({ ...datos, estado: conv.estado ?? 1 }),
         });
       } else {
         r = await fetch(API, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: authHeaders,
           body: JSON.stringify({ ...datos, idUsuario: usuario.idUsuario }),
         });
       }
@@ -150,7 +152,11 @@ export default function PanelAdmin() {
     });
     if (!confirm.isConfirmed) return;
     try {
-      const r = await fetch(`${API}/${conv.idConvocatoria}`, { method: 'DELETE' });
+      const token = localStorage.getItem('token') || '';
+      const r = await fetch(`${API}/${conv.idConvocatoria}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const res = await r.json();
       if (r.ok && res.success) {
         Swal.fire({ icon: 'success', title: 'Convocatoria eliminada', timer: 1300, showConfirmButton: false });

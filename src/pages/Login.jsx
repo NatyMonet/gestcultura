@@ -44,6 +44,8 @@ export default function Login() {
       const data = await response.json();
       if (response.ok) {
         const usuario = data.user;
+        // Guardamos el token de seguridad (JWT) para las acciones protegidas
+        if (data.token) localStorage.setItem('token', data.token);
         try {
           const userResponse = await fetch(`http://localhost:5000/api/usuarios/${usuario.idUsuario}`);
           const userData = await userResponse.json();
