@@ -11,6 +11,7 @@ import DetalleConvocatoria from './pages/DetalleConvocatoria';
 import Perfil from './pages/Perfil';
 import PanelEvaluacion from './pages/PanelEvaluacion';
 import PanelAdmin from './pages/PanelAdmin';
+import Comprobante from './pages/Comprobante';
  import MonetAssistant from './components/MonetAssistant';
 import Footer from './components/Footer';
 
@@ -60,6 +61,7 @@ function AppContent() {
           <Route path="/perfil" element={<Perfil />} />
           <Route path="/panel-evaluacion" element={<PanelEvaluacion />} />
           <Route path="/panel-admin" element={<PanelAdmin />} />
+          <Route path="/comprobante" element={<Comprobante />} />
         </Routes>
         <Footer />
         <MonetAssistant isMonetOpen={isMonetOpen} setIsMonetOpen={setIsMonetOpen} />

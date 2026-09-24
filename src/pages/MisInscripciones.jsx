@@ -1,7 +1,9 @@
 import { useEffect, useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ModoEmpaticContext } from '../context/ModoEmpatico';
 
 const MisInscripciones = () => {
+  const navigate = useNavigate();
   const { modoEmpatico } = useContext(ModoEmpaticContext);
   const isWarm = modoEmpatico;
 
@@ -116,6 +118,7 @@ const MisInscripciones = () => {
                   <th className="px-6 py-4 text-left font-semibold">Fecha de Cierre</th>
                   <th className="px-6 py-4 text-left font-semibold">Días Restantes</th>
                   <th className="px-6 py-4 text-left font-semibold">Estado</th>
+                  <th className="px-6 py-4 text-left font-semibold">Comprobante</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
@@ -138,6 +141,14 @@ const MisInscripciones = () => {
                         <span className="px-3 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-700">
                           {inscripcion.estado}
                         </span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <button
+                          onClick={() => navigate('/comprobante', { state: { inscripcion } })}
+                          className={`${btnColor} text-white py-2 px-4 rounded-lg transition font-semibold text-sm whitespace-nowrap`}
+                        >
+                          Generar comprobante
+                        </button>
                       </td>
                     </tr>
                   );
