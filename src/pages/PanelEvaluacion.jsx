@@ -2,6 +2,16 @@ import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ModoEmpaticContext } from '../context/ModoEmpatico';
 import TablaDatos from '../components/TablaDatos';
+import Badge from '../components/Badge';
+
+// Devuelve el color de la pastilla según el estado de la postulación
+const colorEstado = (estado) => {
+  const e = String(estado || '').toLowerCase();
+  if (e.includes('aprob')) return 'verde';
+  if (e.includes('pend')) return 'naranja';
+  if (e.includes('rechaz')) return 'rojo';
+  return 'gris';
+};
 
 export default function PanelEvaluacion() {
   const navigate = useNavigate();
@@ -42,6 +52,7 @@ export default function PanelEvaluacion() {
     { clave: 'cedula', titulo: 'Cédula' },
     { clave: 'correo', titulo: 'Correo' },
     { clave: 'convocatoria', titulo: 'Convocatoria' },
+    { clave: 'estado', titulo: 'Estado', render: (v) => <Badge texto={v || 'Pendiente'} color={colorEstado(v)} /> },
     { clave: 'motivacion', titulo: 'Motivación', ordenable: false, estilo: { maxWidth: '260px' } },
     { clave: 'fecha', titulo: 'Fecha', render: (v) => formatearFecha(v) },
   ];

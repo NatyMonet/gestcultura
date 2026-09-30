@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { Plus, Pencil, Trash2, ShieldAlert } from 'lucide-react';
 import DashboardAdmin from '../components/DashboardAdmin';
 import TablaDatos from '../components/TablaDatos';
+import Badge from '../components/Badge';
 
 const API = 'http://localhost:5000/api/convocatorias';
 
@@ -197,6 +198,16 @@ export default function PanelAdmin() {
     { clave: 'fechaInicio', titulo: 'Inicio', render: (v) => formatearFecha(v) },
     { clave: 'fechaCierre', titulo: 'Cierre', render: (v) => formatearFecha(v) },
     { clave: 'cupos', titulo: 'Cupos', tipo: 'numero' },
+    {
+      clave: 'estadoConv', titulo: 'Estado', ordenable: false,
+      render: (_, conv) => {
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0);
+        const cierre = new Date(conv.fechaCierre);
+        const cerrada = !isNaN(cierre.getTime()) && cierre < hoy;
+        return <Badge texto={cerrada ? 'Cerrada' : 'Abierta'} color={cerrada ? 'gris' : 'verde'} />;
+      },
+    },
     {
       clave: 'acciones', titulo: 'Acciones', ordenable: false,
       render: (_, conv) => (
