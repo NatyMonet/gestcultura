@@ -14,6 +14,7 @@ import PanelAdmin from './pages/PanelAdmin';
 import Comprobante from './pages/Comprobante';
 import RecuperarPassword from './pages/RecuperarPassword';
 import RestablecerPassword from './pages/RestablecerPassword';
+import AutoLogout from './components/AutoLogout';
  import MonetAssistant from './components/MonetAssistant';
 import Footer from './components/Footer';
 
@@ -43,7 +44,8 @@ function AppContent() {
         : 'bg-[#FAF5FF] text-[#2E1065]'
     }`}>
       <Router>
-        <AccessibilityToolbar 
+        <AutoLogout />
+        <AccessibilityToolbar
           modoEmpatico={modoEmpatico}
           setModoEmpatico={setModoEmpatico}
           textScale={textScale}
