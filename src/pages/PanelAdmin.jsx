@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ModoEmpaticContext } from '../context/ModoEmpatico';
 import Swal from 'sweetalert2';
 import { Plus, Pencil, Trash2, ShieldAlert } from 'lucide-react';
+import DashboardAdmin from '../components/DashboardAdmin';
 
 const API = 'http://localhost:5000/api/convocatorias';
 
@@ -188,23 +189,6 @@ export default function PanelAdmin() {
     );
   }
 
-  // ---- Datos para las gráficas del dashboard ----
-  const totalConvocatorias = convocatorias.length;
-  const totalPostulaciones = inscripciones.length;
-  const totalCupos = convocatorias.reduce((suma, c) => suma + (Number(c.cupos) || 0), 0);
-  // Cuántas personas se postularon a cada convocatoria (más demandadas primero)
-  const demanda = convocatorias
-    .map((c) => ({ nombre: c.nombre, count: inscripciones.filter((i) => i.convocatoria === c.nombre).length }))
-    .sort((a, b) => b.count - a.count);
-  const maxDemanda = Math.max(1, ...demanda.map((d) => d.count));
-
-  const Tarjeta = ({ valor, etiqueta }) => (
-    <div style={{ flex: '1 1 180px', background: C.bg, border: `2px solid ${C.borde}`, borderRadius: '14px', padding: '18px 20px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-      <div style={{ fontSize: '34px', fontWeight: 800, color: C.acento, lineHeight: 1 }}>{valor}</div>
-      <div style={{ fontSize: fs, color: C.texto, opacity: 0.8, marginTop: '6px', fontWeight: 600 }}>{etiqueta}</div>
-    </div>
-  );
-
   return (
     <div style={{ maxWidth: '1000px', margin: '40px auto', padding: '0 20px' }}>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '24px' }}>
@@ -227,53 +211,10 @@ export default function PanelAdmin() {
         </button>
       </div>
 
-      {/* ---- DASHBOARD: tarjetas de resumen + gráfica de más demandadas ---- */}
+      {/* ---- DASHBOARD: tarjetas de resumen + gráficas estadísticas (Recharts) ---- */}
       {!cargando && (
         <div style={{ marginBottom: '28px' }}>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '14px', marginBottom: '18px' }}>
-            <Tarjeta valor={totalConvocatorias} etiqueta="Convocatorias" />
-            <Tarjeta valor={totalPostulaciones} etiqueta="Postulaciones" />
-            <Tarjeta valor={totalCupos} etiqueta="Cupos ofertados" />
-          </div>
-
-          <div style={{ background: C.bg, border: `2px solid ${C.borde}`, borderRadius: '14px', padding: '20px', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-            <h2 style={{ color: C.acento, margin: '0 0 4px', fontSize: isWarm ? '22px' : '20px' }}>
-              Convocatorias más demandadas
-            </h2>
-            <p style={{ color: C.texto, opacity: 0.75, fontSize: '14px', margin: '0 0 16px' }}>
-              Número de postulaciones recibidas por cada convocatoria.
-            </p>
-
-            {totalPostulaciones === 0 ? (
-              <p style={{ color: C.texto, fontSize: fs, opacity: 0.8 }}>
-                Todavía no hay postulaciones registradas. La gráfica se llenará cuando la gente empiece a postularse. 🐾
-              </p>
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {demanda.map((d) => (
-                  <div key={d.nombre} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <div style={{ width: '34%', minWidth: '120px', fontSize: '14px', fontWeight: 600, color: C.texto, textAlign: 'right', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={d.nombre}>
-                      {d.nombre}
-                    </div>
-                    <div style={{ flex: 1, background: C.fila, borderRadius: '6px', height: '22px', position: 'relative' }}>
-                      <div
-                        style={{
-                          width: `${Math.max((d.count / maxDemanda) * 100, d.count > 0 ? 4 : 0)}%`,
-                          background: C.acento,
-                          height: '100%',
-                          borderRadius: '6px',
-                          transition: 'width 0.4s ease',
-                        }}
-                      />
-                    </div>
-                    <div style={{ width: '28px', textAlign: 'left', fontSize: '15px', fontWeight: 800, color: C.acento }}>
-                      {d.count}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          <DashboardAdmin convocatorias={convocatorias} inscripciones={inscripciones} />
         </div>
       )}
 
