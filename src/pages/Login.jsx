@@ -223,6 +223,11 @@ export default function Login() {
       </form>
 
       <div style={{ textAlign: 'center', padding: '0 24px 24px' }}>
+        <p style={{ margin: '0 0 10px', fontSize: isWarm ? '14px' : '13px' }}>
+          <Link to="/recuperar" style={{ color: C.link, textDecoration: 'none', fontWeight: 'bold' }}>
+            ¿Olvidaste tu contraseña?
+          </Link>
+        </p>
         <p style={{ margin: 0, color: C.help, fontSize: isWarm ? '14px' : '13px' }}>
           ¿No tienes cuenta?{' '}
           <Link to="/registro" style={{ color: C.link, textDecoration: 'none', fontWeight: 'bold' }}>

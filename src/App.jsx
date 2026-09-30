@@ -12,6 +12,8 @@ import Perfil from './pages/Perfil';
 import PanelEvaluacion from './pages/PanelEvaluacion';
 import PanelAdmin from './pages/PanelAdmin';
 import Comprobante from './pages/Comprobante';
+import RecuperarPassword from './pages/RecuperarPassword';
+import RestablecerPassword from './pages/RestablecerPassword';
  import MonetAssistant from './components/MonetAssistant';
 import Footer from './components/Footer';
 
@@ -55,6 +57,8 @@ function AppContent() {
           <Route path="/" element={<Navigate to="/convocatorias" replace />} />
           <Route path="/registro" element={<Registro />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/recuperar" element={<RecuperarPassword />} />
+          <Route path="/restablecer" element={<RestablecerPassword />} />
           <Route path="/convocatorias" element={<Convocatorias />} />
           <Route path="/mis-inscripciones" element={<MisInscripciones />} />
           <Route path="/convocatoria/:id" element={<DetalleConvocatoria />} />
