@@ -4,6 +4,7 @@ import { ModoEmpaticContext } from '../context/ModoEmpatico';
 import Swal from 'sweetalert2';
 import { Plus, Pencil, Trash2, ShieldAlert } from 'lucide-react';
 import DashboardAdmin from '../components/DashboardAdmin';
+import TablaDatos from '../components/TablaDatos';
 
 const API = 'http://localhost:5000/api/convocatorias';
 
@@ -189,6 +190,28 @@ export default function PanelAdmin() {
     );
   }
 
+  // Columnas de la tabla de convocatorias (con búsqueda y orden estilo DataTables)
+  const columnasConv = [
+    { clave: 'idConvocatoria', titulo: '#', tipo: 'numero' },
+    { clave: 'nombre', titulo: 'Nombre', estilo: { fontWeight: 'bold' } },
+    { clave: 'fechaInicio', titulo: 'Inicio', render: (v) => formatearFecha(v) },
+    { clave: 'fechaCierre', titulo: 'Cierre', render: (v) => formatearFecha(v) },
+    { clave: 'cupos', titulo: 'Cupos', tipo: 'numero' },
+    {
+      clave: 'acciones', titulo: 'Acciones', ordenable: false,
+      render: (_, conv) => (
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button onClick={() => abrirFormulario(conv)} title="Editar" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '8px 12px', background: '#fff', color: C.acento, border: `2px solid ${C.acento}`, borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '14px' }}>
+            <Pencil size={15} /> Editar
+          </button>
+          <button onClick={() => eliminar(conv)} title="Eliminar" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '8px 12px', background: '#fff', color: '#b91c1c', border: '2px solid #b91c1c', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '14px' }}>
+            <Trash2 size={15} /> Eliminar
+          </button>
+        </div>
+      ),
+    },
+  ];
+
   return (
     <div style={{ maxWidth: '1000px', margin: '40px auto', padding: '0 20px' }}>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '24px' }}>
@@ -223,49 +246,13 @@ export default function PanelAdmin() {
       ) : convocatorias.length === 0 ? (
         <p style={{ color: C.texto, fontSize: fs }}>Todavía no hay convocatorias. Crea la primera con el botón de arriba.</p>
       ) : (
-        <div style={{ overflowX: 'auto', border: `2px solid ${C.borde}`, borderRadius: '12px', background: C.bg, boxShadow: '0 2px 12px rgba(0,0,0,0.08)' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '760px' }}>
-            <thead>
-              <tr style={{ background: C.acento, color: '#fff' }}>
-                <th style={thStyle(fs)}>#</th>
-                <th style={thStyle(fs)}>Nombre</th>
-                <th style={thStyle(fs)}>Inicio</th>
-                <th style={thStyle(fs)}>Cierre</th>
-                <th style={thStyle(fs)}>Cupos</th>
-                <th style={thStyle(fs)}>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {convocatorias.map((conv, i) => (
-                <tr key={conv.idConvocatoria} style={{ background: i % 2 === 0 ? 'transparent' : C.fila }}>
-                  <td style={tdStyle(C, fs)}>{conv.idConvocatoria}</td>
-                  <td style={{ ...tdStyle(C, fs), fontWeight: 'bold' }}>{conv.nombre}</td>
-                  <td style={tdStyle(C, fs)}>{formatearFecha(conv.fechaInicio)}</td>
-                  <td style={tdStyle(C, fs)}>{formatearFecha(conv.fechaCierre)}</td>
-                  <td style={tdStyle(C, fs)}>{conv.cupos}</td>
-                  <td style={tdStyle(C, fs)}>
-                    <div style={{ display: 'flex', gap: '8px' }}>
-                      <button
-                        onClick={() => abrirFormulario(conv)}
-                        title="Editar"
-                        style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '8px 12px', background: '#fff', color: C.acento, border: `2px solid ${C.acento}`, borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '14px' }}
-                      >
-                        <Pencil size={15} /> Editar
-                      </button>
-                      <button
-                        onClick={() => eliminar(conv)}
-                        title="Eliminar"
-                        style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '8px 12px', background: '#fff', color: '#b91c1c', border: '2px solid #b91c1c', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '14px' }}
-                      >
-                        <Trash2 size={15} /> Eliminar
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <TablaDatos
+          columnas={columnasConv}
+          datos={convocatorias}
+          minWidth="760px"
+          placeholderBuscar="Buscar convocatoria por nombre…"
+          filaClave={(c) => c.idConvocatoria}
+        />
       )}
 
       <button

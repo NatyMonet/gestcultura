@@ -1,9 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ModoEmpaticContext } from '../context/ModoEmpatico';
-
-const thStyle = (fs) => ({ padding: '12px', textAlign: 'left', fontSize: fs, fontWeight: 'bold' });
-const tdStyle = (C, fs) => ({ padding: '12px', textAlign: 'left', fontSize: fs, color: C.texto, borderTop: `1px solid ${C.borde}` });
+import TablaDatos from '../components/TablaDatos';
 
 export default function PanelEvaluacion() {
   const navigate = useNavigate();
@@ -25,11 +23,8 @@ export default function PanelEvaluacion() {
 
   const isWarm = modoEmpatico;
   const C = {
-    bg: isWarm ? '#FFF7EF' : '#FFFFFF',
     texto: isWarm ? '#2B1600' : '#2E1065',
     acento: isWarm ? '#C75000' : '#6A1B9A',
-    borde: isWarm ? '#2B1600' : '#E9D5FF',
-    fila: isWarm ? '#FCEBDD' : '#F5EEFB',
   };
   const fs = isWarm ? '17px' : '15px';
 
@@ -39,6 +34,17 @@ export default function PanelEvaluacion() {
     if (isNaN(d.getTime())) return f;
     return d.toLocaleDateString('es-CO', { year: 'numeric', month: 'long', day: 'numeric' });
   };
+
+  // Columnas de la tabla de postulaciones (con búsqueda y orden)
+  const columnas = [
+    { clave: 'idInscripcion', titulo: '#', tipo: 'numero' },
+    { clave: 'postulante', titulo: 'Postulante', estilo: { fontWeight: 'bold' } },
+    { clave: 'cedula', titulo: 'Cédula' },
+    { clave: 'correo', titulo: 'Correo' },
+    { clave: 'convocatoria', titulo: 'Convocatoria' },
+    { clave: 'motivacion', titulo: 'Motivación', ordenable: false, estilo: { maxWidth: '260px' } },
+    { clave: 'fecha', titulo: 'Fecha', render: (v) => formatearFecha(v) },
+  ];
 
   return (
     <div style={{ maxWidth: '1000px', margin: '40px auto', padding: '0 20px' }}>
@@ -59,34 +65,13 @@ export default function PanelEvaluacion() {
       ) : inscripciones.length === 0 ? (
         <p style={{ color: C.texto, fontSize: fs }}>Todavía no hay postulaciones registradas.</p>
       ) : (
-        <div style={{ overflowX: 'auto', border: `2px solid ${C.borde}`, borderRadius: '12px', background: C.bg, boxShadow: '0 2px 12px rgba(0,0,0,0.08)' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '820px' }}>
-            <thead>
-              <tr style={{ background: C.acento, color: '#fff' }}>
-                <th style={thStyle(fs)}>#</th>
-                <th style={thStyle(fs)}>Postulante</th>
-                <th style={thStyle(fs)}>Cédula</th>
-                <th style={thStyle(fs)}>Correo</th>
-                <th style={thStyle(fs)}>Convocatoria</th>
-                <th style={thStyle(fs)}>Motivación</th>
-                <th style={thStyle(fs)}>Fecha</th>
-              </tr>
-            </thead>
-            <tbody>
-              {inscripciones.map((ins, i) => (
-                <tr key={ins.idInscripcion} style={{ background: i % 2 === 0 ? 'transparent' : C.fila }}>
-                  <td style={tdStyle(C, fs)}>{ins.idInscripcion}</td>
-                  <td style={{ ...tdStyle(C, fs), fontWeight: 'bold' }}>{ins.postulante}</td>
-                  <td style={tdStyle(C, fs)}>{ins.cedula || '—'}</td>
-                  <td style={tdStyle(C, fs)}>{ins.correo}</td>
-                  <td style={tdStyle(C, fs)}>{ins.convocatoria}</td>
-                  <td style={{ ...tdStyle(C, fs), maxWidth: '260px' }}>{ins.motivacion || '—'}</td>
-                  <td style={tdStyle(C, fs)}>{formatearFecha(ins.fecha)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <TablaDatos
+          columnas={columnas}
+          datos={inscripciones}
+          minWidth="820px"
+          placeholderBuscar="Buscar por nombre, cédula, convocatoria…"
+          filaClave={(f) => f.idInscripcion}
+        />
       )}
 
       <button
