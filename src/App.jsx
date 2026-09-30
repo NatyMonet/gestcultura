@@ -15,6 +15,7 @@ import Comprobante from './pages/Comprobante';
 import RecuperarPassword from './pages/RecuperarPassword';
 import RestablecerPassword from './pages/RestablecerPassword';
 import AutoLogout from './components/AutoLogout';
+import NotFound from './pages/NotFound';
  import MonetAssistant from './components/MonetAssistant';
 import Footer from './components/Footer';
 
@@ -68,6 +69,7 @@ function AppContent() {
           <Route path="/panel-evaluacion" element={<PanelEvaluacion />} />
           <Route path="/panel-admin" element={<PanelAdmin />} />
           <Route path="/comprobante" element={<Comprobante />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
         <MonetAssistant isMonetOpen={isMonetOpen} setIsMonetOpen={setIsMonetOpen} />
