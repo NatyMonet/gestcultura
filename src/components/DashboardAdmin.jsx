@@ -11,12 +11,30 @@
 // Usa la librería Recharts. Responsivo (se adapta a pantallas pequeñas) y
 // respeta el Modo Empático (colores cálidos y textos más grandes).
 // ============================================================================
-import { useContext } from 'react';
+import { useContext, useState, useMemo } from 'react';
 import {
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
   LabelList, Cell, PieChart, Pie, AreaChart, Area,
 } from 'recharts';
+import { CalendarDays } from 'lucide-react';
 import { ModoEmpaticContext } from '../context/ModoEmpatico';
+
+// Formatea una fecha como AAAA-MM-DD en hora local (para comparar por día).
+const aISO = (d) => {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${dd}`;
+};
+
+// Opciones del filtro de periodo.
+const PERIODOS = [
+  { id: 'todo', texto: 'Todo' },
+  { id: '7', texto: 'Últimos 7 días' },
+  { id: '30', texto: 'Últimos 30 días' },
+  { id: 'mes', texto: 'Este mes' },
+  { id: 'rango', texto: 'Rango…' },
+];
 import { CONVOCATORIAS_DATA } from '../data/mockData';
 
 // Paleta categórica validada (accesible, incluso para daltonismo). Orden fijo.
@@ -42,9 +60,50 @@ export default function DashboardAdmin({ convocatorias = [], inscripciones = [] 
   };
   const fs = isWarm ? 15 : 13;
 
-  // ---- Cálculos de datos ----
+  // ---- FILTRO POR FECHA ----
+  // Estado del filtro de periodo (por defecto "Todo") y fechas del rango manual.
+  const [periodo, setPeriodo] = useState('todo');
+  const [desde, setDesde] = useState('');
+  const [hasta, setHasta] = useState('');
+
+  // Según el periodo elegido, calcula el rango de fechas (desde / hasta) a usar.
+  const rangoDelPeriodo = () => {
+    const hoy = new Date();
+    const hastaHoy = aISO(hoy);
+    if (periodo === '7') {
+      const d = new Date(); d.setDate(d.getDate() - 7);
+      return { d1: aISO(d), d2: hastaHoy };
+    }
+    if (periodo === '30') {
+      const d = new Date(); d.setDate(d.getDate() - 30);
+      return { d1: aISO(d), d2: hastaHoy };
+    }
+    if (periodo === 'mes') {
+      const d = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+      return { d1: aISO(d), d2: hastaHoy };
+    }
+    if (periodo === 'rango') {
+      return { d1: desde || null, d2: hasta || null };
+    }
+    return { d1: null, d2: null }; // "todo"
+  };
+
+  // Postulaciones filtradas por la fecha del periodo seleccionado.
+  const inscripcionesFiltradas = useMemo(() => {
+    const { d1, d2 } = rangoDelPeriodo();
+    if (!d1 && !d2) return inscripciones;
+    return inscripciones.filter((i) => {
+      if (!i.fecha) return false;
+      const dia = String(i.fecha).slice(0, 10);
+      if (d1 && dia < d1) return false;
+      if (d2 && dia > d2) return false;
+      return true;
+    });
+  }, [inscripciones, periodo, desde, hasta]);
+
+  // ---- Cálculos de datos (las postulaciones ya vienen filtradas por fecha) ----
   const totalConvocatorias = convocatorias.length;
-  const totalPostulaciones = inscripciones.length;
+  const totalPostulaciones = inscripcionesFiltradas.length;
   const totalCupos = convocatorias.reduce((s, c) => s + (Number(c.cupos) || 0), 0);
   const ocupacion = totalCupos > 0 ? Math.round((totalPostulaciones / totalCupos) * 100) : 0;
 
@@ -56,13 +115,13 @@ export default function DashboardAdmin({ convocatorias = [], inscripciones = [] 
     .map((c) => ({
       nombre: c.nombre,
       nombreCorto: corto(c.nombre),
-      postulaciones: inscripciones.filter((i) => i.convocatoria === c.nombre).length,
+      postulaciones: inscripcionesFiltradas.filter((i) => i.convocatoria === c.nombre).length,
     }))
     .sort((a, b) => b.postulaciones - a.postulaciones);
 
   // Postulaciones por categoría (para la dona)
   const mapaCat = {};
-  inscripciones.forEach((i) => {
+  inscripcionesFiltradas.forEach((i) => {
     const cat = categoriaDe(i.convocatoria);
     mapaCat[cat] = (mapaCat[cat] || 0) + 1;
   });
@@ -73,12 +132,12 @@ export default function DashboardAdmin({ convocatorias = [], inscripciones = [] 
     nombre: c.nombre,
     nombreCorto: corto(c.nombre),
     Cupos: Number(c.cupos) || 0,
-    Postulaciones: inscripciones.filter((i) => i.convocatoria === c.nombre).length,
+    Postulaciones: inscripcionesFiltradas.filter((i) => i.convocatoria === c.nombre).length,
   }));
 
   // Tendencia de postulaciones por fecha (agrupadas por día)
   const mapaFechas = {};
-  inscripciones.forEach((i) => {
+  inscripcionesFiltradas.forEach((i) => {
     const dia = i.fecha ? String(i.fecha).slice(0, 10) : 'Sin fecha';
     mapaFechas[dia] = (mapaFechas[dia] || 0) + 1;
   });
@@ -126,6 +185,38 @@ export default function DashboardAdmin({ convocatorias = [], inscripciones = [] 
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+      {/* Filtro por fecha (periodo) */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 10, background: C.bg, border: `2px solid ${C.borde}`, borderRadius: 14, padding: '12px 16px' }}>
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: C.acento, fontWeight: 700, fontSize: fs }}>
+          <CalendarDays size={18} /> Periodo:
+        </span>
+        {PERIODOS.map((p) => {
+          const activo = periodo === p.id;
+          return (
+            <button
+              key={p.id}
+              onClick={() => setPeriodo(p.id)}
+              style={{ padding: '7px 14px', borderRadius: 9999, fontSize: 13, fontWeight: 700, cursor: 'pointer', border: `2px solid ${C.acento}`, background: activo ? C.acento : 'transparent', color: activo ? '#fff' : C.acento }}
+            >
+              {p.texto}
+            </button>
+          );
+        })}
+        {periodo === 'rango' && (
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+            <label style={{ fontSize: 13, color: C.texto }}>
+              Desde <input type="date" value={desde} onChange={(e) => setDesde(e.target.value)} style={{ marginLeft: 4, padding: '5px 8px', borderRadius: 8, border: `2px solid ${C.borde}`, color: C.texto, background: '#fff' }} />
+            </label>
+            <label style={{ fontSize: 13, color: C.texto }}>
+              Hasta <input type="date" value={hasta} onChange={(e) => setHasta(e.target.value)} style={{ marginLeft: 4, padding: '5px 8px', borderRadius: 8, border: `2px solid ${C.borde}`, color: C.texto, background: '#fff' }} />
+            </label>
+          </span>
+        )}
+        <span style={{ marginLeft: 'auto', fontSize: 13, color: C.textoSuave, fontWeight: 600 }}>
+          {totalPostulaciones} {totalPostulaciones === 1 ? 'postulación' : 'postulaciones'} en el periodo
+        </span>
+      </div>
+
       {/* KPIs */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14 }}>
         <Kpi valor={totalConvocatorias} etiqueta="Convocatorias" />
