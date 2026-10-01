@@ -16,6 +16,7 @@ import RecuperarPassword from './pages/RecuperarPassword';
 import RestablecerPassword from './pages/RestablecerPassword';
 import AutoLogout from './components/AutoLogout';
 import NotFound from './pages/NotFound';
+import PanelUsuarios from './pages/PanelUsuarios';
  import MonetAssistant from './components/MonetAssistant';
 import Footer from './components/Footer';
 
@@ -68,6 +69,7 @@ function AppContent() {
           <Route path="/perfil" element={<Perfil />} />
           <Route path="/panel-evaluacion" element={<PanelEvaluacion />} />
           <Route path="/panel-admin" element={<PanelAdmin />} />
+          <Route path="/panel-usuarios" element={<PanelUsuarios />} />
           <Route path="/comprobante" element={<Comprobante />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

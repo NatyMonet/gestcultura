@@ -15,6 +15,7 @@ import {
   ChevronDown,
   ArrowRight,
   Settings,
+  Users,
 } from 'lucide-react';
 import Swal from 'sweetalert2';
 import { ModoEmpaticContext } from '../context/ModoEmpatico';
@@ -33,7 +34,7 @@ const Navbar = () => {
   // Solo los administradores (idRol = 1) ven el Panel de Administración
   const esAdmin = usuario && Number(usuario.idRol) === 1;
 
-  const rutasNavbar = ['/convocatorias', '/mis-inscripciones', '/convocatoria', '/perfil', '/login', '/registro', '/panel-evaluacion', '/panel-admin'];
+  const rutasNavbar = ['/convocatorias', '/mis-inscripciones', '/convocatoria', '/perfil', '/login', '/registro', '/panel-evaluacion', '/panel-admin', '/panel-usuarios'];
   const mostrarNavbar = rutasNavbar.some((ruta) => location.pathname.startsWith(ruta));
 
   useEffect(() => {
@@ -189,6 +190,20 @@ const Navbar = () => {
               >
                 <Settings className="w-4 h-4" />
                 <span>Panel Admin</span>
+              </button>
+            )}
+
+            {esAdmin && (
+              <button
+                onClick={() => irA('/panel-usuarios')}
+                className={`px-3 py-2 rounded-xl text-sm font-extrabold flex items-center gap-2 transition-all border-2 ${
+                  isActive('/panel-usuarios')
+                    ? isWarm ? 'bg-[#C75000] text-white border-[#2B1600] shadow-sm' : 'bg-purple-100 text-purple-900 border-purple-600 shadow-sm'
+                    : isWarm ? 'border-transparent hover:border-[#2B1600]/30 hover:bg-black/5 text-[#2B1600]' : 'border-transparent hover:bg-purple-100/50 text-purple-950 opacity-85'
+                }`}
+              >
+                <Users className="w-4 h-4" />
+                <span>Usuarios</span>
               </button>
             )}
           </nav>
@@ -347,6 +362,29 @@ const Navbar = () => {
                     <div>
                       <p className="text-lg sm:text-xl font-black leading-tight">Panel de Administración</p>
                       <p className="text-xs font-medium opacity-80 mt-0.5">Crear, editar y eliminar convocatorias</p>
+                    </div>
+                  </div>
+                  <ArrowRight className="w-5 h-5 opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                </button>
+              )}
+
+              {esAdmin && (
+                <button
+                  role="menuitem"
+                  onClick={() => irA('/panel-usuarios')}
+                  className={`w-full text-left p-3.5 rounded-xl flex items-center justify-between border-2 transition-all group ${
+                    isActive('/panel-usuarios')
+                      ? isWarm ? 'bg-[#FFF7EF] border-[#2B1600] font-black' : 'bg-purple-100 border-purple-600 font-black'
+                      : isWarm ? 'bg-white border-transparent hover:border-[#2B1600] hover:bg-[#FFF7EF]' : 'bg-white border-transparent hover:border-purple-300 hover:bg-purple-50'
+                  }`}
+                >
+                  <div className="flex items-center gap-3.5">
+                    <div className="p-2.5 rounded-xl border-2 shrink-0 bg-rose-600 text-white border-rose-800">
+                      <Users className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <p className="text-lg sm:text-xl font-black leading-tight">Gestión de Usuarios</p>
+                      <p className="text-xs font-medium opacity-80 mt-0.5">Ver usuarios, cambiar rol y activar / inactivar</p>
                     </div>
                   </div>
                   <ArrowRight className="w-5 h-5 opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
