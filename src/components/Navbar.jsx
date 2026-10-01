@@ -270,18 +270,33 @@ const Navbar = () => {
           </div>
 
           {menuOpen && (
-            <div
-              className={`absolute right-4 sm:right-6 top-full mt-2 w-[calc(100vw-2rem)] sm:w-96 rounded-2xl shadow-2xl border-3 p-3 sm:p-4 space-y-2 z-50 ${
-                isWarm ? 'bg-white border-[#2B1600] text-[#2B1600]' : 'bg-white border-purple-300 text-purple-950'
-              }`}
-              style={{ borderWidth: '3px' }}
-              role="menu"
-            >
-              <div className="flex items-center justify-between px-3 py-2 border-b-2 border-current/15 mb-1">
+            <>
+              {/* Fondo oscuro: al hacer clic se cierra el menú lateral */}
+              <style>{`@keyframes gcSlideIn{from{transform:translateX(-100%);opacity:.5}to{transform:translateX(0);opacity:1}}`}</style>
+              <div
+                onClick={() => setMenuOpen(false)}
+                className="fixed inset-0 bg-black/40 z-40"
+                aria-hidden="true"
+              />
+              {/* Cajón lateral (sidebar) deslizante y colapsable */}
+              <div
+                className={`fixed top-0 left-0 h-full w-[330px] max-w-[85vw] overflow-y-auto shadow-2xl p-4 space-y-2 z-50 border-r-4 ${
+                  isWarm ? 'bg-white border-[#2B1600] text-[#2B1600]' : 'bg-white border-purple-300 text-purple-950'
+                }`}
+                style={{ animation: 'gcSlideIn .25s ease-out' }}
+                role="menu"
+              >
+              <div className="flex items-center justify-between px-1 py-2 border-b-2 border-current/15 mb-1">
                 <span className="text-xs font-black uppercase tracking-wider opacity-75">Menú Principal</span>
-                <span className={`text-[11px] font-black px-2 py-0.5 rounded-full border ${
-                  isWarm ? 'bg-[#FFF7EF] border-[#2B1600] text-[#2B1600]' : 'bg-purple-100 border-purple-300 text-purple-800'
-                }`}>Accesible</span>
+                <button
+                  onClick={() => setMenuOpen(false)}
+                  aria-label="Cerrar menú"
+                  className={`p-1.5 rounded-lg border-2 transition-colors ${
+                    isWarm ? 'border-[#2B1600] hover:bg-amber-100' : 'border-purple-300 hover:bg-purple-50'
+                  }`}
+                >
+                  <X className="w-5 h-5" />
+                </button>
               </div>
 
               <button
@@ -442,7 +457,8 @@ const Navbar = () => {
                   </button>
                 )}
               </div>
-            </div>
+              </div>
+            </>
           )}
 
         </div>
