@@ -52,9 +52,9 @@ export default function PanelEvaluacion() {
     { clave: 'cedula', titulo: 'Cédula' },
     { clave: 'correo', titulo: 'Correo' },
     { clave: 'convocatoria', titulo: 'Convocatoria' },
-    { clave: 'estado', titulo: 'Estado', render: (v) => <Badge texto={v || 'Pendiente'} color={colorEstado(v)} /> },
+    { clave: 'estado', titulo: 'Estado', render: (v) => <Badge texto={v || 'Pendiente'} color={colorEstado(v)} />, exportar: (f) => f.estado || 'Pendiente' },
     { clave: 'motivacion', titulo: 'Motivación', ordenable: false, estilo: { maxWidth: '260px' } },
-    { clave: 'fecha', titulo: 'Fecha', render: (v) => formatearFecha(v) },
+    { clave: 'fecha', titulo: 'Fecha', render: (v) => formatearFecha(v), exportar: (f) => formatearFecha(f.fecha) },
   ];
 
   return (
@@ -82,6 +82,8 @@ export default function PanelEvaluacion() {
           minWidth="820px"
           placeholderBuscar="Buscar por nombre, cédula, convocatoria…"
           filaClave={(f) => f.idInscripcion}
+          nombreArchivo="postulaciones"
+          tituloExport="Postulaciones - GestCultura"
         />
       )}
 

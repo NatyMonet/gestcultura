@@ -67,6 +67,15 @@ export default function PanelAdmin() {
     return d.toLocaleDateString('es-CO', { year: 'numeric', month: 'long', day: 'numeric' });
   };
 
+  // Calcula si una convocatoria está Abierta o Cerrada según la fecha de cierre.
+  const estadoConvTexto = (conv) => {
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+    const cierre = new Date(conv.fechaCierre);
+    const cerrada = !isNaN(cierre.getTime()) && cierre < hoy;
+    return cerrada ? 'Cerrada' : 'Abierta';
+  };
+
   // Abre el formulario para crear (conv = null) o editar (conv = la convocatoria)
   const abrirFormulario = async (conv = null) => {
     const esEditar = !!conv;
@@ -191,25 +200,23 @@ export default function PanelAdmin() {
     );
   }
 
-  // Columnas de la tabla de convocatorias (con búsqueda y orden estilo DataTables)
+  // Columnas de la tabla de convocatorias (con búsqueda, orden y exportación)
   const columnasConv = [
     { clave: 'idConvocatoria', titulo: '#', tipo: 'numero' },
     { clave: 'nombre', titulo: 'Nombre', estilo: { fontWeight: 'bold' } },
-    { clave: 'fechaInicio', titulo: 'Inicio', render: (v) => formatearFecha(v) },
-    { clave: 'fechaCierre', titulo: 'Cierre', render: (v) => formatearFecha(v) },
+    { clave: 'fechaInicio', titulo: 'Inicio', render: (v) => formatearFecha(v), exportar: (conv) => formatearFecha(conv.fechaInicio) },
+    { clave: 'fechaCierre', titulo: 'Cierre', render: (v) => formatearFecha(v), exportar: (conv) => formatearFecha(conv.fechaCierre) },
     { clave: 'cupos', titulo: 'Cupos', tipo: 'numero' },
     {
       clave: 'estadoConv', titulo: 'Estado', ordenable: false,
       render: (_, conv) => {
-        const hoy = new Date();
-        hoy.setHours(0, 0, 0, 0);
-        const cierre = new Date(conv.fechaCierre);
-        const cerrada = !isNaN(cierre.getTime()) && cierre < hoy;
-        return <Badge texto={cerrada ? 'Cerrada' : 'Abierta'} color={cerrada ? 'gris' : 'verde'} />;
+        const texto = estadoConvTexto(conv);
+        return <Badge texto={texto} color={texto === 'Cerrada' ? 'gris' : 'verde'} />;
       },
+      exportar: (conv) => estadoConvTexto(conv),
     },
     {
-      clave: 'acciones', titulo: 'Acciones', ordenable: false,
+      clave: 'acciones', titulo: 'Acciones', ordenable: false, exportable: false,
       render: (_, conv) => (
         <div style={{ display: 'flex', gap: '8px' }}>
           <button onClick={() => abrirFormulario(conv)} title="Editar" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '8px 12px', background: '#fff', color: C.acento, border: `2px solid ${C.acento}`, borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '14px' }}>
@@ -263,6 +270,8 @@ export default function PanelAdmin() {
           minWidth="760px"
           placeholderBuscar="Buscar convocatoria por nombre…"
           filaClave={(c) => c.idConvocatoria}
+          nombreArchivo="convocatorias"
+          tituloExport="Convocatorias - GestCultura"
         />
       )}
 
