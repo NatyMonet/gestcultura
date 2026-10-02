@@ -17,6 +17,7 @@ import RestablecerPassword from './pages/RestablecerPassword';
 import AutoLogout from './components/AutoLogout';
 import NotFound from './pages/NotFound';
 import PanelUsuarios from './pages/PanelUsuarios';
+import Postular from './pages/Postular';
  import MonetAssistant from './components/MonetAssistant';
 import Footer from './components/Footer';
 
@@ -66,6 +67,7 @@ function AppContent() {
           <Route path="/convocatorias" element={<Convocatorias />} />
           <Route path="/mis-inscripciones" element={<MisInscripciones />} />
           <Route path="/convocatoria/:id" element={<DetalleConvocatoria />} />
+          <Route path="/postular/:id" element={<Postular />} />
           <Route path="/perfil" element={<Perfil />} />
           <Route path="/panel-evaluacion" element={<PanelEvaluacion />} />
           <Route path="/panel-admin" element={<PanelAdmin />} />

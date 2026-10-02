@@ -45,55 +45,20 @@ const DetalleConvocatoria = () => {
     return dias;
   };
 
+  // Lleva al participante al formulario inteligente de 5 pasos (postulación con
+  // firma electrónica y generación de PDF). Si no ha iniciado sesión, lo envía al login.
   const handleInscribirse = (convocatoria) => {
     const usuarioGuardado = localStorage.getItem('usuario');
     if (!usuarioGuardado) {
       Swal.fire({
         icon: 'warning',
         title: 'Inicia sesión primero',
-        text: 'Debes estar registrado para inscribirte',
+        text: 'Debes iniciar sesión para postularte',
         confirmButtonText: 'Ir a Login',
       }).then(() => navigate('/login'));
       return;
     }
-
-    const usuario = JSON.parse(usuarioGuardado);
-    Swal.fire({
-      title: '¿Inscribirse en esta convocatoria?',
-      text: convocatoria.nombre,
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, inscribirse',
-      cancelButtonText: 'Cancelar',
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          const response = await fetch('http://localhost:5000/api/inscripciones', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              idUsuario: usuario.idUsuario,
-              idConvocatoria: convocatoria.idConvocatoria,
-              motivacion: 'Inscripción desde GestCultura',
-            }),
-          });
-          const data = await response.json();
-          if (data.success) {
-            Swal.fire({
-              icon: 'success',
-              title: '¡Inscripción exitosa!',
-              text: 'Te has inscrito en: ' + convocatoria.nombre,
-              confirmButtonText: 'OK',
-            }).then(() => navigate('/mis-inscripciones'));
-          } else {
-            Swal.fire({ icon: 'error', title: 'Error', text: data.message || 'No se pudo completar la inscripción' });
-          }
-        } catch (error) {
-          Swal.fire({ icon: 'error', title: 'Error de conexión', text: 'No se pudo conectar con el servidor' });
-          console.error('Error:', error);
-        }
-      }
-    });
+    navigate(`/postular/${convocatoria.idConvocatoria}`);
   };
 
   if (loading) {

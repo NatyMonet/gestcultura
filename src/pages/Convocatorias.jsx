@@ -132,78 +132,22 @@ export default function Convocatorias() {
     return matchesCat && matchesSearch;
   });
 
-  const handleInscribirse = async (convocatoria) => {
+  // Lleva al participante al Formulario Inteligente de 5 pasos (postulación con
+  // firma electrónica y PDF). La motivación se diligencia dentro del formulario (paso 3).
+  const handleInscribirse = (convocatoria) => {
     const usuario = JSON.parse(localStorage.getItem('usuario'));
 
     if (!usuario) {
       Swal.fire({
         icon: 'warning',
         title: 'Sesión requerida',
-        text: 'Debes iniciar sesión para inscribirte',
+        text: 'Debes iniciar sesión para postularte',
       });
       navigate('/login');
       return;
     }
 
-    // Preguntar la motivación de la persona con un cuadro de SweetAlert2
-    const { value: motivacion, isConfirmed } = await Swal.fire({
-      title: `Postularte a: ${convocatoria.title}`,
-      input: 'textarea',
-      inputLabel: '¿Por qué quieres participar en esta convocatoria?',
-      inputPlaceholder: 'Cuéntanos brevemente tu motivación...',
-      inputAttributes: { 'aria-label': 'Escribe tu motivación' },
-      showCancelButton: true,
-      confirmButtonText: 'Enviar postulación',
-      cancelButtonText: 'Cancelar',
-      inputValidator: (value) => {
-        if (!value || value.trim().length < 10) {
-          return 'Por favor cuéntanos tu motivación (mínimo 10 caracteres).';
-        }
-      },
-    });
-
-    if (!isConfirmed) {
-      return;
-    }
-
-    setInscribiendose(true);
-
-    try {
-      const response = await fetch('http://localhost:5000/api/inscripciones', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          idUsuario: usuario.idUsuario,
-          idConvocatoria: convocatoria.idConvocatoria,
-          motivacion: motivacion,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        Swal.fire({
-          icon: 'success',
-          title: 'Inscripción exitosa',
-          text: `Te has inscrito en: ${convocatoria.title}`,
-        });
-        navigate('/mis-inscripciones');
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error en inscripción',
-          text: data.message || 'No se pudo completar la inscripción',
-        });
-      }
-    } catch (error) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error de conexión',
-        text: 'No se pudo procesar tu inscripción',
-      });
-    } finally {
-      setInscribiendose(false);
-    }
+    navigate(`/postular/${convocatoria.idConvocatoria}`);
   };
 
   if (loading) {
