@@ -20,6 +20,18 @@ import Badge from '../components/Badge';
 
 const API = 'http://localhost:5000/api/usuarios';
 
+// Calcula la edad (en años) a partir de la fecha de nacimiento.
+const calcularEdad = (fn) => {
+  if (!fn) return null;
+  const nac = new Date(fn);
+  if (isNaN(nac.getTime())) return null;
+  const hoy = new Date();
+  let edad = hoy.getFullYear() - nac.getFullYear();
+  const m = hoy.getMonth() - nac.getMonth();
+  if (m < 0 || (m === 0 && hoy.getDate() < nac.getDate())) edad--;
+  return edad;
+};
+
 export default function PanelUsuarios() {
   const navigate = useNavigate();
   const { modoEmpatico } = useContext(ModoEmpaticContext);
@@ -46,7 +58,8 @@ export default function PanelUsuarios() {
       const token = localStorage.getItem('token') || '';
       const r = await fetch(API, { headers: { Authorization: `Bearer ${token}` } });
       const res = await r.json();
-      if (res && res.success && Array.isArray(res.data)) setUsuarios(res.data);
+      // Agregamos la edad calculada a cada usuario (para buscar y ordenar por edad)
+      if (res && res.success && Array.isArray(res.data)) setUsuarios(res.data.map((u) => ({ ...u, edad: calcularEdad(u.fechaNacimiento) })));
     } catch (e) {
       console.error('Error cargando usuarios:', e);
     } finally {
@@ -162,6 +175,7 @@ export default function PanelUsuarios() {
     { clave: 'correo', titulo: 'Correo' },
     { clave: 'telefono', titulo: 'Teléfono' },
     { clave: 'cedula', titulo: 'Cédula' },
+    { clave: 'edad', titulo: 'Edad', tipo: 'numero', render: (v) => (v ?? '—') },
     {
       clave: 'rol', titulo: 'Rol',
       render: (v) => <Badge texto={v} color={v === 'Administrador' ? 'morado' : 'gris'} />,
@@ -248,7 +262,7 @@ export default function PanelUsuarios() {
           columnas={columnas}
           datos={usuariosTabla}
           minWidth="900px"
-          placeholderBuscar="Buscar por nombre, correo, cédula, rol…"
+          placeholderBuscar="Buscar por nombre, correo, cédula, edad, rol…"
           filaClave={(u) => u.idUsuario}
           nombreArchivo="usuarios"
           tituloExport="Usuarios - GestCultura"

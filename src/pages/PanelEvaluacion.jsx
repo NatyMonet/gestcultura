@@ -13,6 +13,18 @@ const colorEstado = (estado) => {
   return 'gris';
 };
 
+// Calcula la edad (en años) a partir de la fecha de nacimiento.
+const calcularEdad = (fn) => {
+  if (!fn) return null;
+  const nac = new Date(fn);
+  if (isNaN(nac.getTime())) return null;
+  const hoy = new Date();
+  let edad = hoy.getFullYear() - nac.getFullYear();
+  const m = hoy.getMonth() - nac.getMonth();
+  if (m < 0 || (m === 0 && hoy.getDate() < nac.getDate())) edad--;
+  return edad;
+};
+
 export default function PanelEvaluacion() {
   const navigate = useNavigate();
   const { modoEmpatico } = useContext(ModoEmpaticContext);
@@ -24,7 +36,8 @@ export default function PanelEvaluacion() {
       .then((r) => r.json())
       .then((res) => {
         if (res && res.success && Array.isArray(res.data)) {
-          setInscripciones(res.data);
+          // Agregamos la edad calculada a cada postulante (para buscar y ordenar por edad)
+          setInscripciones(res.data.map((x) => ({ ...x, edad: calcularEdad(x.fechaNacimiento) })));
         }
         setCargando(false);
       })
@@ -50,6 +63,7 @@ export default function PanelEvaluacion() {
     { clave: 'idInscripcion', titulo: '#', tipo: 'numero' },
     { clave: 'postulante', titulo: 'Postulante', estilo: { fontWeight: 'bold' } },
     { clave: 'cedula', titulo: 'Cédula' },
+    { clave: 'edad', titulo: 'Edad', tipo: 'numero', render: (v) => (v ?? '—') },
     { clave: 'correo', titulo: 'Correo' },
     { clave: 'convocatoria', titulo: 'Convocatoria' },
     { clave: 'estado', titulo: 'Estado', render: (v) => <Badge texto={v || 'Pendiente'} color={colorEstado(v)} />, exportar: (f) => f.estado || 'Pendiente' },
@@ -80,7 +94,7 @@ export default function PanelEvaluacion() {
           columnas={columnas}
           datos={inscripciones}
           minWidth="820px"
-          placeholderBuscar="Buscar por nombre, cédula, convocatoria…"
+          placeholderBuscar="Buscar por nombre, cédula, edad, convocatoria…"
           filaClave={(f) => f.idInscripcion}
           nombreArchivo="postulaciones"
           tituloExport="Postulaciones - GestCultura"
