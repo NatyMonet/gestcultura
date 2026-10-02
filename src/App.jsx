@@ -18,6 +18,9 @@ import AutoLogout from './components/AutoLogout';
 import NotFound from './pages/NotFound';
 import PanelUsuarios from './pages/PanelUsuarios';
 import Postular from './pages/Postular';
+import Pago from './pages/Pago';
+import PagoResultado from './pages/PagoResultado';
+import ComprobantePago from './pages/ComprobantePago';
  import MonetAssistant from './components/MonetAssistant';
 import Footer from './components/Footer';
 
@@ -68,6 +71,9 @@ function AppContent() {
           <Route path="/mis-inscripciones" element={<MisInscripciones />} />
           <Route path="/convocatoria/:id" element={<DetalleConvocatoria />} />
           <Route path="/postular/:id" element={<Postular />} />
+          <Route path="/pago" element={<Pago />} />
+          <Route path="/pago-resultado" element={<PagoResultado />} />
+          <Route path="/comprobante-pago" element={<ComprobantePago />} />
           <Route path="/perfil" element={<Perfil />} />
           <Route path="/panel-evaluacion" element={<PanelEvaluacion />} />
           <Route path="/panel-admin" element={<PanelAdmin />} />

@@ -118,6 +118,7 @@ const MisInscripciones = () => {
                   <th className="px-6 py-4 text-left font-semibold">Fecha de Cierre</th>
                   <th className="px-6 py-4 text-left font-semibold">Días Restantes</th>
                   <th className="px-6 py-4 text-left font-semibold">Estado</th>
+                  <th className="px-6 py-4 text-left font-semibold">Pago</th>
                   <th className="px-6 py-4 text-left font-semibold">Comprobante</th>
                 </tr>
               </thead>
@@ -141,6 +142,28 @@ const MisInscripciones = () => {
                         <span className="px-3 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-700">
                           {inscripcion.estado}
                         </span>
+                      </td>
+                      <td className="px-6 py-4">
+                        {Number(inscripcion.tienePago) > 0 ? (
+                          <div className="flex flex-col items-start gap-1">
+                            <span className="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 whitespace-nowrap">
+                              ✓ Pagado
+                            </span>
+                            <button
+                              onClick={() => navigate('/comprobante-pago', { state: { inscripcion } })}
+                              className="text-xs font-semibold text-green-700 underline hover:text-green-800 whitespace-nowrap"
+                            >
+                              Ver comprobante
+                            </button>
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => navigate('/pago', { state: { inscripcion } })}
+                            className="bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-4 rounded-lg transition font-semibold text-sm whitespace-nowrap"
+                          >
+                            Pagar
+                          </button>
+                        )}
                       </td>
                       <td className="px-6 py-4">
                         <button
