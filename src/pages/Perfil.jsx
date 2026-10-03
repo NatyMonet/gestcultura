@@ -1,3 +1,4 @@
+import { API_URL } from '../config/api';
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ModoEmpaticContext } from '../context/ModoEmpatico';
@@ -14,7 +15,7 @@ export default function Perfil() {
     try { u = JSON.parse(data); } catch { return; }
     setUsuario(u);
     if (u.idUsuario) {
-      fetch(`http://localhost:5000/api/usuarios/${u.idUsuario}`)
+      fetch(`${API_URL}/api/usuarios/${u.idUsuario}`)
         .then((r) => r.json())
         .then((res) => {
           if (res && res.success && res.data) {

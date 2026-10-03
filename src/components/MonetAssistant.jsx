@@ -1,3 +1,4 @@
+import { API_URL } from '../config/api';
 import { useState, useRef, useEffect, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
@@ -264,7 +265,7 @@ const MonetAssistant = ({ isMonetOpen, setIsMonetOpen }) => {
 
     setPensando(true);
     try {
-      const r = await fetch('http://localhost:5000/api/monet', {
+      const r = await fetch(`${API_URL}/api/monet`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mensaje: message }),

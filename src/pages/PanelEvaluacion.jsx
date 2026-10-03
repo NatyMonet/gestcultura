@@ -1,3 +1,4 @@
+import { API_URL } from '../config/api';
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ModoEmpaticContext } from '../context/ModoEmpatico';
@@ -32,7 +33,7 @@ export default function PanelEvaluacion() {
   const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/inscripciones')
+    fetch(`${API_URL}/api/inscripciones`)
       .then((r) => r.json())
       .then((res) => {
         if (res && res.success && Array.isArray(res.data)) {

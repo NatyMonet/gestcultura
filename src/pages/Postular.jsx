@@ -1,3 +1,4 @@
+import { API_URL } from '../config/api';
 // ============================================================================
 // PÁGINA: Postular — Formulario Inteligente de 5 Pasos (Módulo 1)
 // Ficha SENA: 3013183 | Estudiante: Natalia Mejía Cardona
@@ -18,7 +19,7 @@ import Swal from 'sweetalert2';
 import jsPDF from 'jspdf';
 import { ArrowLeft, ArrowRight, Check, Eraser, User, Compass, FileSignature, ScrollText, PenLine } from 'lucide-react';
 
-const API = 'http://localhost:5000/api';
+const API = `${API_URL}/api`;
 
 const TEXTO_COMPROMISO = [
   'Declaro que la información suministrada en este formulario es verídica y corresponde a mis datos reales.',

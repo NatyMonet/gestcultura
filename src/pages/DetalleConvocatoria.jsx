@@ -1,3 +1,4 @@
+import { API_URL } from '../config/api';
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -13,7 +14,7 @@ const DetalleConvocatoria = () => {
     const obtenerConvocatoria = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`http://localhost:5000/api/convocatorias/${id}`);
+        const response = await fetch(`${API_URL}/api/convocatorias/${id}`);
         if (!response.ok) throw new Error('Convocatoria no encontrada');
         const data = await response.json();
         if (data.success) {

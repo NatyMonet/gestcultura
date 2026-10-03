@@ -1,3 +1,4 @@
+import { API_URL } from '../config/api';
 // ============================================================================
 // PANTALLA: Restablecer contraseña (Paso 2 - crear la nueva contraseña)
 // Ficha SENA: 3013183 | Estudiante: Natalia Mejía Cardona
@@ -41,7 +42,7 @@ export default function RestablecerPassword() {
     }
     setCargando(true);
     try {
-      const response = await fetch('http://localhost:5000/api/auth/restablecer', {
+      const response = await fetch(`${API_URL}/api/auth/restablecer`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token, contrasena, confirmContrasena }),

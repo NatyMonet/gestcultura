@@ -1,3 +1,4 @@
+import { API_URL } from '../config/api';
 // ============================================================================
 // PÁGINA: Pago — Pasarelas de Pago (Módulo 5) · SIMULACIÓN PMV
 // Ficha SENA: 3013183 | Estudiante: Natalia Mejía Cardona
@@ -13,7 +14,7 @@ import { ModoEmpaticContext } from '../context/ModoEmpatico';
 import Swal from 'sweetalert2';
 import { ShieldCheck, CreditCard, Lock, ArrowLeft, Check, FlaskConical } from 'lucide-react';
 
-const API = 'http://localhost:5000/api';
+const API = `${API_URL}/api`;
 const VALOR = 50000; // Valor simulado de inscripción (COP) para la demostración del PMV
 
 const PASARELAS = [

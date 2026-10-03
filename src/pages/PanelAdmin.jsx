@@ -1,3 +1,4 @@
+import { API_URL } from '../config/api';
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ModoEmpaticContext } from '../context/ModoEmpatico';
@@ -7,7 +8,7 @@ import DashboardAdmin from '../components/DashboardAdmin';
 import TablaDatos from '../components/TablaDatos';
 import Badge from '../components/Badge';
 
-const API = 'http://localhost:5000/api/convocatorias';
+const API = `${API_URL}/api/convocatorias`;
 
 const thStyle = (fs) => ({ padding: '12px', textAlign: 'left', fontSize: fs, fontWeight: 'bold' });
 const tdStyle = (C, fs) => ({ padding: '12px', textAlign: 'left', fontSize: fs, color: C.texto, borderTop: `1px solid ${C.borde}` });
@@ -44,7 +45,7 @@ export default function PanelAdmin() {
       // (activas e inactivas). Luego decidimos en pantalla cuáles mostrar.
       const [rc, ri] = await Promise.all([
         fetch(`${API}/admin`, { headers: { Authorization: `Bearer ${token}` } }),
-        fetch('http://localhost:5000/api/inscripciones'),
+        fetch(`${API_URL}/api/inscripciones`),
       ]);
       const resC = await rc.json();
       const resI = await ri.json();

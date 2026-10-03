@@ -1,3 +1,4 @@
+import { API_URL } from '../config/api';
 // ============================================================================
 // PÁGINA: Panel de Usuarios (Gestión de Usuarios y Roles)
 // Ficha SENA: 3013183 | Estudiante: Natalia Mejía Cardona
@@ -18,7 +19,7 @@ import { ShieldAlert, UserCog, UserCheck, UserX } from 'lucide-react';
 import TablaDatos from '../components/TablaDatos';
 import Badge from '../components/Badge';
 
-const API = 'http://localhost:5000/api/usuarios';
+const API = `${API_URL}/api/usuarios`;
 
 // Calcula la edad (en años) a partir de la fecha de nacimiento.
 const calcularEdad = (fn) => {

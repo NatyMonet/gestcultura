@@ -1,3 +1,4 @@
+import { API_URL } from '../config/api';
 import { useState, useContext, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Eye, EyeOff, HeartHandshake, Sparkles } from 'lucide-react';
@@ -71,7 +72,7 @@ export default function Registro() {
     const fechaNacimiento = `${anioNacimiento}-01-01`;
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/registro', {
+      const response = await fetch(`${API_URL}/api/auth/registro`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

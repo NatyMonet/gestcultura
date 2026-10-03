@@ -1,3 +1,4 @@
+import { API_URL } from '../config/api';
 // ============================================================================
 // PÁGINA: PagoResultado — Resultado del pago con Wompi (Módulo 5)
 // Ficha SENA: 3013183 | Estudiante: Natalia Mejía Cardona
@@ -13,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { ModoEmpaticContext } from '../context/ModoEmpatico';
 import { CheckCircle2, XCircle, Clock, ArrowLeft, Loader2 } from 'lucide-react';
 
-const API = 'http://localhost:5000/api';
+const API = `${API_URL}/api`;
 
 export default function PagoResultado() {
   const navigate = useNavigate();

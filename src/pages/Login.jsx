@@ -1,3 +1,4 @@
+import { API_URL } from '../config/api';
 import { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Eye, EyeOff, HeartHandshake } from 'lucide-react';
@@ -36,7 +37,7 @@ export default function Login() {
     }
     setCargando(true);
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const response = await fetch(`${API_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -47,7 +48,7 @@ export default function Login() {
         // Guardamos el token de seguridad (JWT) para las acciones protegidas
         if (data.token) localStorage.setItem('token', data.token);
         try {
-          const userResponse = await fetch(`http://localhost:5000/api/usuarios/${usuario.idUsuario}`);
+          const userResponse = await fetch(`${API_URL}/api/usuarios/${usuario.idUsuario}`);
           const userData = await userResponse.json();
           if (userData.success && userData.data.fechaNacimiento) {
             const edad = calcularEdad(userData.data.fechaNacimiento);

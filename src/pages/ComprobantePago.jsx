@@ -1,3 +1,4 @@
+import { API_URL } from '../config/api';
 // ============================================================================
 // PÁGINA: ComprobantePago — Comprobante de PAGO (recibo estilo pasarela)
 // Ficha SENA: 3013183 | Estudiante: Natalia Mejía Cardona
@@ -13,7 +14,7 @@ import { ModoEmpaticContext } from '../context/ModoEmpatico';
 import { CheckCircle2, Download, ArrowLeft, ReceiptText, Loader2 } from 'lucide-react';
 import jsPDF from 'jspdf';
 
-const API = 'http://localhost:5000/api';
+const API = `${API_URL}/api`;
 
 export default function ComprobantePago() {
   const navigate = useNavigate();

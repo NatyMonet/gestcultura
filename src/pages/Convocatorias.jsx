@@ -1,3 +1,4 @@
+import { API_URL } from '../config/api';
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ModoEmpaticContext } from '../context/ModoEmpatico';
@@ -75,7 +76,7 @@ export default function Convocatorias() {
   useEffect(() => {
     const cargar = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/convocatorias');
+        const res = await fetch(`${API_URL}/api/convocatorias`);
         const json = await res.json();
         if (json.success && Array.isArray(json.data) && json.data.length > 0) {
           const formateadas = json.data.map((c) => {

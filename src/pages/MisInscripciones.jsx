@@ -1,3 +1,4 @@
+import { API_URL } from '../config/api';
 import { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ModoEmpaticContext } from '../context/ModoEmpatico';
@@ -23,7 +24,7 @@ const MisInscripciones = () => {
         }
         const usuario = JSON.parse(usuarioGuardado);
         const idUsuario = usuario.idUsuario;
-        const response = await fetch(`http://localhost:5000/api/inscripciones/usuario/${idUsuario}`);
+        const response = await fetch(`${API_URL}/api/inscripciones/usuario/${idUsuario}`);
         if (!response.ok) throw new Error('Error al obtener inscripciones');
         const data = await response.json();
         if (data.success) {

@@ -1,3 +1,4 @@
+import { API_URL } from '../config/api';
 // ============================================================================
 // PANTALLA: Recuperar contraseña (Paso 1 - pedir el enlace)
 // Ficha SENA: 3013183 | Estudiante: Natalia Mejía Cardona
@@ -30,7 +31,7 @@ export default function RecuperarPassword() {
     }
     setCargando(true);
     try {
-      const response = await fetch('http://localhost:5000/api/auth/recuperar', {
+      const response = await fetch(`${API_URL}/api/auth/recuperar`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ correo }),
