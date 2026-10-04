@@ -19,6 +19,7 @@ import { Search, ArrowUp, ArrowDown, ChevronsUpDown, FileSpreadsheet, FileText }
 import { ModoEmpaticContext } from '../context/ModoEmpatico';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { LOGO_CINEFILIA_NEGRO, piePdfCinefilia } from '../assets/cinefilia';
 
 // Quita tildes y pasa a minúsculas, para que la búsqueda sea más amable.
 const normalizar = (texto) =>
@@ -161,7 +162,13 @@ export default function TablaDatos({
       styles: { fontSize: 9, cellPadding: 2.5, overflow: 'linebreak' },
       headStyles: { fillColor: [106, 27, 154], textColor: 255, fontStyle: 'bold' },
       alternateRowStyles: { fillColor: [245, 238, 251] },
-      margin: { left: 14, right: 14 },
+      margin: { left: 14, right: 14, bottom: 24 },
+      // Logo de Cinefilia (arriba a la derecha) y datos de contacto (pie) en cada página
+      didDrawPage: () => {
+        doc.addImage(LOGO_CINEFILIA_NEGRO, 'PNG', 274, 6, 13, 17);
+        const alto = doc.internal.pageSize.getHeight();
+        piePdfCinefilia(doc, alto - 12, 14);
+      },
     });
     doc.save(`${nombreConFecha()}.pdf`);
   };

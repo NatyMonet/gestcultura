@@ -195,8 +195,14 @@ export default function Convocatorias() {
           </p>
         </div>
 
-        <div className="hidden lg:block absolute -right-6 -bottom-10 opacity-15 pointer-events-none">
-          <Film className="w-64 h-64" />
+        <div className="hidden lg:block absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none">
+          <img
+            src="/postal-cinefilia.jpg"
+            alt="Postal histórica de Corporación Cinefilia"
+            className={`w-72 xl:w-80 h-auto rounded-2xl object-cover shadow-2xl border-4 rotate-2 ${
+              isWarm ? 'border-[#2B1600]' : 'border-white'
+            }`}
+          />
         </div>
       </section>
 

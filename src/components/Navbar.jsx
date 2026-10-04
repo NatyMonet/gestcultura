@@ -123,7 +123,7 @@ const Navbar = () => {
           <div className={`p-2.5 rounded-xl border-2 transition-transform group-hover:scale-105 ${
             isWarm ? 'bg-[#C75000] text-white border-[#2B1600]' : 'bg-[#7C3AED] text-white border-[#6D28D9]'
           }`}>
-            <HeartHandshake className="w-7 h-7" />
+            <img src="/logo-cinefilia-white.png" alt="Logo Corporación Cinefilia" className="w-7 h-7 object-contain" />
           </div>
           <div>
             <div className="flex items-center gap-2">

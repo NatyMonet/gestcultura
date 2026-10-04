@@ -1,7 +1,7 @@
 import { API_URL } from '../config/api';
 import { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Eye, EyeOff, HeartHandshake } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 import Swal from 'sweetalert2';
 import { ModoEmpaticContext } from '../context/ModoEmpatico';
 
@@ -144,7 +144,7 @@ export default function Login() {
             marginBottom: '12px',
           }}
         >
-          <HeartHandshake size={34} />
+          <img src="/logo-cinefilia-white.png" alt="Logo Corporación Cinefilia" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
         </div>
         <h2 style={{ margin: 0, fontSize: isWarm ? '24px' : '22px', fontWeight: 800 }}>Gestión Empática</h2>
         <p style={{ margin: '6px 0 0', fontSize: isWarm ? '14px' : '13px', opacity: 0.9 }}>

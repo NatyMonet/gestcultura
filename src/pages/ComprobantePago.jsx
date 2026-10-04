@@ -13,6 +13,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { ModoEmpaticContext } from '../context/ModoEmpatico';
 import { CheckCircle2, Download, ArrowLeft, ReceiptText, Loader2 } from 'lucide-react';
 import jsPDF from 'jspdf';
+import { LOGO_CINEFILIA_BLANCO, piePdfCinefilia } from '../assets/cinefilia';
 
 const API = `${API_URL}/api`;
 
@@ -71,9 +72,10 @@ export default function ComprobantePago() {
     if (!pago) return;
     const doc = new jsPDF();
 
-    // Franja verde de "Transacción aprobada"
+    // Franja verde de "Transacción aprobada" (con logo de Cinefilia a la derecha)
     doc.setFillColor(91, 168, 41);
     doc.rect(0, 0, 210, 26, 'F');
+    doc.addImage(LOGO_CINEFILIA_BLANCO, 'PNG', 185, 3, 14, 19);
     doc.setTextColor(255, 255, 255);
     doc.setFont(undefined, 'bold');
     doc.setFontSize(16);
@@ -118,11 +120,12 @@ export default function ComprobantePago() {
       y += 9;
     });
 
-    // Pie
-    doc.setFontSize(9);
+    // Pie: aviso de simulación + datos de contacto de la organización
+    doc.setFontSize(8.5);
     doc.setTextColor(120, 120, 120);
-    doc.text('Comprobante generado por GestCultura. Pago en modo de pruebas (simulación), sin cobro real.', 14, 280);
-    doc.text(`Generado el ${formatearFecha(new Date())}.`, 14, 286);
+    doc.text('Comprobante generado por GestCultura. Pago en modo de pruebas (simulación), sin cobro real.', 14, 264);
+    doc.text(`Generado el ${formatearFecha(new Date())}.`, 14, 268);
+    piePdfCinefilia(doc, 280);
 
     doc.save(`Comprobante_Pago_${pago.referencia}.pdf`);
   };

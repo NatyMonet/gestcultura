@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { ModoEmpaticContext } from '../context/ModoEmpatico';
 import { Eraser, Download, ArrowLeft, FileCheck2 } from 'lucide-react';
 import jsPDF from 'jspdf';
+import { LOGO_CINEFILIA_BLANCO, piePdfCinefilia } from '../assets/cinefilia';
 
 export default function Comprobante() {
   const navigate = useNavigate();
@@ -99,9 +100,10 @@ export default function Comprobante() {
     const doc = new jsPDF();
     const morado = isWarm ? [199, 80, 0] : [106, 27, 154];
 
-    // Franja de encabezado
+    // Franja de encabezado (con logo de Cinefilia a la derecha)
     doc.setFillColor(morado[0], morado[1], morado[2]);
     doc.rect(0, 0, 210, 28, 'F');
+    doc.addImage(LOGO_CINEFILIA_BLANCO, 'PNG', 184, 4, 15, 20);
     doc.setTextColor(255, 255, 255);
     doc.setFont(undefined, 'bold');
     doc.setFontSize(18);
@@ -160,19 +162,13 @@ export default function Comprobante() {
     doc.setTextColor(90, 90, 90);
     doc.text(usuario?.nombre || '', 14, y);
 
-    // Pie
-    doc.setFontSize(9);
+    // Pie: fecha de generación + datos de contacto de la organización
+    doc.setFontSize(8.5);
     doc.setTextColor(120, 120, 120);
-    doc.text(
-      `Documento generado automáticamente el ${formatearFecha(new Date())}.`,
-      14,
-      284
-    );
-    doc.text(
-      'Este comprobante certifica la radicación de la postulación en GestCultura.',
-      14,
-      289
-    );
+    doc.setFont(undefined, 'normal');
+    doc.text(`Documento generado automáticamente el ${formatearFecha(new Date())}.`, 14, 266);
+    doc.text('Este comprobante certifica la radicación de la postulación en GestCultura.', 14, 270);
+    piePdfCinefilia(doc, 280);
 
     doc.save(`Comprobante_${radicado}.pdf`);
   };
