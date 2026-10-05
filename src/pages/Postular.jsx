@@ -18,9 +18,12 @@ import { ModoEmpaticContext } from '../context/ModoEmpatico';
 import Swal from 'sweetalert2';
 import jsPDF from 'jspdf';
 import { LOGO_CINEFILIA_BLANCO, piePdfCinefilia } from '../assets/cinefilia';
-import { ArrowLeft, ArrowRight, Check, Eraser, User, Compass, FileSignature, ScrollText, PenLine } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Eraser, User, Compass, FileSignature, ScrollText, PenLine, ClipboardCheck } from 'lucide-react';
 
 const API = `${API_URL}/api`;
+
+// Carita de Monet (el mismo avatar del asistente) para la guía empática.
+const MONET_AVATAR = '/Monet_asistente.png';
 
 const TEXTO_COMPROMISO = [
   'Declaro que la información suministrada en este formulario es verídica y corresponde a mis datos reales.',
@@ -37,13 +40,24 @@ export default function Postular() {
 
   const usuarioSesion = JSON.parse(localStorage.getItem('usuario') || 'null');
 
-  const [paso, setPaso] = useState(1);
+  // --- Respaldo automático (como Google Drive) ---
+  // Guardamos en este navegador lo que la persona va escribiendo. Si cierra la
+  // página por error o presiona una tecla equivocada, al volver encuentra todo.
+  const BORRADOR_KEY = `gc_borrador_postulacion_${id}`;
+  const leerBorrador = () => {
+    try { return JSON.parse(localStorage.getItem(BORRADOR_KEY)) || {}; } catch (e) { return {}; }
+  };
+  const borradorInicial = leerBorrador();
+
+  const [paso, setPaso] = useState(() => Math.min(Number(borradorInicial.paso) || 1, 5));
   const [convocatoria, setConvocatoria] = useState(null);
   const [datosUsuario, setDatosUsuario] = useState(null);
   const [cargando, setCargando] = useState(true);
-  const [motivacion, setMotivacion] = useState('');
-  const [aceptaCompromiso, setAceptaCompromiso] = useState(false);
+  const [motivacion, setMotivacion] = useState(() => borradorInicial.motivacion || '');
+  const [aceptaCompromiso, setAceptaCompromiso] = useState(() => !!borradorInicial.aceptaCompromiso);
   const [enviando, setEnviando] = useState(false);
+  const [corrector, setCorrector] = useState(false);  // corrector de ortografía opcional
+  const [guardado, setGuardado] = useState(false);     // indicador "guardado automáticamente"
 
   const canvasRef = useRef(null);
   const dibujandoRef = useRef(false);
@@ -82,9 +96,21 @@ export default function Postular() {
     cargar();
   }, [id]);
 
+  // --- Respaldo automático: cada cambio se guarda en el navegador ---
+  useEffect(() => {
+    try {
+      localStorage.setItem(BORRADOR_KEY, JSON.stringify({ motivacion, paso: Math.min(paso, 5), aceptaCompromiso }));
+      if (motivacion.trim().length > 0 || aceptaCompromiso) {
+        setGuardado(true);
+        const t = setTimeout(() => setGuardado(false), 1600);
+        return () => clearTimeout(t);
+      }
+    } catch (e) { /* si el navegador bloquea el almacenamiento, seguimos sin respaldo */ }
+  }, [motivacion, paso, aceptaCompromiso]);
+
   // --- Inicializar el lienzo de la firma cuando se llega al paso 5 ---
   useEffect(() => {
-    if (paso !== 5) return;
+    if (paso !== 6) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -126,7 +152,7 @@ export default function Postular() {
       Swal.fire({ icon: 'info', title: 'Falta tu confirmación', text: 'Por favor marca la casilla confirmando que leíste y aceptas el compromiso.' });
       return;
     }
-    setPaso((p) => Math.min(5, p + 1));
+    setPaso((p) => Math.min(6, p + 1));
   };
   const anterior = () => setPaso((p) => Math.max(1, p - 1));
 
@@ -169,6 +195,9 @@ export default function Postular() {
       }
 
       generarPDF(res.idInscripcion, datos);
+
+      // Postulación enviada: ya no necesitamos el borrador guardado.
+      try { localStorage.removeItem(BORRADOR_KEY); } catch (e) { /* no pasa nada */ }
 
       setEnviando(false);
       Swal.fire({
@@ -293,22 +322,63 @@ export default function Postular() {
     );
   }
 
-  const ICONOS = [User, Compass, FileSignature, ScrollText, PenLine];
-  const TITULOS = ['Tus datos', 'La convocatoria', 'Tu motivación', 'Términos y compromiso', 'Tu firma'];
+  const ICONOS = [User, Compass, FileSignature, ScrollText, ClipboardCheck, PenLine];
+  const TITULOS = ['Tus datos', 'La convocatoria', 'Tu motivación', 'Términos y compromiso', 'Revisión', 'Tu firma'];
+  const ANIMOS = [
+    'Empecemos con calma. Un pasito a la vez, tú puedes. 🐾',
+    '¡Muy bien! Confirmemos tu convocatoria.',
+    '¡Lo estás haciendo genial! Cuéntanos con tus palabras.',
+    'Vas excelente. Lee el compromiso con calma. 💜',
+    'Revisemos todo juntos antes de enviar.',
+    '¡Último paso! Tu firma y quedas postulado/a. 🎉',
+  ];
+  // Mensajes de Monet (aparecen en Modo Acompañado para guiar paso a paso).
+  const MENSAJES_MONET = [
+    'Hola, soy Monet 🐾 Revisemos juntos que tus datos estén bien. Si algo está mal, lo corriges en tu Perfil. Vamos con calma, sin afán.',
+    'Esta es la convocatoria que elegiste. Léela sin prisa y, cuando te sientas listo/a, seguimos. Estoy aquí contigo.',
+    'Ahora cuéntame con tus palabras por qué quieres participar. No hay respuestas malas. Si quieres, activa el corrector de ortografía. ¡Tú puedes! 💪',
+    'Lee el compromiso con tranquilidad y marca la casilla cuando estés de acuerdo. Ya casi terminamos.',
+    'Revisemos todo juntitos antes de firmar. Si algo no te gusta, volvemos atrás sin ningún problema. 🧡',
+    '¡Último pasito! Dibuja tu firma. Lo lograste, estoy muy orgulloso de ti. 🎉',
+  ];
   const IconoPaso = ICONOS[paso - 1];
+  const porcentaje = Math.round((paso / 6) * 100);
 
   return (
     <div style={{ maxWidth: '720px', margin: '40px auto', padding: '0 20px' }}>
       {/* Encabezado + progreso */}
       <h1 style={{ color: C.acento, margin: '0 0 4px', fontSize: fsTitulo }}>Formulario de Postulación</h1>
       <p style={{ color: C.texto, opacity: 0.85, fontSize: fs, margin: '0 0 16px' }}>
-        Paso {paso} de 5 · {TITULOS[paso - 1]}
+        Paso {paso} de 6 · {TITULOS[paso - 1]}
       </p>
-      <div style={{ display: 'flex', gap: '6px', marginBottom: '24px' }}>
-        {[1, 2, 3, 4, 5].map((n) => (
+      <div style={{ display: 'flex', gap: '6px', marginBottom: '8px' }}>
+        {[1, 2, 3, 4, 5, 6].map((n) => (
           <div key={n} style={{ flex: 1, height: '10px', borderRadius: '9999px', background: n <= paso ? C.acento : C.borde, transition: 'background .3s' }} />
         ))}
       </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px', marginBottom: '12px', flexWrap: 'wrap' }}>
+        <span style={{ color: C.acento, fontSize: '13px', fontWeight: 'bold' }}>{porcentaje}% completado</span>
+        {guardado && (
+          <span style={{ color: '#1baf7a', fontSize: '13px', fontWeight: 'bold', display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+            <Check size={14} /> Guardado automáticamente
+          </span>
+        )}
+      </div>
+      <div style={{ background: C.suave, border: `1px solid ${C.borde}`, borderRadius: '10px', padding: '10px 14px', marginBottom: isWarm ? '12px' : '20px', color: C.texto, fontSize: fs, fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <span aria-hidden="true">💬</span>
+        <span>{ANIMOS[paso - 1]}</span>
+      </div>
+
+      {/* Monet te acompaña paso a paso — solo en Modo Acompañado */}
+      {isWarm && (
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', background: '#fff', border: `2px solid ${C.acento}`, borderRadius: '14px', padding: '14px 16px', marginBottom: '20px', boxShadow: '0 2px 12px rgba(199,80,0,0.12)' }}>
+          <img src={MONET_AVATAR} alt="Monet, tu asistente" style={{ width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover', border: `2px solid ${C.acento}`, flexShrink: 0 }} />
+          <div>
+            <div style={{ color: C.acento, fontWeight: 800, fontSize: '15px', marginBottom: '2px' }}>Monet te acompaña 🐾</div>
+            <p style={{ color: C.texto, fontSize: fs, margin: 0, lineHeight: 1.5 }}>{MENSAJES_MONET[paso - 1]}</p>
+          </div>
+        </div>
+      )}
 
       <div style={{ background: C.bg, border: `2px solid ${C.borde}`, borderRadius: '16px', padding: '24px', boxShadow: '0 2px 14px rgba(0,0,0,0.06)', minHeight: '260px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '18px' }}>
@@ -362,17 +432,32 @@ export default function Postular() {
             <p style={{ color: C.texto, fontSize: fs, marginTop: 0, marginBottom: '12px' }}>
               Cuéntanos con tus palabras: ¿por qué deseas participar en esta convocatoria?
             </p>
+
+            {/* Corrector de ortografía opcional (lo activa quien quiera) */}
+            <label style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', cursor: 'pointer', color: C.texto, fontSize: '14px', fontWeight: 600, marginBottom: '10px' }}>
+              <input
+                type="checkbox"
+                checked={corrector}
+                onChange={(e) => setCorrector(e.target.checked)}
+                style={{ width: '18px', height: '18px', accentColor: C.acento, cursor: 'pointer' }}
+              />
+              Activar corrector de ortografía
+            </label>
+
             <textarea
               value={motivacion}
               onChange={(e) => setMotivacion(e.target.value)}
               placeholder="Escribe aquí tu motivación…"
               rows={6}
+              spellCheck={corrector}
+              lang="es"
               style={{ width: '100%', boxSizing: 'border-box', padding: '14px', borderRadius: '12px', border: `2px solid ${C.borde}`, fontSize: fs, color: C.texto, background: '#fff', outline: 'none', resize: 'vertical' }}
               onFocus={(e) => (e.target.style.border = `2px solid ${C.acento}`)}
               onBlur={(e) => (e.target.style.border = `2px solid ${C.borde}`)}
             />
             <p style={{ color: C.texto, opacity: 0.6, fontSize: '13px', marginTop: '6px' }}>
               {motivacion.trim().length} caracteres (mínimo 15).
+              {corrector && ' · El corrector subrayará las palabras con posibles errores.'}
             </p>
           </div>
         )}
@@ -402,8 +487,39 @@ export default function Postular() {
           </div>
         )}
 
-        {/* PASO 5 — Firma electrónica */}
+        {/* PASO 5 — Revisión antes de firmar */}
         {paso === 5 && (
+          <div>
+            <p style={{ color: C.texto, fontSize: fs, marginTop: 0, marginBottom: '16px' }}>
+              Vamos a revisar tu postulación. Verifica que todo esté correcto. Si quieres corregir algo
+              (incluida la ortografía), usa el botón <strong>Anterior</strong>.
+            </p>
+            <div style={{ background: C.suave, borderRadius: '12px', padding: '16px 18px' }}>
+              {[
+                ['Nombre', datosUsuario?.nombre],
+                ['Cédula', datosUsuario?.cedula],
+                ['Correo', datosUsuario?.correo],
+                ['Teléfono', datosUsuario?.telefono],
+                ['Convocatoria', convocatoria?.nombre],
+              ].map(([et, val]) => (
+                <div key={et} style={{ display: 'flex', justifyContent: 'space-between', gap: '12px', padding: '7px 0', borderBottom: `1px solid ${C.borde}` }}>
+                  <span style={{ color: C.texto, opacity: 0.7, fontWeight: 'bold', fontSize: '14px' }}>{et}</span>
+                  <span style={{ color: C.texto, fontSize: fs, textAlign: 'right', wordBreak: 'break-word' }}>{val || '—'}</span>
+                </div>
+              ))}
+              <div style={{ paddingTop: '10px' }}>
+                <div style={{ color: C.texto, opacity: 0.7, fontWeight: 'bold', fontSize: '14px', marginBottom: '4px' }}>Tu motivación</div>
+                <p style={{ color: C.texto, fontSize: fs, margin: 0, whiteSpace: 'pre-line', lineHeight: 1.5 }}>{motivacion.trim() || '—'}</p>
+              </div>
+            </div>
+            <p style={{ color: C.texto, opacity: 0.8, fontSize: '13px', marginTop: '12px' }}>
+              ✅ Si todo está bien, continúa para firmar. Tu compromiso ya fue aceptado.
+            </p>
+          </div>
+        )}
+
+        {/* PASO 6 — Firma electrónica */}
+        {paso === 6 && (
           <div>
             <p style={{ color: C.texto, fontSize: fs, marginTop: 0, marginBottom: '12px' }}>
               Firma en el recuadro (con el dedo o el mouse). Esta firma quedará en tu constancia en PDF.
@@ -445,7 +561,7 @@ export default function Postular() {
           <ArrowLeft size={18} /> {paso === 1 ? 'Cancelar' : 'Anterior'}
         </button>
 
-        {paso < 5 ? (
+        {paso < 6 ? (
           <button
             onClick={siguiente}
             style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '14px 26px', background: C.acento, color: '#fff', border: 'none', borderRadius: '10px', cursor: 'pointer', fontWeight: 'bold', fontSize: fs, boxShadow: '0 4px 14px rgba(0,0,0,0.15)' }}

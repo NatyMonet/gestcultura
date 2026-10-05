@@ -7,7 +7,7 @@ import { API_URL } from '../config/api';
 // ============================================================================
 import { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { HeartHandshake, Mail } from 'lucide-react';
+import { Mail } from 'lucide-react';
 import Swal from 'sweetalert2';
 import { ModoEmpaticContext } from '../context/ModoEmpatico';
 
@@ -99,7 +99,7 @@ export default function RecuperarPassword() {
     <div style={{ maxWidth: '400px', margin: '70px auto', borderRadius: '18px', overflow: 'hidden', boxShadow: '0 12px 34px rgba(106,27,154,0.18)', background: '#fff' }}>
       <div style={{ background: C.header, padding: '30px 24px', textAlign: 'center', color: '#fff' }}>
         <div style={{ width: '62px', height: '62px', borderRadius: '16px', background: 'rgba(255,255,255,0.18)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px' }}>
-          <HeartHandshake size={34} />
+          <img src="/logo-cinefilia-white.png" alt="Logo Corporación Cinefilia" style={{ width: '40px', height: '40px', objectFit: 'contain' }} />
         </div>
         <h2 style={{ margin: 0, fontSize: isWarm ? '24px' : '22px', fontWeight: 800 }}>Recuperar contraseña</h2>
         <p style={{ margin: '6px 0 0', fontSize: isWarm ? '14px' : '13px', opacity: 0.9 }}>

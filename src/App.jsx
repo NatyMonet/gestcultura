@@ -21,6 +21,7 @@ import Postular from './pages/Postular';
 import Pago from './pages/Pago';
 import PagoResultado from './pages/PagoResultado';
 import ComprobantePago from './pages/ComprobantePago';
+import Contacto from './pages/Contacto';
  import MonetAssistant from './components/MonetAssistant';
 import Footer from './components/Footer';
 
@@ -79,6 +80,7 @@ function AppContent() {
           <Route path="/panel-admin" element={<PanelAdmin />} />
           <Route path="/panel-usuarios" element={<PanelUsuarios />} />
           <Route path="/comprobante" element={<Comprobante />} />
+          <Route path="/contacto" element={<Contacto />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />

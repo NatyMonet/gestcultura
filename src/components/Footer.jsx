@@ -104,6 +104,7 @@ const Footer = () => {
               <li><button onClick={() => navigate('/mis-inscripciones')} className="hover:underline opacity-85 hover:opacity-100 font-bold">Consultar Mis Solicitudes</button></li>
               <li><button onClick={() => navigate('/convocatorias')} className="hover:underline opacity-85 hover:opacity-100 font-bold">Panel de Evaluación</button></li>
               <li><button onClick={() => navigate('/login')} className="hover:underline opacity-85 hover:opacity-100 font-bold">Acceso Postulantes</button></li>
+              <li><button onClick={() => navigate('/contacto')} className="hover:underline opacity-85 hover:opacity-100 font-bold">Contacto</button></li>
             </ul>
           </div>
 
