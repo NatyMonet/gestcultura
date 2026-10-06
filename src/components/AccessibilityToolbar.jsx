@@ -1,5 +1,6 @@
 import React from 'react';
 import { Eye, HeartHandshake, Volume2, VolumeX, Sparkles } from 'lucide-react';
+import Swal from 'sweetalert2';
 
 export const AccessibilityToolbar = ({
   modoEmpatico,
@@ -62,7 +63,37 @@ export const AccessibilityToolbar = ({
           {/* Botón Preguntar edad */}
           <button
             type="button"
-            onClick={() => {}}
+            onClick={async () => {
+              const { value: edad } = await Swal.fire({
+                title: '¿Cuántos años tienes?',
+                input: 'number',
+                inputLabel: 'Nos ayuda a adaptar la página para que te sientas cómodo/a',
+                inputPlaceholder: 'Escribe tu edad',
+                confirmButtonText: 'Continuar',
+                confirmButtonColor: '#6D28D9',
+                inputAttributes: { min: '1', max: '120' },
+              });
+              if (edad) {
+                const n = parseInt(edad, 10);
+                if (n >= 50) {
+                  setModoEmpatico(true);
+                  setTextScale('large');
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Modo Acompañado activado',
+                    text: 'Adaptamos la página con texto más grande y acompañamiento para ti.',
+                    confirmButtonColor: '#C75000'
+                  });
+                } else {
+                  Swal.fire({
+                    icon: 'info',
+                    title: '¡Perfecto!',
+                    text: 'Dejamos la página en su modo estándar. Puedes activar el Modo Acompañado cuando quieras.',
+                    confirmButtonColor: '#6D28D9'
+                  });
+                }
+              }
+            }}
             className={`px-3 py-1.5 rounded-full text-xs font-black border-2 transition-all ${
               modoEmpatico
                 ? 'bg-white text-[#2B1600] border-[#2B1600] hover:bg-amber-50'
@@ -149,7 +180,7 @@ export const AccessibilityToolbar = ({
                 : 'bg-[#6D28D9] text-white border-[#4A148C] hover:opacity-90'
             }`}
           >
-                        <Sparkles className="w-4 h-4" />
+            <Sparkles className="w-4 h-4" />
             <span>Asistente Monet</span>
             <Sparkles className="w-3.5 h-3.5 text-yellow-300 fill-yellow-300 animate-spin" />
           </button>
