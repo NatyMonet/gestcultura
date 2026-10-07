@@ -1,3 +1,12 @@
+/**
+ * Nombre del archivo: App.jsx
+ * Descripción: Componente raíz de la aplicación (React). Define el enrutamiento,
+ *              los proveedores de contexto y los candados de ruta de administrador.
+ * Autor: Natalia Mejía Cardona
+ * Fecha de creación: 2026-09-05
+ * Última modificación: 2026-10-07
+ * Licencia: Uso académico — Corporación Cinefilia / SENA.
+ */
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ModoEmpaticProvider, ModoEmpaticContext } from './context/ModoEmpatico';
 import { useContext, useState, useEffect } from 'react';
