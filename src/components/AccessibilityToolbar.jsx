@@ -85,6 +85,8 @@ export const AccessibilityToolbar = ({
                     confirmButtonColor: '#C75000'
                   });
                 } else {
+                  setModoEmpatico(false);
+                  setTextScale('normal');
                   Swal.fire({
                     icon: 'info',
                     title: '¡Perfecto!',
