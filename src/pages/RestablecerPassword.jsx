@@ -33,11 +33,25 @@ export default function RestablecerPassword() {
       return;
     }
     if (contrasena !== confirmContrasena) {
-      Swal.fire({ icon: 'warning', title: 'No coinciden', text: 'Las dos contraseñas deben ser iguales' });
+      Swal.fire({
+        icon: 'info',
+        title: 'Las contraseñas no son iguales',
+        html: isWarm
+          ? 'No te preocupes, esto nos pasa a todos. 😊<br/><br/>Las dos contraseñas deben quedar <b>exactamente iguales</b>. Tómate tu tiempo: toca el ícono del ojo 👁️ para ver lo que escribiste y revisarlo con calma.'
+          : 'Las dos contraseñas deben ser iguales. Puedes usar el ícono del ojo 👁️ para compararlas.',
+        confirmButtonText: 'Entendido, lo reviso',
+      });
       return;
     }
     if (contrasena.length < 8) {
-      Swal.fire({ icon: 'warning', title: 'Contraseña muy corta', text: 'La contraseña debe tener al menos 8 caracteres' });
+      Swal.fire({
+        icon: 'info',
+        title: 'Tu contraseña es un poquito corta',
+        html: isWarm
+          ? 'Necesita tener <b>al menos 8 caracteres</b> para cuidar mejor tu cuenta. ¡Lo estás haciendo bien!<br/><br/>💡 Un truco fácil: elige algo que recuerdes siempre y agrégale unos números. Por ejemplo, el nombre de tu mascota y un año especial:<br/><br/><b style="font-size:17px">MiPerroFirulais07</b>'
+          : 'La contraseña debe tener al menos 8 caracteres.<br/><br/>💡 Consejo: combina algo fácil de recordar con números, por ejemplo <b>MiPerroFirulais07</b>.',
+        confirmButtonText: 'De acuerdo',
+      });
       return;
     }
     setCargando(true);
@@ -136,6 +150,9 @@ export default function RestablecerPassword() {
               />
               {botonOjo}
             </div>
+            <p style={{ margin: '8px 0 0', fontSize: `${isWarm ? 14 : 12}px`, color: C.help, lineHeight: 1.45 }}>
+              💡 Elige una contraseña <b>fácil de recordar para ti</b>: puede ser el nombre de tu mascota o tu cosa favorita, con unos números al final. Por ejemplo: <b>MiPerroFirulais07</b>. Mínimo 8 caracteres. Toca el 👁️ para verla mientras la escribes.
+            </p>
           </div>
 
           <div style={{ marginBottom: '22px' }}>
