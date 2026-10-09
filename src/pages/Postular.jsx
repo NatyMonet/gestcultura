@@ -21,6 +21,8 @@ import Swal from 'sweetalert2';
 import jsPDF from 'jspdf';
 import { LOGO_CINEFILIA_BLANCO, piePdfCinefilia } from '../assets/cinefilia';
 import { ArrowLeft, ArrowRight, Check, Eraser, User, Compass, Film, Paperclip, FileSignature, ScrollText, PenLine, ClipboardCheck, Upload } from 'lucide-react';
+import RevisorOrtografia from '../components/RevisorOrtografia';
+import { aplicarCorreccion } from '../utils/corrector';
 
 const API = `${API_URL}/api`;
 const TOTAL_PASOS = 8;
@@ -487,7 +489,7 @@ export default function Postular() {
     'Esta es la convocatoria que elegiste. Léela sin prisa y, cuando te sientas listo/a, seguimos. Estoy aquí contigo.',
     'Cuéntame de tu proyecto con tus palabras. Lo que no sepas, lo dejas en blanco si no es obligatorio. ¡Tú puedes! 💪',
     'Ahora subimos tus documentos en PDF. Toca "Seleccionar archivo", búscalo en tu computador y listo. Yo te espero. 🧡',
-    'Cuéntame por qué quieres participar. Si quieres, activa el corrector de ortografía. No hay respuestas malas.',
+    'Cuéntame por qué quieres participar. Cuando termines, toca "Revisar ortografía" y te ayudo a corregir con calma. No hay respuestas malas.',
     'Lee el compromiso con tranquilidad y marca la casilla cuando estés de acuerdo. Ya casi terminamos.',
     'Revisemos todo juntitos antes de firmar. Si algo no te gusta, volvemos atrás sin ningún problema. 🧡',
     '¡Último pasito! Dibuja tu firma. Lo lograste, estoy muy orgulloso de ti. 🎉',
@@ -705,15 +707,6 @@ export default function Postular() {
             <p style={{ color: C.texto, fontSize: fs, marginTop: 0, marginBottom: '12px' }}>
               Cuéntanos con tus palabras: ¿por qué deseas participar en esta convocatoria?
             </p>
-            <label style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', cursor: 'pointer', color: C.texto, fontSize: '14px', fontWeight: 600, marginBottom: '10px' }}>
-              <input
-                type="checkbox"
-                checked={corrector}
-                onChange={(e) => setCorrector(e.target.checked)}
-                style={{ width: '18px', height: '18px', accentColor: C.acento, cursor: 'pointer' }}
-              />
-              Activar corrector de ortografía
-            </label>
             <textarea
               value={motivacion}
               onChange={(e) => setMotivacion(e.target.value)}
@@ -726,9 +719,15 @@ export default function Postular() {
               onBlur={desenfoque}
             />
             <p style={{ color: C.texto, opacity: 0.6, fontSize: '13px', marginTop: '6px' }}>
-              {motivacion.trim().length} caracteres (mínimo 15).
-              {corrector && ' · El corrector subrayará las palabras con posibles errores.'}
+              {motivacion.trim().length} caracteres (mínimo 15). Cuando termines, puedes revisar tu ortografía aquí abajo.
             </p>
+            <RevisorOrtografia
+              texto={motivacion}
+              onCorregir={(palabra, correccion) => setMotivacion((t) => aplicarCorreccion(t, palabra, correccion))}
+              isWarm={isWarm}
+              C={C}
+              fs={fs}
+            />
           </div>
         )}
 
