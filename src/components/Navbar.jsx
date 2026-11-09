@@ -24,7 +24,7 @@ import { ModoEmpaticContext } from '../context/ModoEmpatico';
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { modoEmpatico } = useContext(ModoEmpaticContext);
+  const { modoEmpatico, setModoEmpatico } = useContext(ModoEmpaticContext);
   const isWarm = modoEmpatico;
 
   const [menuOpen, setMenuOpen] = useState(false);
@@ -91,6 +91,8 @@ const Navbar = () => {
       if (result.isConfirmed) {
         localStorage.removeItem('usuario');
         localStorage.removeItem('token');
+        // Al cerrar sesión, volvemos al modo normal (apagamos el Modo Empático)
+        setModoEmpatico(false);
         Swal.fire({
           icon: 'success',
           title: 'Sesión cerrada',

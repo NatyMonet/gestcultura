@@ -66,10 +66,17 @@ export default function Login() {
         }
         setTimeout(() => { navigate('/convocatorias'); }, 2000);
       } else {
-        Swal.fire({ icon: 'error', title: 'Error', text: data.message || 'No se pudo iniciar sesión' });
+        Swal.fire({
+          icon: 'info',
+          title: 'Revisemos tus datos',
+          html: isWarm
+            ? 'No pudimos iniciar tu sesión. Tranquila(o), lo resolvemos juntos. 😊<br/><br/>Revisa con calma que tu <b>correo</b> y tu <b>contraseña</b> estén bien escritos. Puedes tocar el ícono del ojo 👁️ para ver tu contraseña.<br/><br/>Si no la recuerdas, toca <b>“¿Olvidaste tu contraseña?”</b> y te ayudamos a crear una nueva.'
+            : (data.message || 'No pudimos iniciar sesión. Verifica tu correo y contraseña, o usa “¿Olvidaste tu contraseña?”.'),
+          confirmButtonText: 'Volver a intentar',
+        });
       }
     } catch (error) {
-      Swal.fire({ icon: 'error', title: 'Error de conexión', text: 'No se pudo conectar al servidor' });
+      Swal.fire({ icon: 'error', title: 'Error de conexión', text: 'No se pudo conectar al servidor. Intenta de nuevo en un momento.' });
     } finally {
       setCargando(false);
     }

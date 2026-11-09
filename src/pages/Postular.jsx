@@ -565,6 +565,20 @@ export default function Postular() {
 
   return (
     <div style={{ maxWidth: '720px', margin: '40px auto', padding: '0 20px' }}>
+      {/* Botón para volver al inicio (lista de convocatorias) — tu progreso se guarda solo */}
+      <button
+        type="button"
+        onClick={() => navigate('/convocatorias')}
+        style={{
+          display: 'inline-flex', alignItems: 'center', gap: '6px',
+          background: 'transparent', border: `2px solid ${C.acento}`, color: C.acento,
+          fontSize: fs, fontWeight: 700, padding: '8px 14px', borderRadius: '10px',
+          cursor: 'pointer', marginBottom: '16px',
+        }}
+      >
+        ← Volver a Convocatorias
+      </button>
+
       {/* Encabezado + progreso */}
       <h1 style={{ color: C.acento, margin: '0 0 4px', fontSize: fsTitulo }}>Formulario de Postulación</h1>
       <p style={{ color: C.texto, opacity: 0.85, fontSize: fs, margin: '0 0 16px' }}>

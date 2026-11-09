@@ -7,15 +7,17 @@
 // sesión de forma automática y segura, y la lleva al inicio de sesión.
 // El contador se reinicia cada vez que la persona hace algo.
 // ============================================================================
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { ModoEmpaticContext } from '../context/ModoEmpatico';
 
 // Tiempo máximo de inactividad permitido (15 minutos). Se puede cambiar aquí.
 const TIEMPO_INACTIVIDAD_MS = 15 * 60 * 1000;
 
 export default function AutoLogout() {
   const navigate = useNavigate();
+  const { setModoEmpatico } = useContext(ModoEmpaticContext);
   const temporizador = useRef(null);
 
   useEffect(() => {
@@ -28,6 +30,8 @@ export default function AutoLogout() {
       if (!haySesion()) return;
       localStorage.removeItem('token');
       localStorage.removeItem('usuario');
+      // Al cerrar la sesión también volvemos al modo normal
+      setModoEmpatico(false);
       Swal.fire({
         icon: 'info',
         title: 'Cerramos tu sesión por seguridad',
@@ -55,7 +59,7 @@ export default function AutoLogout() {
       eventos.forEach((ev) => window.removeEventListener(ev, reiniciar));
       if (temporizador.current) clearTimeout(temporizador.current);
     };
-  }, [navigate]);
+  }, [navigate, setModoEmpatico]);
 
   // Este componente no dibuja nada; solo vigila la inactividad.
   return null;

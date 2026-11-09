@@ -59,12 +59,26 @@ export default function Registro() {
     }
 
     if (formData.contrasena !== formData.confirmContrasena) {
-      Swal.fire({ icon: 'warning', title: 'Contraseñas no coinciden', text: 'Las contraseñas deben ser iguales' });
+      Swal.fire({
+        icon: 'info',
+        title: 'Las contraseñas no son iguales',
+        html: isWarm
+          ? 'No te preocupes, esto nos pasa a todos. 😊<br/><br/>Las dos contraseñas deben quedar <b>exactamente iguales</b>. Tómate tu tiempo: puedes tocar el ícono del ojo 👁️ para ver lo que escribiste y revisarlo con calma.'
+          : 'Las dos contraseñas deben ser iguales. Puedes usar el ícono del ojo 👁️ para ver lo que escribiste y compararlas.',
+        confirmButtonText: 'Entendido, lo reviso',
+      });
       return;
     }
 
     if (formData.contrasena.length < 8) {
-      Swal.fire({ icon: 'warning', title: 'Contraseña débil', text: 'La contraseña debe tener mínimo 8 caracteres' });
+      Swal.fire({
+        icon: 'info',
+        title: 'Tu contraseña es un poquito corta',
+        html: isWarm
+          ? 'Necesita tener <b>al menos 8 caracteres</b> para cuidar mejor tu cuenta. ¡Lo estás haciendo bien!<br/><br/>💡 Un truco fácil: elige algo que recuerdes siempre y agrégale unos números. Por ejemplo, el nombre de tu mascota y un año especial:<br/><br/><b style="font-size:17px">MiPerroFirulais07</b>'
+          : 'La contraseña debe tener al menos 8 caracteres.<br/><br/>💡 Consejo: combina algo fácil de recordar con números, por ejemplo <b>MiPerroFirulais07</b>.',
+        confirmButtonText: 'De acuerdo',
+      });
       return;
     }
 
@@ -265,6 +279,9 @@ export default function Registro() {
               {verContrasena ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
+          <p style={{ margin: '8px 0 0', fontSize: `${fsHelp}px`, color: C.help, lineHeight: 1.45 }}>
+            💡 Crea una contraseña que sea <b>fácil de recordar para ti</b>: puede ser el nombre de tu mascota o tu cosa favorita, con unos números al final. Por ejemplo: <b>MiPerroFirulais07</b>. Mínimo 8 caracteres. Puedes tocar el 👁️ para verla mientras la escribes.
+          </p>
         </div>
 
         <div style={{ marginBottom: '22px' }}>
