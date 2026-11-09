@@ -1,3 +1,12 @@
+/**
+ * Nombre del archivo: PanelEvaluacion.jsx
+ * Descripción: Página que muestra las postulaciones recibidas (solo administradores).
+ *              Incluye el cálculo de edad y los colores por estado de la postulación.
+ * Autor: Natalia Mejía Cardona
+ * Fecha de creación: 2026-09-18
+ * Última modificación: 2026-10-07
+ * Licencia: Uso académico — Corporación Cinefilia / SENA.
+ */
 import { API_URL } from '../config/api';
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';

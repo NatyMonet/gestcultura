@@ -88,3 +88,9 @@ html.text-scale-large {
 html.text-scale-xlarge {
   font-size: 135%;
 }
+
+/* Logo Cinefilia: evita que se encoja hasta desaparecer cuando la barra esta llena (sesion iniciada) */
+div:has(> img[alt*="Cinefilia"]),
+div:has(> div > img[alt*="Cinefilia"]) {
+    flex-shrink: 0;
+}
