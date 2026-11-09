@@ -1,6 +1,7 @@
 import { API_URL } from '../config/api';
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Heart } from 'lucide-react';
 import { ModoEmpaticContext } from '../context/ModoEmpatico';
 
 export default function Perfil() {
@@ -89,8 +90,8 @@ export default function Perfil() {
       <Fila etiqueta="Edad:" valor={edad != null ? `${edad} años` : 'No registrada'} />
 
       {modoEmpatico && (
-        <div style={{ marginTop: '16px', padding: '10px 14px', background: '#FCEBDD', border: '2px solid #C75000', borderRadius: '10px', color: '#2B1600', fontSize: fs, fontWeight: 600 }}>
-          🧡 Tienes activo el Modo Acompañado: letra más grande y colores de alto contraste para tu comodidad.
+        <div style={{ marginTop: '16px', padding: '10px 14px', background: '#FCEBDD', border: '2px solid #C75000', borderRadius: '10px', color: '#2B1600', fontSize: fs, fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Heart size={18} style={{ flexShrink: 0 }} /> Tienes activo el Modo Acompañado: letra más grande y colores de alto contraste para tu comodidad.
         </div>
       )}
 

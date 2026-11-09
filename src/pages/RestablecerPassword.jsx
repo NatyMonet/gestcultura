@@ -7,7 +7,7 @@ import { API_URL } from '../config/api';
 // ============================================================================
 import { useState, useContext } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, Lock } from 'lucide-react';
 import Swal from 'sweetalert2';
 import { ModoEmpaticContext } from '../context/ModoEmpatico';
 
@@ -175,7 +175,11 @@ export default function RestablecerPassword() {
             disabled={cargando}
             style={{ width: '100%', padding: '13px', background: cargando ? C.buttonLoading : C.button, color: 'white', border: 'none', cursor: cargando ? 'not-allowed' : 'pointer', borderRadius: '10px', fontSize: `${fsBtn}px`, fontWeight: 'bold', boxShadow: '0 4px 14px rgba(124,58,237,0.35)' }}
           >
-            {cargando ? '⏳ Guardando...' : '🔒 Guardar contraseña'}
+            {cargando ? 'Guardando...' : (
+              <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                <Lock size={18} /> Guardar contraseña
+              </span>
+            )}
           </button>
         </form>
       )}

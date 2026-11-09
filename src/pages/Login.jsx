@@ -1,7 +1,7 @@
 import { API_URL } from '../config/api';
 import { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, LogIn, Loader2 } from 'lucide-react';
 import Swal from 'sweetalert2';
 import { ModoEmpaticContext } from '../context/ModoEmpatico';
 
@@ -138,6 +138,7 @@ export default function Login() {
         background: '#fff',
       }}
     >
+      <style>{`@keyframes gcspin{to{transform:rotate(360deg)}}`}</style>
       <div style={{ background: C.header, padding: '30px 24px', textAlign: 'center', color: '#fff' }}>
         <div
           style={{
@@ -226,7 +227,15 @@ export default function Login() {
             boxShadow: '0 4px 14px rgba(124,58,237,0.35)',
           }}
         >
-          {cargando ? '⏳ Cargando...' : '🔓 Iniciar Sesión'}
+          {cargando ? (
+            <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+              <Loader2 size={18} style={{ animation: 'gcspin 1s linear infinite' }} /> Cargando...
+            </span>
+          ) : (
+            <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+              <LogIn size={18} /> Iniciar Sesión
+            </span>
+          )}
         </button>
       </form>
 

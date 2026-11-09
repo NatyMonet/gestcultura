@@ -1,6 +1,7 @@
 import { API_URL } from '../config/api';
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { Calendar, BarChart3, Clock, XCircle, Sparkles } from 'lucide-react';
 import Swal from 'sweetalert2';
 
 const DetalleConvocatoria = () => {
@@ -106,7 +107,7 @@ const DetalleConvocatoria = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
               <div className="border-l-4 border-indigo-600 pl-6">
-                <h3 className="text-xl font-bold text-gray-800 mb-4">📅 Fechas</h3>
+                <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2"><Calendar className="w-5 h-5 text-indigo-600" /> Fechas</h3>
                 <div className="space-y-3">
                   <div>
                     <p className="text-sm text-gray-500 font-semibold">Fecha de Inicio</p>
@@ -120,7 +121,7 @@ const DetalleConvocatoria = () => {
               </div>
 
               <div className="border-l-4 border-indigo-600 pl-6">
-                <h3 className="text-xl font-bold text-gray-800 mb-4">📊 Información</h3>
+                <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2"><BarChart3 className="w-5 h-5 text-indigo-600" /> Información</h3>
                 <div className="space-y-3">
                   <div>
                     <p className="text-sm text-gray-500 font-semibold">Cupos Disponibles</p>
@@ -135,8 +136,10 @@ const DetalleConvocatoria = () => {
             </div>
 
             <div className={`p-4 rounded-lg mb-8 ${estaVigente ? 'bg-blue-50 border-l-4 border-blue-600' : 'bg-red-50 border-l-4 border-red-600'}`}>
-              <p className={`font-bold text-lg ${estaVigente ? 'text-blue-800' : 'text-red-800'}`}>
-                {estaVigente ? `⏰ ${diasRestantes} días restantes para inscribirse` : '❌ Esta convocatoria ha expirado'}
+              <p className={`font-bold text-lg flex items-center gap-2 ${estaVigente ? 'text-blue-800' : 'text-red-800'}`}>
+                {estaVigente
+                  ? <><Clock className="w-5 h-5" /> {diasRestantes} días restantes para inscribirse</>
+                  : <><XCircle className="w-5 h-5" /> Esta convocatoria ha expirado</>}
               </p>
             </div>
 
@@ -146,7 +149,9 @@ const DetalleConvocatoria = () => {
                 disabled={!estaVigente}
                 className={`flex-1 py-3 px-6 rounded-lg transition font-bold text-white ${estaVigente ? 'bg-indigo-600 hover:bg-indigo-700 cursor-pointer' : 'bg-gray-400 cursor-not-allowed'}`}
               >
-                {estaVigente ? '✨ Inscribirse' : 'Inscripción Cerrada'}
+                {estaVigente
+                  ? <span className="inline-flex items-center justify-center gap-2"><Sparkles className="w-5 h-5" /> Inscribirse</span>
+                  : 'Inscripción Cerrada'}
               </button>
               <button onClick={() => navigate('/convocatorias')} className="flex-1 bg-gray-200 text-gray-800 py-3 px-6 rounded-lg hover:bg-gray-300 transition font-bold">
                 ← Volver

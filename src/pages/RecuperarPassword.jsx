@@ -135,7 +135,11 @@ export default function RecuperarPassword() {
           disabled={cargando}
           style={{ width: '100%', padding: '13px', background: cargando ? C.buttonLoading : C.button, color: 'white', border: 'none', cursor: cargando ? 'not-allowed' : 'pointer', borderRadius: '10px', fontSize: `${fsBtn}px`, fontWeight: 'bold', boxShadow: '0 4px 14px rgba(124,58,237,0.35)' }}
         >
-          {cargando ? '⏳ Enviando...' : '✉️ Enviar enlace'}
+          {cargando ? 'Enviando...' : (
+            <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+              <Mail size={18} /> Enviar enlace
+            </span>
+          )}
         </button>
       </form>
 

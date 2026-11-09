@@ -1,6 +1,7 @@
 import { API_URL } from '../config/api';
 import { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AlertTriangle, ClipboardList } from 'lucide-react';
 import { ModoEmpaticContext } from '../context/ModoEmpatico';
 
 const MisInscripciones = () => {
@@ -75,7 +76,7 @@ const MisInscripciones = () => {
     return (
       <div className={`min-h-screen ${pageBg} flex items-center justify-center px-4`}>
         <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md w-full">
-          <div className="text-red-600 text-5xl mb-4 text-center">⚠️</div>
+          <div className="text-red-600 mb-4 flex justify-center"><AlertTriangle className="w-14 h-14" /></div>
           <h1 className={`text-2xl font-bold ${headText} text-center mb-2`}>Error</h1>
           <p className="text-gray-600 text-center">{error}</p>
           <button onClick={() => window.location.reload()} className={`mt-6 w-full ${btnColor} text-white py-2 px-4 rounded-lg transition`}>
@@ -90,7 +91,7 @@ const MisInscripciones = () => {
     return (
       <div className={`min-h-screen ${pageBg} flex items-center justify-center px-4`}>
         <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md w-full text-center">
-          <div className="text-4xl mb-4">📋</div>
+          <div className="mb-4 flex justify-center text-gray-400"><ClipboardList className="w-14 h-14" /></div>
           <h1 className={`text-2xl font-bold ${headText} mb-2`}>Sin solicitudes</h1>
           <p className="text-gray-600 mb-6">Aún no tienes solicitudes registradas convocatoria</p>
           <a href="/convocatorias" className={`inline-block ${btnColor} text-white py-2 px-6 rounded-lg transition font-medium`}>

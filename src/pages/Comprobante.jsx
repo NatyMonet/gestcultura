@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ModoEmpaticContext } from '../context/ModoEmpatico';
-import { Eraser, Download, ArrowLeft, FileCheck2 } from 'lucide-react';
+import { Eraser, Download, ArrowLeft, FileCheck2, PenLine } from 'lucide-react';
 import jsPDF from 'jspdf';
 import { LOGO_CINEFILIA_BLANCO, piePdfCinefilia } from '../assets/cinefilia';
 
@@ -262,8 +262,8 @@ export default function Comprobante() {
           </button>
         </div>
         {!hayFirma && (
-          <p style={{ color: C.texto, opacity: 0.7, fontSize: '13px', marginTop: '10px' }}>
-            ✍️ Dibuja tu firma para poder descargar el comprobante.
+          <p style={{ color: C.texto, opacity: 0.7, fontSize: '13px', marginTop: '10px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <PenLine size={15} /> Dibuja tu firma para poder descargar el comprobante.
           </p>
         )}
       </div>
