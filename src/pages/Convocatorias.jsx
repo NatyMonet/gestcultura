@@ -164,6 +164,11 @@ export default function Convocatorias() {
 
   return (
     <div className="space-y-8 pb-12">
+      {/* Aviso de versión de demostración (sugerido por usuarios de la encuesta) */}
+      <div className="rounded-xl border px-4 py-3 text-sm flex items-start gap-2.5 bg-amber-50 border-amber-200 text-amber-900">
+        <svg className="w-5 h-5 flex-none mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        <span>Esta es una <b>versión de demostración</b>. Algunas convocatorias y fechas son de ejemplo para probar el sistema; no corresponden a procesos reales abiertos.</span>
+      </div>
       <section
         aria-label="Presentación del portal"
         className={`p-6 sm:p-10 rounded-3xl border-3 shadow-sm relative overflow-hidden transition-all ${

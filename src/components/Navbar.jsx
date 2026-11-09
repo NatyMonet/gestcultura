@@ -279,7 +279,7 @@ const Navbar = () => {
                 }`}
               >
                 <LogIn className="w-4 h-4" />
-                <span>Ingresar</span>
+                <span>Ingresar / Registrarse</span>
               </button>
             )}
           </div>
