@@ -54,7 +54,7 @@ export default function Login() {
             const edad = calcularEdad(userData.data.fechaNacimiento);
             if (edad >= 50) {
               setModoEmpatico(true);
-              Swal.fire({ icon: 'info', title: '👁️ Modo Empático Activado', text: `Bienvenido, ${usuario.nombre}. Se ha activado automáticamente el Modo Empático para una mejor experiencia.`, timer: 2000 });
+              Swal.fire({ icon: 'info', title: 'Modo Empático activado', text: `Bienvenido, ${usuario.nombre}. Se ha activado automáticamente el Modo Empático para una mejor experiencia.`, timer: 2000 });
             } else {
               Swal.fire({ icon: 'success', title: 'Sesión iniciada', text: `¡Bienvenido, ${usuario.nombre}!`, timer: 1500 });
             }

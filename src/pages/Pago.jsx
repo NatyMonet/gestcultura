@@ -98,7 +98,7 @@ export default function Pago() {
       if (r.ok && res.success) {
         Swal.fire({
           icon: 'success',
-          title: '¡Pago aprobado! ✅',
+          title: '¡Pago aprobado!',
           html: `Tu pago con <b>${pasarela}</b> fue registrado.<br><small>(Simulación — no se realizó ningún cobro real.)</small>`,
           confirmButtonText: 'Ver mis solicitudes',
         }).then(() => navigate('/mis-inscripciones'));

@@ -339,7 +339,7 @@ export default function Postular() {
       setEnviando(false);
       Swal.fire({
         icon: 'success',
-        title: '¡Postulación exitosa! 🎉',
+        title: '¡Postulación exitosa!',
         html: `Tu postulación a <b>${convocatoria.nombre}</b> quedó registrada y firmada.<br><small>Se descargó tu constancia en PDF.</small>`,
         confirmButtonText: 'Ver mis solicitudes',
       }).then(() => navigate('/mis-inscripciones'));
