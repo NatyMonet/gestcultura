@@ -39,7 +39,18 @@ export const AccessibilityToolbar = ({
           {/* Switch Modo Acompañado */}
           <button
             type="button"
-            onClick={() => setModoEmpatico(!modoEmpatico)}
+            onClick={() => {
+              const activar = !modoEmpatico;
+              setModoEmpatico(activar);
+              if (activar) {
+                Swal.fire({
+                  title: 'Modo Acompañado activado 🧡',
+                  html: 'Lo diseñamos pensando en tu comodidad, especialmente para personas mayores de 50 años: <b>colores cálidos, letras más grandes y botones claros</b>.<br/><br/>Elegimos tonos cálidos porque son más amables con la vista y cansan menos al leer.<br/><br/><i>Porque creemos que la tecnología debe ser amable con todos.</i>',
+                  confirmButtonText: 'Entendido',
+                  confirmButtonColor: '#B45309',
+                });
+              }
+            }}
             className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border-2 font-black text-xs transition-all shadow-xs ${
               modoEmpatico
                 ? 'bg-[#B45309] text-white border-[#3A2A1C]'
