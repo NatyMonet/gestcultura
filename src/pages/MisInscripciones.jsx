@@ -1,7 +1,7 @@
 import { API_URL } from '../config/api';
 import { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AlertTriangle, ClipboardList } from 'lucide-react';
+import { AlertTriangle, ClipboardList, LogIn } from 'lucide-react';
 import { ModoEmpaticContext } from '../context/ModoEmpatico';
 
 const MisInscripciones = () => {
@@ -12,6 +12,7 @@ const MisInscripciones = () => {
   const [inscripciones, setInscripciones] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [noAuth, setNoAuth] = useState(false);
 
   useEffect(() => {
     const obtenerInscripciones = async () => {
@@ -19,7 +20,7 @@ const MisInscripciones = () => {
         setLoading(true);
         const usuarioGuardado = localStorage.getItem('usuario');
         if (!usuarioGuardado) {
-          setError('Usuario no autenticado');
+          setNoAuth(true);
           setLoading(false);
           return;
         }
@@ -67,6 +68,21 @@ const MisInscripciones = () => {
         <div className="text-center">
           <div className={`inline-block animate-spin rounded-full h-12 w-12 border-b-2 ${isWarm ? 'border-[#C75000]' : 'border-purple-600'} mb-4`}></div>
           <p className={`${headText} text-lg`}>Cargando tus inscripciones...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (noAuth) {
+    return (
+      <div className={`min-h-screen ${pageBg} flex items-center justify-center px-4`}>
+        <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md w-full text-center">
+          <div className={`mb-4 flex justify-center ${isWarm ? 'text-[#C75000]' : 'text-purple-600'}`}><LogIn className="w-14 h-14" /></div>
+          <h1 className={`text-2xl font-bold ${headText} mb-2`}>Inicia sesión para ver tus solicitudes</h1>
+          <p className="text-gray-600 mb-6">Para ver las convocatorias en las que te has inscrito, primero inicia sesión en tu cuenta.</p>
+          <button onClick={() => navigate('/login')} className={`w-full ${btnColor} text-white py-2 px-4 rounded-lg transition font-medium`}>
+            Iniciar sesión
+          </button>
         </div>
       </div>
     );

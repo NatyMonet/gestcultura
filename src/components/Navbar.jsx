@@ -172,15 +172,19 @@ const Navbar = () => {
               <span>Mis Solicitudes</span>
             </button>
 
-            <button
-              onClick={() => irA('/panel-evaluacion')}
-              className={`px-3 py-2 rounded-xl text-sm font-extrabold flex items-center gap-2 transition-all border-2 ${
-                isWarm ? 'border-transparent hover:border-[#2B1600]/30 hover:bg-black/5 text-[#2B1600]' : 'border-transparent hover:bg-purple-100/50 text-purple-950 opacity-85'
-              }`}
-            >
-              <ShieldCheck className="w-4 h-4" />
-              <span>Panel Evaluación</span>
-            </button>
+            {esAdmin && (
+              <button
+                onClick={() => irA('/panel-evaluacion')}
+                className={`px-3 py-2 rounded-xl text-sm font-extrabold flex items-center gap-2 transition-all border-2 ${
+                  isActive('/panel-evaluacion')
+                    ? isWarm ? 'bg-[#C75000] text-white border-[#2B1600] shadow-sm' : 'bg-purple-100 text-purple-900 border-purple-600 shadow-sm'
+                    : isWarm ? 'border-transparent hover:border-[#2B1600]/30 hover:bg-black/5 text-[#2B1600]' : 'border-transparent hover:bg-purple-100/50 text-purple-950 opacity-85'
+                }`}
+              >
+                <ShieldCheck className="w-4 h-4" />
+                <span>Panel Evaluación</span>
+              </button>
+            )}
 
             <button
               onClick={() => navigate('/contacto')}
@@ -356,24 +360,26 @@ const Navbar = () => {
                 <ArrowRight className="w-5 h-5 opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
               </button>
 
-              <button
-                role="menuitem"
-                onClick={() => irA('/panel-evaluacion')}
-                className={`w-full text-left p-3.5 rounded-xl flex items-center justify-between border-2 transition-all group ${
-                  isWarm ? 'bg-white border-transparent hover:border-[#2B1600] hover:bg-[#FFF7EF]' : 'bg-white border-transparent hover:border-purple-300 hover:bg-purple-50'
-                }`}
-              >
-                <div className="flex items-center gap-3.5">
-                  <div className="p-2.5 rounded-xl border-2 shrink-0 bg-emerald-600 text-white border-emerald-800">
-                    <ShieldCheck className="w-6 h-6" />
+              {esAdmin && (
+                <button
+                  role="menuitem"
+                  onClick={() => irA('/panel-evaluacion')}
+                  className={`w-full text-left p-3.5 rounded-xl flex items-center justify-between border-2 transition-all group ${
+                    isWarm ? 'bg-white border-transparent hover:border-[#2B1600] hover:bg-[#FFF7EF]' : 'bg-white border-transparent hover:border-purple-300 hover:bg-purple-50'
+                  }`}
+                >
+                  <div className="flex items-center gap-3.5">
+                    <div className="p-2.5 rounded-xl border-2 shrink-0 bg-emerald-600 text-white border-emerald-800">
+                      <ShieldCheck className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <p className="text-lg sm:text-xl font-black leading-tight">Panel de Evaluación</p>
+                      <p className="text-xs font-medium opacity-80 mt-0.5">Revisión y validación de jurados oficiales</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-lg sm:text-xl font-black leading-tight">Panel de Evaluación</p>
-                    <p className="text-xs font-medium opacity-80 mt-0.5">Revisión y validación de jurados oficiales</p>
-                  </div>
-                </div>
-                <ArrowRight className="w-5 h-5 opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-              </button>
+                  <ArrowRight className="w-5 h-5 opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                </button>
+              )}
 
               <button
                 role="menuitem"

@@ -47,22 +47,25 @@ export default function Login() {
         const usuario = data.user;
         // Guardamos el token de seguridad (JWT) para las acciones protegidas
         if (data.token) localStorage.setItem('token', data.token);
+        // Intentamos obtener la fecha de nacimiento (para el Modo Empático). Es opcional.
+        let fechaNacimiento = null;
         try {
           const userResponse = await fetch(`${API_URL}/api/usuarios/${usuario.idUsuario}`);
           const userData = await userResponse.json();
-          if (userData.success && userData.data.fechaNacimiento) {
-            const edad = calcularEdad(userData.data.fechaNacimiento);
-            if (edad >= 50) {
-              setModoEmpatico(true);
-              Swal.fire({ icon: 'info', title: 'Modo Empático activado', text: `Bienvenido, ${usuario.nombre}. Se ha activado automáticamente el Modo Empático para una mejor experiencia.`, timer: 2000 });
-            } else {
-              Swal.fire({ icon: 'success', title: 'Sesión iniciada', text: `¡Bienvenido, ${usuario.nombre}!`, timer: 1500 });
-            }
-            localStorage.setItem('usuario', JSON.stringify({ ...usuario, fechaNacimiento: userData.data?.fechaNacimiento || null }));
+          if (userData.success && userData.data) {
+            fechaNacimiento = userData.data.fechaNacimiento || null;
           }
         } catch (userError) {
-          console.log('Error obteniendo usuario, pero continuando...');
-          localStorage.setItem('usuario', JSON.stringify(usuario));
+          console.log('No se pudo obtener la fecha de nacimiento, pero continuamos...');
+        }
+        // Guardamos SIEMPRE el usuario (incluye idRol) para que funcionen los paneles de administrador.
+        localStorage.setItem('usuario', JSON.stringify({ ...usuario, fechaNacimiento }));
+        // Activamos el Modo Empático automáticamente para personas mayores de 50 años.
+        if (fechaNacimiento && calcularEdad(fechaNacimiento) >= 50) {
+          setModoEmpatico(true);
+          Swal.fire({ icon: 'info', title: 'Modo Empático activado', text: `Bienvenido, ${usuario.nombre}. Se ha activado automáticamente el Modo Empático para una mejor experiencia.`, timer: 2000 });
+        } else {
+          Swal.fire({ icon: 'success', title: 'Sesión iniciada', text: `¡Bienvenido, ${usuario.nombre}!`, timer: 1500 });
         }
         setTimeout(() => { navigate('/convocatorias'); }, 2000);
       } else {

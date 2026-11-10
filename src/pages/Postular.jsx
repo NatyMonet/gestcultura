@@ -134,6 +134,19 @@ export default function Postular() {
     cargar();
   }, [id]);
 
+  // Si la persona no ha iniciado sesión, la invitamos a entrar antes de postularse.
+  useEffect(() => {
+    if (!usuarioSesion) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Inicia sesión para postularte',
+        text: 'Para postularte a una convocatoria primero debes iniciar sesión o crear tu cuenta.',
+        confirmButtonText: 'Ir a iniciar sesión',
+      }).then(() => navigate('/login'));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Prefill del teléfono con el del perfil (si la persona aún no escribió uno).
   useEffect(() => {
     if (datosUsuario?.telefono) {
@@ -285,6 +298,10 @@ export default function Postular() {
 
   // --- Finalizar: guarda la postulación y genera el PDF ---
   const finalizar = async () => {
+    if (!usuarioSesion?.idUsuario) {
+      Swal.fire({ icon: 'info', title: 'Inicia sesión para postularte', text: 'Tu sesión no está activa. Inicia sesión para completar tu postulación.', confirmButtonText: 'Ir a iniciar sesión' }).then(() => navigate('/login'));
+      return;
+    }
     if (!hayFirma) {
       Swal.fire({ icon: 'info', title: 'Falta tu firma', text: 'Dibuja tu firma en el recuadro para finalizar.' });
       return;
