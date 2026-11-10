@@ -33,6 +33,7 @@ import ComprobantePago from './pages/ComprobantePago';
 import Contacto from './pages/Contacto';
 import MonetAssistant from './components/MonetAssistant';
 import Footer from './components/Footer';
+import Swal from 'sweetalert2';
 
 // 🔒 Candado de ruta: solo deja pasar a administradores con sesión iniciada (idRol = 1).
 // Si no hay sesión de administrador, redirige al inicio de sesión.
@@ -71,6 +72,38 @@ const handleToggleRead = () => {
 setIsReading(!isReading);
 };
 
+// Lector de voz: al activarlo, lee en voz alta el contenido de la pantalla actual.
+useEffect(() => {
+if (!isReading) {
+if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+return;
+}
+if (!('speechSynthesis' in window)) {
+Swal.fire({ icon: 'info', title: 'Lectura no disponible', text: 'Tu navegador no permite la lectura en voz alta. Prueba con Chrome o Edge.' });
+setIsReading(false);
+return;
+}
+const main = document.getElementById('gc-main');
+const texto = main ? (main.innerText || '').replace(/\s+/g, ' ').trim() : '';
+if (!texto) { setIsReading(false); return; }
+Swal.fire({
+icon: 'info',
+title: 'Lectura en voz alta activada',
+html: 'Voy a leerte el contenido de esta pantalla. 🔊<br/><br/>Para <b>detener</b> la lectura, vuelve a tocar el botón <b>“Detener lectura”</b> en la barra de arriba.',
+confirmButtonText: 'Entendido',
+timer: 5000,
+timerProgressBar: true,
+});
+window.speechSynthesis.cancel();
+const u = new SpeechSynthesisUtterance(texto);
+u.lang = 'es-ES';
+u.rate = 0.95;
+u.onend = () => setIsReading(false);
+window.speechSynthesis.speak(u);
+return () => { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); };
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, [isReading]);
+
 return (
 <div className={`min-h-screen transition-colors duration-200 ${
 modoEmpatico
@@ -89,6 +122,7 @@ onToggleRead={handleToggleRead}
 onOpenMonet={() => setIsMonetOpen(true)}
 />
 <Navbar />
+<main id="gc-main">
 <Routes>
 <Route path="/" element={<Navigate to="/convocatorias" replace />} />
 <Route path="/registro" element={<Registro />} />
@@ -110,6 +144,7 @@ onOpenMonet={() => setIsMonetOpen(true)}
 <Route path="/contacto" element={<Contacto />} />
 <Route path="*" element={<NotFound />} />
 </Routes>
+</main>
 <Footer />
 <MonetAssistant isMonetOpen={isMonetOpen} setIsMonetOpen={setIsMonetOpen} />
 </Router>

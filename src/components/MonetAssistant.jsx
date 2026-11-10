@@ -155,6 +155,17 @@ const MonetAssistant = ({ isMonetOpen, setIsMonetOpen }) => {
   const [pensando, setPensando] = useState(false);
   const chatBottomRef = useRef(null);
 
+  // Mientras la persona escribe en un campo, Monet se aparta para no estorbar.
+  const [escribiendo, setEscribiendo] = useState(false);
+  useEffect(() => {
+    const esCampo = (el) => !!el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT') && !el.closest('[data-monet]');
+    const onFocusIn = (e) => { if (esCampo(e.target)) setEscribiendo(true); };
+    const onFocusOut = () => { setTimeout(() => setEscribiendo(esCampo(document.activeElement)), 60); };
+    document.addEventListener('focusin', onFocusIn);
+    document.addEventListener('focusout', onFocusOut);
+    return () => { document.removeEventListener('focusin', onFocusIn); document.removeEventListener('focusout', onFocusOut); };
+  }, []);
+
   const horaAhora = () => {
     const now = new Date();
     return `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
@@ -285,7 +296,7 @@ const MonetAssistant = ({ isMonetOpen, setIsMonetOpen }) => {
 
   return (
     <>
-      <aside aria-label="Asistente virtual Monet" className="fixed bottom-6 right-6 z-50 flex items-end gap-3">
+      <aside data-monet aria-label="Asistente virtual Monet" className={`fixed bottom-6 right-6 z-50 flex items-end gap-3 transition-all duration-300 ${escribiendo && !isMonetOpen ? 'opacity-0 translate-y-6 pointer-events-none' : 'opacity-100'}`}>
         {!isMonetOpen && (
           <div
             onClick={() => setIsMonetOpen(true)}
@@ -321,6 +332,7 @@ const MonetAssistant = ({ isMonetOpen, setIsMonetOpen }) => {
 
       {isMonetOpen && (
         <div
+          data-monet
           className="fixed inset-0 sm:inset-auto sm:bottom-24 sm:right-6 z-50 w-full sm:w-[420px] max-h-[90vh] sm:max-h-[640px] flex flex-col rounded-none sm:rounded-3xl shadow-2xl overflow-hidden"
           style={{
             borderWidth: '3px',
