@@ -17,6 +17,8 @@ export default function Comprobante() {
   const canvasRef = useRef(null);
   const dibujandoRef = useRef(false);
   const [hayFirma, setHayFirma] = useState(false);
+  const GROSORES = { fino: 1.4, medio: 2.2, grueso: 3.4 };
+  const [grosorFirma, setGrosorFirma] = useState('fino');
 
   const C = {
     bg: isWarm ? '#FBF4EC' : '#FFFFFF',
@@ -47,7 +49,7 @@ export default function Comprobante() {
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.strokeStyle = '#1A1A1A';
-    ctx.lineWidth = 2.2;
+    ctx.lineWidth = GROSORES[grosorFirma];
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
   }, []);
@@ -68,6 +70,7 @@ export default function Comprobante() {
     dibujandoRef.current = true;
     const { x, y } = posicion(e);
     const ctx = canvasRef.current.getContext('2d');
+    ctx.lineWidth = GROSORES[grosorFirma];
     ctx.beginPath();
     ctx.moveTo(x, y);
   };
@@ -224,6 +227,24 @@ export default function Comprobante() {
         <p style={{ color: C.texto, fontWeight: 'bold', fontSize: fs, margin: '0 0 10px' }}>
           Tu firma (dibuja con el dedo o el mouse):
         </p>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px', flexWrap: 'wrap' }}>
+          <span style={{ color: C.texto, fontSize: '13px', fontWeight: 'bold' }}>Grosor del trazo:</span>
+          {[['fino', 'Fino'], ['medio', 'Medio'], ['grueso', 'Grueso']].map(([k, lab]) => (
+            <button
+              key={k}
+              type="button"
+              onClick={() => { setGrosorFirma(k); const cv = canvasRef.current; if (cv) cv.getContext('2d').lineWidth = GROSORES[k]; }}
+              style={{
+                padding: '6px 14px', borderRadius: '8px', fontSize: '13px', fontWeight: 'bold', cursor: 'pointer',
+                border: `2px solid ${C.acento}`,
+                background: grosorFirma === k ? C.acento : '#fff',
+                color: grosorFirma === k ? '#fff' : C.acento,
+              }}
+            >
+              {lab}
+            </button>
+          ))}
+        </div>
         <canvas
           ref={canvasRef}
           width={640}
