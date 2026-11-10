@@ -116,6 +116,8 @@ export default function Postular() {
   const canvasRef = useRef(null);
   const dibujandoRef = useRef(false);
   const [hayFirma, setHayFirma] = useState(false);
+  const GROSORES = { fino: 1.4, medio: 2.2, grueso: 3.4 };
+  const [grosorFirma, setGrosorFirma] = useState('fino');
 
   const C = {
     bg: isWarm ? '#FBF4EC' : '#FFFFFF',
@@ -198,7 +200,7 @@ export default function Postular() {
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.strokeStyle = '#1A1A1A';
-    ctx.lineWidth = 2.2;
+    ctx.lineWidth = GROSORES[grosorFirma];
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
   }, [paso]);
@@ -270,7 +272,7 @@ export default function Postular() {
     const cy = e.touches ? e.touches[0].clientY : e.clientY;
     return { x: (cx - rect.left) * (canvas.width / rect.width), y: (cy - rect.top) * (canvas.height / rect.height) };
   };
-  const iniciar = (e) => { e.preventDefault(); dibujandoRef.current = true; const { x, y } = posicion(e); const ctx = canvasRef.current.getContext('2d'); ctx.beginPath(); ctx.moveTo(x, y); };
+  const iniciar = (e) => { e.preventDefault(); dibujandoRef.current = true; const { x, y } = posicion(e); const ctx = canvasRef.current.getContext('2d'); ctx.lineWidth = GROSORES[grosorFirma]; ctx.beginPath(); ctx.moveTo(x, y); };
   const dibujar = (e) => { if (!dibujandoRef.current) return; e.preventDefault(); const { x, y } = posicion(e); const ctx = canvasRef.current.getContext('2d'); ctx.lineTo(x, y); ctx.stroke(); if (!hayFirma) setHayFirma(true); };
   const terminar = () => { dibujandoRef.current = false; };
   const limpiarFirma = () => { const canvas = canvasRef.current; const ctx = canvas.getContext('2d'); ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height); setHayFirma(false); };
@@ -926,6 +928,24 @@ export default function Postular() {
             <p style={{ color: C.texto, fontSize: fs, marginTop: 0, marginBottom: '12px' }}>
               Firma en el recuadro (con el dedo o el mouse). Esta firma quedará en tu constancia en PDF.
             </p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px', flexWrap: 'wrap' }}>
+              <span style={{ color: C.texto, fontSize: '13px', fontWeight: 'bold' }}>Grosor del trazo:</span>
+              {[['fino', 'Fino'], ['medio', 'Medio'], ['grueso', 'Grueso']].map(([k, lab]) => (
+                <button
+                  key={k}
+                  type="button"
+                  onClick={() => { setGrosorFirma(k); const cv = canvasRef.current; if (cv) cv.getContext('2d').lineWidth = GROSORES[k]; }}
+                  style={{
+                    padding: '6px 14px', borderRadius: '8px', fontSize: '13px', fontWeight: 'bold', cursor: 'pointer',
+                    border: `2px solid ${C.acento}`,
+                    background: grosorFirma === k ? C.acento : '#fff',
+                    color: grosorFirma === k ? '#fff' : C.acento,
+                  }}
+                >
+                  {lab}
+                </button>
+              ))}
+            </div>
             <canvas
               ref={canvasRef}
               width={640}
