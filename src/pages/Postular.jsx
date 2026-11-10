@@ -43,10 +43,26 @@ const CAMPOS_PROYECTO = [
   { key: 'comoSeEntero', label: '¿Cómo te enteraste de la convocatoria?', tipo: 'select', opciones: ['Redes sociales', 'Un amigo o familiar', 'Correo electrónico', 'Página web', 'Otro'] },
 ];
 
+// --- Listas para país y ciudad (lista desplegable en vez de texto libre) ----
+const PAISES = [
+  'Colombia', 'Argentina', 'Bolivia', 'Brasil', 'Chile', 'Costa Rica', 'Cuba', 'Ecuador',
+  'El Salvador', 'España', 'Estados Unidos', 'Guatemala', 'Honduras', 'México', 'Nicaragua',
+  'Panamá', 'Paraguay', 'Perú', 'Puerto Rico', 'República Dominicana', 'Uruguay', 'Venezuela', 'Otro',
+];
+const CIUDADES_CO = [
+  'Bogotá', 'Medellín', 'Cali', 'Barranquilla', 'Cartagena', 'Cúcuta', 'Soledad', 'Bucaramanga',
+  'Soacha', 'Villavicencio', 'Bello', 'Pereira', 'Valledupar', 'Montería', 'Ibagué', 'Pasto',
+  'Manizales', 'Neiva', 'Santa Marta', 'Armenia', 'Popayán', 'Sincelejo', 'Palmira', 'Floridablanca',
+  'Buenaventura', 'Barrancabermeja', 'Tuluá', 'Dosquebradas', 'Tunja', 'Girardot', 'Riohacha',
+  'Florencia', 'Yopal', 'Quibdó', 'Mocoa', 'San Andrés', 'Leticia', 'Arauca', 'Inírida', 'Mitú',
+  'Puerto Carreño', 'San José del Guaviare',
+];
+
 // --- Datos de contacto adicionales (los demás vienen del perfil) -----------
 const CAMPOS_CONTACTO = [
   { key: 'telefono', label: 'Teléfono / WhatsApp', tipo: 'text', requerido: true, placeholder: 'Ej: 300 123 4567' },
-  { key: 'ciudad', label: 'Ciudad de residencia', tipo: 'text', requerido: true, placeholder: 'Ej: Medellín' },
+  { key: 'pais', label: 'País de residencia', tipo: 'select', requerido: true, opciones: PAISES },
+  { key: 'ciudad', label: 'Ciudad de residencia', tipo: 'ciudad', requerido: true },
   { key: 'edad', label: 'Edad', tipo: 'text', placeholder: 'Ej: 58' },
 ];
 
@@ -153,6 +169,12 @@ export default function Postular() {
       setContacto((c) => (c.telefono ? c : { ...c, telefono: datosUsuario.telefono }));
     }
   }, [datosUsuario]);
+
+  // Por defecto el país es Colombia (la mayoría de usuarios); se puede cambiar.
+  useEffect(() => {
+    setContacto((c) => (c.pais ? c : { ...c, pais: 'Colombia' }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // --- Respaldo automático: cada cambio se guarda en el navegador ---
   useEffect(() => {
@@ -320,6 +342,7 @@ export default function Postular() {
         cedula: datosUsuario?.cedula,
         correo: datosUsuario?.correo,
         telefono: contacto.telefono || datosUsuario?.telefono,
+        pais: contacto.pais,
         ciudad: contacto.ciudad,
         edad: contacto.edad,
         convocatoria: convocatoria?.nombre,
@@ -408,6 +431,7 @@ export default function Postular() {
     linea('Cédula:', datos.cedula);
     linea('Correo:', datos.correo);
     linea('Teléfono:', datos.telefono);
+    linea('País:', datos.pais);
     linea('Ciudad:', datos.ciudad);
     linea('Convocatoria:', datos.convocatoria);
     linea('Título del proyecto:', datos.proyecto?.titulo);
@@ -580,6 +604,63 @@ export default function Postular() {
     );
   };
 
+  // Ciudad: lista desplegable de ciudades de Colombia, o texto libre si el país es otro / "Otra ciudad".
+  const renderCiudad = () => {
+    const esColombia = (contacto.pais || '') === 'Colombia';
+    const otra = contacto.ciudadOtra === 'si';
+    const label = (
+      <label style={{ display: 'block', fontSize: '14px', color: C.texto, fontWeight: 'bold', marginBottom: '6px' }}>
+        Ciudad de residencia <span style={{ color: C.acento }}>*</span>
+      </label>
+    );
+    if (esColombia && !otra) {
+      const val = CIUDADES_CO.includes(contacto.ciudad) ? contacto.ciudad : '';
+      return (
+        <div key="ciudad" style={{ marginBottom: '14px' }}>
+          {label}
+          <select
+            value={val}
+            onChange={(e) => {
+              const v = e.target.value;
+              if (v === '__otra__') { setCampoContacto('ciudadOtra', 'si'); setCampoContacto('ciudad', ''); }
+              else { setCampoContacto('ciudad', v); }
+            }}
+            style={{ ...estiloInput, cursor: 'pointer' }}
+            onFocus={enfoque}
+            onBlur={desenfoque}
+          >
+            <option value="">Selecciona tu ciudad…</option>
+            {CIUDADES_CO.map((c) => (<option key={c} value={c}>{c}</option>))}
+            <option value="__otra__">Otra ciudad (escribir)…</option>
+          </select>
+        </div>
+      );
+    }
+    return (
+      <div key="ciudad" style={{ marginBottom: '14px' }}>
+        {label}
+        <input
+          type="text"
+          value={contacto.ciudad || ''}
+          onChange={(e) => setCampoContacto('ciudad', e.target.value)}
+          placeholder="Escribe tu ciudad"
+          style={estiloInput}
+          onFocus={enfoque}
+          onBlur={desenfoque}
+        />
+        {esColombia && (
+          <button
+            type="button"
+            onClick={() => { setCampoContacto('ciudadOtra', ''); setCampoContacto('ciudad', ''); }}
+            style={{ marginTop: '6px', background: 'transparent', border: 'none', color: C.acento, fontWeight: 700, fontSize: '13px', cursor: 'pointer', textDecoration: 'underline' }}
+          >
+            ← Elegir de la lista
+          </button>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div style={{ maxWidth: '720px', margin: '40px auto', padding: '0 20px' }}>
       {/* Botón para volver al inicio (lista de convocatorias) — tu progreso se guarda solo */}
@@ -655,7 +736,7 @@ export default function Postular() {
               </div>
             ))}
             <div style={{ height: '8px' }} />
-            {CAMPOS_CONTACTO.map((campo) => renderCampo(campo, contacto[campo.key], setCampoContacto))}
+            {CAMPOS_CONTACTO.map((campo) => campo.key === 'ciudad' ? renderCiudad() : renderCampo(campo, contacto[campo.key], setCampoContacto))}
           </div>
         )}
 
@@ -800,6 +881,7 @@ export default function Postular() {
                 ['Cédula', datosUsuario?.cedula],
                 ['Correo', datosUsuario?.correo],
                 ['Teléfono', contacto.telefono],
+                ['País', contacto.pais],
                 ['Ciudad', contacto.ciudad],
                 ['Convocatoria', convocatoria?.nombre],
                 ['Título del proyecto', proyecto.titulo],

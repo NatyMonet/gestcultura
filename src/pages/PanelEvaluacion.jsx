@@ -115,6 +115,7 @@ export default function PanelEvaluacion() {
           ${fila2('Cédula', fila.cedula)}
           ${fila2('Correo', fila.correo)}
           ${fila2('Teléfono', d.telefono)}
+          ${fila2('País', d.pais)}
           ${fila2('Ciudad', d.ciudad)}
           ${fila2('Edad', d.edad || fila.edad)}
           ${fila2('Convocatoria', fila.convocatoria)}
