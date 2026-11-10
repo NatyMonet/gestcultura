@@ -60,7 +60,7 @@ const Footer = () => {
   return (
     <footer
       className={`w-full mt-16 transition-colors ${
-        isWarm ? 'bg-[#FFF7EF] border-[#2B1600] text-[#2B1600]' : 'bg-[#F5EEFB] border-[#E9D5FF] text-[#2E1065]'
+        isWarm ? 'bg-[#FBF4EC] border-[#3A2A1C] text-[#3A2A1C]' : 'bg-[#F5EEFB] border-[#E9D5FF] text-[#2E1065]'
       }`}
       style={{ borderTopWidth: '3px', borderTopStyle: 'solid' }}
     >
@@ -71,7 +71,7 @@ const Footer = () => {
           {/* Marca */}
           <div className="space-y-3 md:col-span-2">
             <div className="flex items-center gap-3">
-              <div className={`p-2.5 rounded-xl text-white ${isWarm ? 'bg-[#C75000]' : 'bg-purple-700'}`}>
+              <div className={`p-2.5 rounded-xl text-white ${isWarm ? 'bg-[#B45309]' : 'bg-purple-700'}`}>
                 <img src="/logo-cinefilia-white.png" alt="Logo Corporación Cinefilia" className="w-6 h-6 object-contain" />
               </div>
               <div>
@@ -88,7 +88,7 @@ const Footer = () => {
 
             <div className="flex items-center gap-2 pt-1">
               <span className={`px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider border-2 flex items-center gap-1.5 ${
-                isWarm ? 'border-[#2B1600] bg-white text-[#2B1600]' : 'border-current'
+                isWarm ? 'border-[#3A2A1C] bg-white text-[#3A2A1C]' : 'border-current'
               }`}>
                 <Eye className="w-3.5 h-3.5" />
                 <span>Norma WCAG 2.1 Nivel AAA</span>
@@ -117,11 +117,11 @@ const Footer = () => {
                 <a href="https://api.whatsapp.com/send/?phone=573113446586" target="_blank" rel="noopener noreferrer" className="hover:underline">WhatsApp: +57 311 344 6586</a>
               </li>
               <li className="flex items-center gap-2">
-                <Mail className={`w-4 h-4 shrink-0 ${isWarm ? 'text-[#C75000]' : 'text-purple-600'}`} />
+                <Mail className={`w-4 h-4 shrink-0 ${isWarm ? 'text-[#B45309]' : 'text-purple-600'}`} />
                 <a href="mailto:info@cinefilia.org.co" className="hover:underline">info@cinefilia.org.co</a>
               </li>
               <li className="flex items-center gap-2">
-                <MapPin className={`w-4 h-4 shrink-0 ${isWarm ? 'text-[#C75000]' : 'text-purple-600'}`} />
+                <MapPin className={`w-4 h-4 shrink-0 ${isWarm ? 'text-[#B45309]' : 'text-purple-600'}`} />
                 <span>Medellín, Colombia</span>
               </li>
             </ul>
@@ -130,22 +130,22 @@ const Footer = () => {
               <a href="https://api.whatsapp.com/send/?phone=573113446586" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp de Cinefilia" title="WhatsApp" className="p-2 rounded-lg text-white transition-transform hover:scale-110 bg-[#25D366]">
                 <IconWhatsApp className="w-4 h-4" />
               </a>
-              <a href="https://www.instagram.com/cinefilia_colombia/" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Cinefilia" title="Instagram" className={`p-2 rounded-lg text-white transition-transform hover:scale-110 ${isWarm ? 'bg-[#C75000]' : 'bg-purple-700'}`}>
+              <a href="https://www.instagram.com/cinefilia_colombia/" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Cinefilia" title="Instagram" className={`p-2 rounded-lg text-white transition-transform hover:scale-110 ${isWarm ? 'bg-[#B45309]' : 'bg-purple-700'}`}>
                 <IconInstagram className="w-4 h-4" />
               </a>
-              <a href="https://cinefilia.org/" target="_blank" rel="noopener noreferrer" aria-label="Sitio web de Cinefilia" title="cinefilia.org" className={`p-2 rounded-lg text-white transition-transform hover:scale-110 ${isWarm ? 'bg-[#C75000]' : 'bg-purple-700'}`}>
+              <a href="https://cinefilia.org/" target="_blank" rel="noopener noreferrer" aria-label="Sitio web de Cinefilia" title="cinefilia.org" className={`p-2 rounded-lg text-white transition-transform hover:scale-110 ${isWarm ? 'bg-[#B45309]' : 'bg-purple-700'}`}>
                 <Globe className="w-4 h-4" />
               </a>
-              <a href="https://labguion.com/" target="_blank" rel="noopener noreferrer" aria-label="Programa LabGuion" title="labguion.com" className={`p-2 rounded-lg text-white transition-transform hover:scale-110 ${isWarm ? 'bg-[#C75000]' : 'bg-purple-700'}`}>
+              <a href="https://labguion.com/" target="_blank" rel="noopener noreferrer" aria-label="Programa LabGuion" title="labguion.com" className={`p-2 rounded-lg text-white transition-transform hover:scale-110 ${isWarm ? 'bg-[#B45309]' : 'bg-purple-700'}`}>
                 <IconMatraz className="w-4 h-4" />
               </a>
-              <a href="https://www.facebook.com/cinefiliaorg/" target="_blank" rel="noopener noreferrer" aria-label="Facebook de Cinefilia" title="Facebook" className={`p-2 rounded-lg text-white transition-transform hover:scale-110 ${isWarm ? 'bg-[#C75000]' : 'bg-purple-700'}`}>
+              <a href="https://www.facebook.com/cinefiliaorg/" target="_blank" rel="noopener noreferrer" aria-label="Facebook de Cinefilia" title="Facebook" className={`p-2 rounded-lg text-white transition-transform hover:scale-110 ${isWarm ? 'bg-[#B45309]' : 'bg-purple-700'}`}>
                 <IconFacebook className="w-4 h-4" />
               </a>
-              <a href="https://x.com/cinefiliaorg" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter) de Cinefilia" title="X" className={`p-2 rounded-lg text-white transition-transform hover:scale-110 ${isWarm ? 'bg-[#C75000]' : 'bg-purple-700'}`}>
+              <a href="https://x.com/cinefiliaorg" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter) de Cinefilia" title="X" className={`p-2 rounded-lg text-white transition-transform hover:scale-110 ${isWarm ? 'bg-[#B45309]' : 'bg-purple-700'}`}>
                 <IconX className="w-4 h-4" />
               </a>
-              <a href="https://www.youtube.com/@2026CinefiliaMedColom" target="_blank" rel="noopener noreferrer" aria-label="Canal de YouTube de Cinefilia" title="YouTube" className={`p-2 rounded-lg text-white transition-transform hover:scale-110 ${isWarm ? 'bg-[#C75000]' : 'bg-purple-700'}`}>
+              <a href="https://www.youtube.com/@2026CinefiliaMedColom" target="_blank" rel="noopener noreferrer" aria-label="Canal de YouTube de Cinefilia" title="YouTube" className={`p-2 rounded-lg text-white transition-transform hover:scale-110 ${isWarm ? 'bg-[#B45309]' : 'bg-purple-700'}`}>
                 <IconYouTube className="w-4 h-4" />
               </a>
             </div>

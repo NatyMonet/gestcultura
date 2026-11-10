@@ -173,7 +173,7 @@ export default function Convocatorias() {
         aria-label="Presentación del portal"
         className={`p-6 sm:p-10 rounded-3xl border-3 shadow-sm relative overflow-hidden transition-all ${
           isWarm
-            ? 'bg-[#FFF7EF] border-[#2B1600] text-[#2B1600]'
+            ? 'bg-[#FBF4EC] border-[#3A2A1C] text-[#3A2A1C]'
             : 'bg-gradient-to-br from-purple-50 via-white to-purple-100 border-purple-300 text-purple-950'
         }`}
         style={{ borderWidth: '3px' }}
@@ -182,11 +182,11 @@ export default function Convocatorias() {
           <div
             className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border-2 text-xs font-black uppercase tracking-wider ${
               isWarm
-                ? 'bg-white border-[#2B1600] text-[#2B1600]'
+                ? 'bg-white border-[#3A2A1C] text-[#3A2A1C]'
                 : 'bg-white border-[#6D28D9] text-[#4A148C]'
             }`}
           >
-            <Sparkles className={`w-4 h-4 ${isWarm ? 'text-[#C75000]' : 'text-[#4A148C]'}`} />
+            <Sparkles className={`w-4 h-4 ${isWarm ? 'text-[#B45309]' : 'text-[#4A148C]'}`} />
             <span>Convocatorias Abiertas Ciclo 2026</span>
           </div>
 
@@ -205,7 +205,7 @@ export default function Convocatorias() {
             src="/postal-cinefilia.jpg"
             alt="Postal histórica de Corporación Cinefilia"
             className={`w-72 xl:w-80 h-auto rounded-2xl object-cover shadow-2xl border-4 rotate-2 ${
-              isWarm ? 'border-[#2B1600]' : 'border-white'
+              isWarm ? 'border-[#3A2A1C]' : 'border-white'
             }`}
           />
         </div>
@@ -216,7 +216,7 @@ export default function Convocatorias() {
           <div className="relative flex-1 max-w-xl">
             <Search
               className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 ${
-                isWarm ? 'text-[#2B1600]' : 'text-purple-600'
+                isWarm ? 'text-[#3A2A1C]' : 'text-purple-600'
               }`}
             />
             <input
@@ -226,7 +226,7 @@ export default function Convocatorias() {
               placeholder="Buscar por nombre, disciplina, categoría..."
               className={`w-full pl-12 pr-10 py-3.5 rounded-2xl text-sm font-semibold border-3 outline-none transition-all ${
                 isWarm
-                  ? 'bg-white text-[#2B1600] border-[#2B1600] placeholder:text-[#2B1600]/60 focus:border-[#FACC15] focus:ring-2 focus:ring-[#FACC15] shadow-sm'
+                  ? 'bg-white text-[#3A2A1C] border-[#3A2A1C] placeholder:text-[#3A2A1C]/60 focus:border-[#FACC15] focus:ring-2 focus:ring-[#FACC15] shadow-sm'
                   : 'bg-white text-purple-950 border-purple-200 placeholder:text-purple-400 focus:border-purple-600 shadow-sm'
               }`}
               style={{ borderWidth: '3px' }}
@@ -245,7 +245,7 @@ export default function Convocatorias() {
 
           <div
             className={`text-xs font-black px-3.5 py-2.5 rounded-xl border-2 self-start md:self-center ${
-              isWarm ? 'border-[#2B1600] bg-white text-[#2B1600]' : 'border-current/20'
+              isWarm ? 'border-[#3A2A1C] bg-white text-[#3A2A1C]' : 'border-current/20'
             }`}
           >
             {filteredConvocatorias.length} {filteredConvocatorias.length === 1 ? 'convocatoria encontrada' : 'convocatorias encontradas'}
@@ -262,10 +262,10 @@ export default function Convocatorias() {
                 className={`px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-extrabold whitespace-nowrap transition-all border-3 flex items-center gap-2 ${
                   isSelected
                     ? isWarm
-                      ? 'bg-[#C75000] text-white border-[#2B1600] shadow-sm scale-102'
+                      ? 'bg-[#B45309] text-white border-[#3A2A1C] shadow-sm scale-102'
                       : 'bg-[#7C3AED] text-white border-[#6D28D9] shadow-sm scale-102'
                     : isWarm
-                    ? 'bg-white text-[#2B1600] border-[#2B1600] hover:bg-amber-50'
+                    ? 'bg-white text-[#3A2A1C] border-[#3A2A1C] hover:bg-amber-50'
                     : 'bg-white text-purple-950 border-purple-200 hover:border-purple-400'
                 }`}
                 style={{ borderWidth: '3px' }}
@@ -296,7 +296,7 @@ export default function Convocatorias() {
             key={conv.id}
             className={`rounded-3xl border-3 overflow-hidden flex flex-col justify-between transition-all duration-200 hover:-translate-y-1 hover:shadow-xl ${
               isWarm
-                ? 'bg-white border-[#2B1600] text-[#2B1600]'
+                ? 'bg-white border-[#3A2A1C] text-[#3A2A1C]'
                 : 'bg-white border-purple-200 text-purple-950'
             }`}
             style={{ borderWidth: '3px' }}
@@ -310,7 +310,7 @@ export default function Convocatorias() {
               <div className="absolute top-3 left-3">
                 <span className={`px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider border-2 shadow-sm ${
                   isWarm
-                    ? 'bg-[#C75000] text-white border-[#2B1600]'
+                    ? 'bg-[#B45309] text-white border-[#3A2A1C]'
                     : 'bg-[#7C3AED] text-white border-white'
                 }`}>
                   {conv.category}
@@ -330,15 +330,15 @@ export default function Convocatorias() {
 
               <div className="space-y-2 pt-2 border-t border-current/10 text-xs font-bold">
                 <div className="flex items-center gap-2">
-                  <Calendar className={`w-4 h-4 ${isWarm ? 'text-[#C75000]' : 'text-purple-600'} shrink-0`} />
+                  <Calendar className={`w-4 h-4 ${isWarm ? 'text-[#B45309]' : 'text-purple-600'} shrink-0`} />
                   <span>Cierre: <strong className="font-extrabold">{conv.closeDate}</strong></span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Users className={`w-4 h-4 ${isWarm ? 'text-[#C75000]' : 'text-purple-600'} shrink-0`} />
+                  <Users className={`w-4 h-4 ${isWarm ? 'text-[#B45309]' : 'text-purple-600'} shrink-0`} />
                   <span>Cupos: <strong>{conv.cupos} participantes</strong></span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Award className={`w-4 h-4 ${isWarm ? 'text-[#C75000]' : 'text-purple-600'} shrink-0`} />
+                  <Award className={`w-4 h-4 ${isWarm ? 'text-[#B45309]' : 'text-purple-600'} shrink-0`} />
                   <span className="truncate">Estímulo: <strong>{conv.budget}</strong></span>
                 </div>
               </div>
@@ -349,7 +349,7 @@ export default function Convocatorias() {
                   disabled={inscribiendose}
                   className={`w-full min-h-[52px] py-3 px-4 rounded-2xl font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 border-3 transition-transform active:scale-98 shadow-md disabled:opacity-50 ${
                     isWarm
-                      ? 'bg-[#C75000] text-white border-[#2B1600] hover:bg-[#A93F00]'
+                      ? 'bg-[#B45309] text-white border-[#3A2A1C] hover:bg-[#92400E]'
                       : 'bg-[#7C3AED] text-white border-[#6D28D9] hover:bg-[#6D28D9]'
                   }`}
                   style={{ borderWidth: '3px' }}
@@ -363,7 +363,7 @@ export default function Convocatorias() {
                   onClick={() => setDetailModalConv(conv)}
                   className={`w-full py-2.5 px-4 rounded-xl text-xs font-bold border-2 transition-colors flex items-center justify-center gap-1.5 ${
                     isWarm
-                      ? 'border-[#2B1600] hover:bg-amber-50 text-[#2B1600] bg-white font-extrabold'
+                      ? 'border-[#3A2A1C] hover:bg-amber-50 text-[#3A2A1C] bg-white font-extrabold'
                       : 'border-purple-200 hover:bg-purple-50 text-purple-900'
                   }`}
                 >
@@ -392,7 +392,7 @@ export default function Convocatorias() {
           <div
             className={`w-full max-w-2xl rounded-3xl border-3 shadow-2xl p-6 sm:p-8 space-y-6 animate-in zoom-in-95 my-8 max-h-[90vh] overflow-y-auto ${
               isWarm
-                ? 'bg-[#FFF7EF] border-[#2B1600] text-[#2B1600]'
+                ? 'bg-[#FBF4EC] border-[#3A2A1C] text-[#3A2A1C]'
                 : 'bg-white border-purple-300 text-purple-950'
             }`}
             style={{ borderWidth: '3px' }}
@@ -401,7 +401,7 @@ export default function Convocatorias() {
               <div>
                 <span
                   className={`text-xs font-black uppercase px-2.5 py-1 rounded-full border-2 ${
-                    isWarm ? 'bg-white border-[#2B1600] text-[#2B1600]' : 'border-current'
+                    isWarm ? 'bg-white border-[#3A2A1C] text-[#3A2A1C]' : 'border-current'
                   }`}
                 >
                   {detailModalConv.category}
@@ -427,7 +427,7 @@ export default function Convocatorias() {
             {detailModalConv.requirements && detailModalConv.requirements.length > 0 && (
               <div className="space-y-3">
                 <h4 className="font-extrabold text-base flex items-center gap-2">
-                  <FileCheck2 className={`w-5 h-5 ${isWarm ? 'text-[#C75000]' : 'text-purple-600'}`} />
+                  <FileCheck2 className={`w-5 h-5 ${isWarm ? 'text-[#B45309]' : 'text-purple-600'}`} />
                   <span>Requisitos de Postulación</span>
                 </h4>
                 <ul className="space-y-2 text-sm font-medium">
@@ -444,7 +444,7 @@ export default function Convocatorias() {
             {detailModalConv.stages && detailModalConv.stages.length > 0 && (
               <div className="space-y-3">
                 <h4 className="font-extrabold text-base flex items-center gap-2">
-                  <Clock className={`w-5 h-5 ${isWarm ? 'text-[#C75000]' : 'text-purple-600'}`} />
+                  <Clock className={`w-5 h-5 ${isWarm ? 'text-[#B45309]' : 'text-purple-600'}`} />
                   <span>Etapas del Proceso</span>
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-bold">
@@ -452,12 +452,12 @@ export default function Convocatorias() {
                     <div
                       key={idx}
                       className={`p-3 rounded-xl border-2 flex items-center gap-2 ${
-                        isWarm ? 'bg-white border-[#2B1600]' : 'bg-black/5 border-current/20'
+                        isWarm ? 'bg-white border-[#3A2A1C]' : 'bg-black/5 border-current/20'
                       }`}
                     >
                       <span
                         className={`w-5 h-5 rounded-full text-white flex items-center justify-center text-xs font-black shrink-0 ${
-                          isWarm ? 'bg-[#C75000]' : 'bg-purple-600'
+                          isWarm ? 'bg-[#B45309]' : 'bg-purple-600'
                         }`}
                       >
                         {idx + 1}
@@ -474,7 +474,7 @@ export default function Convocatorias() {
                 onClick={() => setDetailModalConv(null)}
                 className={`py-3 px-6 rounded-xl border-2 font-bold text-sm ${
                   isWarm
-                    ? 'border-[#2B1600] bg-white text-[#2B1600] hover:bg-black/5'
+                    ? 'border-[#3A2A1C] bg-white text-[#3A2A1C] hover:bg-black/5'
                     : 'hover:bg-black/5'
                 }`}
               >
@@ -488,7 +488,7 @@ export default function Convocatorias() {
                 disabled={inscribiendose}
                 className={`py-3 px-8 rounded-xl font-extrabold text-sm flex items-center justify-center gap-2 border-2 disabled:opacity-50 ${
                   isWarm
-                    ? 'bg-[#C75000] text-white border-[#2B1600] hover:bg-[#A93F00]'
+                    ? 'bg-[#B45309] text-white border-[#3A2A1C] hover:bg-[#92400E]'
                     : 'bg-[#7C3AED] text-white border-[#6D28D9]'
                 }`}
               >

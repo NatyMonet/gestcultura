@@ -16,7 +16,7 @@ export const AccessibilityToolbar = ({
       aria-label="Barra de herramientas de accesibilidad"
       className={`w-full border-b-2 py-2 px-4 sm:px-8 transition-colors z-40 ${
         modoEmpatico
-          ? 'bg-[#FFF7EF] border-[#2B1600] text-[#2B1600]'
+          ? 'bg-[#FBF4EC] border-[#3A2A1C] text-[#3A2A1C]'
           : 'bg-[#F2EEFA] border-[#D6C7EB] text-[#2E1052]'
       }`}
       style={{ borderWidth: '2px' }}
@@ -27,7 +27,7 @@ export const AccessibilityToolbar = ({
         <div className="flex items-center gap-3 flex-wrap">
           <span className={`font-bold flex items-center gap-1.5 px-3 py-1 rounded-full text-xs uppercase tracking-wider ${
             modoEmpatico
-              ? 'border-2 border-[#2B1600] bg-white text-[#2B1600]'
+              ? 'border-2 border-[#3A2A1C] bg-white text-[#3A2A1C]'
               : 'border border-purple-300 bg-white/80 text-purple-950'
           }`}>
             <Eye className="w-3.5 h-3.5" />
@@ -42,7 +42,7 @@ export const AccessibilityToolbar = ({
             onClick={() => setModoEmpatico(!modoEmpatico)}
             className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border-2 font-black text-xs transition-all shadow-xs ${
               modoEmpatico
-                ? 'bg-[#C75000] text-white border-[#2B1600]'
+                ? 'bg-[#B45309] text-white border-[#3A2A1C]'
                 : 'bg-white border-purple-300 text-purple-950 hover:bg-purple-50'
             }`}
           >
@@ -82,7 +82,7 @@ export const AccessibilityToolbar = ({
                     icon: 'success',
                     title: 'Modo Acompañado activado',
                     text: 'Adaptamos la página con texto más grande y acompañamiento para ti.',
-                    confirmButtonColor: '#C75000'
+                    confirmButtonColor: '#B45309'
                   });
                 } else {
                   setModoEmpatico(false);
@@ -98,7 +98,7 @@ export const AccessibilityToolbar = ({
             }}
             className={`px-3 py-1.5 rounded-full text-xs font-black border-2 transition-all ${
               modoEmpatico
-                ? 'bg-white text-[#2B1600] border-[#2B1600] hover:bg-amber-50'
+                ? 'bg-white text-[#3A2A1C] border-[#3A2A1C] hover:bg-amber-50'
                 : 'bg-white text-purple-950 border-purple-300 hover:bg-purple-50'
             }`}
             title="Preguntar edad"
@@ -112,7 +112,7 @@ export const AccessibilityToolbar = ({
 
           {/* Selector de tamaño de fuente */}
           <div className={`flex items-center gap-1 p-1 rounded-xl border-2 ${
-            modoEmpatico ? 'bg-white border-[#2B1600]' : 'bg-white/80 border-purple-200'
+            modoEmpatico ? 'bg-white border-[#3A2A1C]' : 'bg-white/80 border-purple-200'
           }`}>
             <span className="text-xs font-bold px-1.5">Tamaño:</span>
 
@@ -121,7 +121,7 @@ export const AccessibilityToolbar = ({
               onClick={() => setTextScale('normal')}
               className={`px-2 py-0.5 rounded-lg text-xs font-black transition-all ${
                 textScale === 'normal'
-                  ? modoEmpatico ? 'bg-[#C75000] text-white' : 'bg-[#6D28D9] text-white'
+                  ? modoEmpatico ? 'bg-[#B45309] text-white' : 'bg-[#6D28D9] text-white'
                   : 'hover:bg-black/5 opacity-70'
               }`}
               title="Texto normal"
@@ -134,7 +134,7 @@ export const AccessibilityToolbar = ({
               onClick={() => setTextScale('large')}
               className={`px-2 py-0.5 rounded-lg text-sm font-black transition-all ${
                 textScale === 'large'
-                  ? modoEmpatico ? 'bg-[#C75000] text-white' : 'bg-[#6D28D9] text-white'
+                  ? modoEmpatico ? 'bg-[#B45309] text-white' : 'bg-[#6D28D9] text-white'
                   : 'hover:bg-black/5 opacity-70'
               }`}
               title="Texto grande (+18%)"
@@ -147,7 +147,7 @@ export const AccessibilityToolbar = ({
               onClick={() => setTextScale('xlarge')}
               className={`px-2 py-0.5 rounded-lg text-base font-black transition-all ${
                 textScale === 'xlarge'
-                  ? modoEmpatico ? 'bg-[#C75000] text-white' : 'bg-[#6D28D9] text-white'
+                  ? modoEmpatico ? 'bg-[#B45309] text-white' : 'bg-[#6D28D9] text-white'
                   : 'hover:bg-black/5 opacity-70'
               }`}
               title="Texto extra grande (+35%)"
@@ -164,11 +164,11 @@ export const AccessibilityToolbar = ({
               isReading
                 ? 'bg-rose-600 text-white border-rose-700 animate-pulse'
                 : modoEmpatico
-                  ? 'bg-white border-[#2B1600] text-[#2B1600] hover:bg-amber-50'
+                  ? 'bg-white border-[#3A2A1C] text-[#3A2A1C] hover:bg-amber-50'
                   : 'bg-white border-purple-200 text-purple-950 hover:bg-purple-50'
             }`}
           >
-            {isReading ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4 text-[#C75000]" />}
+            {isReading ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4 text-[#B45309]" />}
             <span>{isReading ? 'Detener lectura' : 'Leer en voz alta'}</span>
           </button>
 
@@ -178,7 +178,7 @@ export const AccessibilityToolbar = ({
             onClick={() => onOpenMonet?.()}
             className={`px-3 py-1.5 rounded-xl text-xs font-black flex items-center gap-1.5 border-2 transition-all ${
               modoEmpatico
-                ? 'bg-[#C75000] text-white border-[#2B1600] hover:opacity-90'
+                ? 'bg-[#B45309] text-white border-[#3A2A1C] hover:opacity-90'
                 : 'bg-[#6D28D9] text-white border-[#4A148C] hover:opacity-90'
             }`}
           >

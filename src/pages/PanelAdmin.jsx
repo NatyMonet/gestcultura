@@ -29,11 +29,11 @@ export default function PanelAdmin() {
   const esAdmin = usuario && Number(usuario.idRol) === 1;
 
   const C = {
-    bg: isWarm ? '#FFF7EF' : '#FFFFFF',
-    texto: isWarm ? '#2B1600' : '#2E1065',
-    acento: isWarm ? '#C75000' : '#6A1B9A',
-    borde: isWarm ? '#2B1600' : '#E9D5FF',
-    fila: isWarm ? '#FCEBDD' : '#F5EEFB',
+    bg: isWarm ? '#FBF4EC' : '#FFFFFF',
+    texto: isWarm ? '#3A2A1C' : '#2E1065',
+    acento: isWarm ? '#B45309' : '#6A1B9A',
+    borde: isWarm ? '#3A2A1C' : '#E9D5FF',
+    fila: isWarm ? '#FBEFE0' : '#F5EEFB',
   };
   const fs = isWarm ? '17px' : '15px';
 

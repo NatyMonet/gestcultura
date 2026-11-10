@@ -75,8 +75,8 @@ export default function PanelEvaluacion() {
 
   const isWarm = modoEmpatico;
   const C = {
-    texto: isWarm ? '#2B1600' : '#2E1065',
-    acento: isWarm ? '#C75000' : '#6A1B9A',
+    texto: isWarm ? '#3A2A1C' : '#2E1065',
+    acento: isWarm ? '#B45309' : '#6A1B9A',
   };
   const fs = isWarm ? '17px' : '15px';
 

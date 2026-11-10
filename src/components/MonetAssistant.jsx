@@ -117,7 +117,7 @@ const MonetFace = ({ className, style }) => {
     return (
       <div
         className={className}
-        style={{ ...style, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#C75000' }}
+        style={{ ...style, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#B45309' }}
       >
         <span style={{ fontSize: '1.3em' }}>🐶</span>
       </div>
@@ -290,7 +290,7 @@ const MonetAssistant = ({ isMonetOpen, setIsMonetOpen }) => {
           <div
             onClick={() => setIsMonetOpen(true)}
             className={`hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-2xl shadow-xl cursor-pointer transition-all hover:scale-105 animate-bounce ${
-              isWarm ? 'bg-white text-[#2B1600] border-[#2B1600]' : 'bg-white text-purple-950 border-purple-500'
+              isWarm ? 'bg-white text-[#3A2A1C] border-[#3A2A1C]' : 'bg-white text-purple-950 border-purple-500'
             }`}
             style={{ borderWidth: '3px', borderStyle: 'solid' }}
             role="button"
@@ -298,7 +298,7 @@ const MonetAssistant = ({ isMonetOpen, setIsMonetOpen }) => {
             aria-label="Abrir asistente Monet"
             onKeyDown={(e) => e.key === 'Enter' && setIsMonetOpen(true)}
           >
-            <Sparkles className={`w-4 h-4 animate-spin ${isWarm ? 'text-[#C75000]' : 'text-purple-600'}`} />
+            <Sparkles className={`w-4 h-4 animate-spin ${isWarm ? 'text-[#B45309]' : 'text-purple-600'}`} />
             <span className="text-xs font-extrabold">¿Tienes dudas? Monet te acompaña</span>
           </div>
         )}
@@ -306,9 +306,9 @@ const MonetAssistant = ({ isMonetOpen, setIsMonetOpen }) => {
         <button
           onClick={() => setIsMonetOpen(!isMonetOpen)}
           className={`relative p-1 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-110 focus:outline-none ${
-            isWarm ? 'bg-[#C75000] text-white' : 'bg-purple-600 text-white'
+            isWarm ? 'bg-[#B45309] text-white' : 'bg-purple-600 text-white'
           }`}
-          style={{ borderWidth: '3px', borderStyle: 'solid', borderColor: isWarm ? '#2B1600' : '#ffffff' }}
+          style={{ borderWidth: '3px', borderStyle: 'solid', borderColor: isWarm ? '#3A2A1C' : '#ffffff' }}
           aria-label={isMonetOpen ? 'Cerrar asistente Monet' : 'Abrir asistente virtual Monet'}
           aria-expanded={isMonetOpen}
         >
@@ -325,13 +325,13 @@ const MonetAssistant = ({ isMonetOpen, setIsMonetOpen }) => {
           style={{
             borderWidth: '3px',
             borderStyle: 'solid',
-            borderColor: isWarm ? '#2B1600' : '#D8B4FE',
-            backgroundColor: isWarm ? '#FFF7EF' : '#FAF5FF',
-            color: isWarm ? '#2B1600' : '#2E1065',
+            borderColor: isWarm ? '#3A2A1C' : '#D8B4FE',
+            backgroundColor: isWarm ? '#FBF4EC' : '#FAF5FF',
+            color: isWarm ? '#3A2A1C' : '#2E1065',
           }}
         >
           <div className={`p-4 border-b-2 flex items-center justify-between gap-3 ${
-            isWarm ? 'bg-[#C75000] text-white border-[#2B1600]' : 'bg-[#7C3AED] text-white border-purple-800'
+            isWarm ? 'bg-[#B45309] text-white border-[#3A2A1C]' : 'bg-[#7C3AED] text-white border-purple-800'
           }`}>
             <div className="flex items-center gap-3">
               <div className="relative">
@@ -369,12 +369,12 @@ const MonetAssistant = ({ isMonetOpen, setIsMonetOpen }) => {
           </div>
 
           <div className={`flex border-b-2 px-2 text-xs font-bold ${
-            isWarm ? 'bg-[#FFF7EF] border-[#2B1600]' : 'bg-black/5 border-current/15'
+            isWarm ? 'bg-[#FBF4EC] border-[#3A2A1C]' : 'bg-black/5 border-current/15'
           }`}>
             <button
               onClick={() => setActiveTab('guia')}
               className={`flex-1 py-2.5 px-3 text-center transition-all flex items-center justify-center gap-1.5 ${
-                activeTab === 'guia' ? (isWarm ? 'text-[#2B1600] font-black' : 'text-purple-900 font-black') : 'opacity-70 hover:opacity-100'
+                activeTab === 'guia' ? (isWarm ? 'text-[#3A2A1C] font-black' : 'text-purple-900 font-black') : 'opacity-70 hover:opacity-100'
               }`}
             >
               <Sparkles className="w-3.5 h-3.5" />
@@ -383,7 +383,7 @@ const MonetAssistant = ({ isMonetOpen, setIsMonetOpen }) => {
             <button
               onClick={() => setActiveTab('chat')}
               className={`flex-1 py-2.5 px-3 text-center transition-all flex items-center justify-center gap-1.5 ${
-                activeTab === 'chat' ? (isWarm ? 'text-[#2B1600] font-black' : 'text-purple-900 font-black') : 'opacity-70 hover:opacity-100'
+                activeTab === 'chat' ? (isWarm ? 'text-[#3A2A1C] font-black' : 'text-purple-900 font-black') : 'opacity-70 hover:opacity-100'
               }`}
             >
               <MessageCircleHeart className="w-3.5 h-3.5" />
@@ -392,7 +392,7 @@ const MonetAssistant = ({ isMonetOpen, setIsMonetOpen }) => {
             <button
               onClick={() => setActiveTab('faqs')}
               className={`flex-1 py-2.5 px-3 text-center transition-all flex items-center justify-center gap-1.5 ${
-                activeTab === 'faqs' ? (isWarm ? 'text-[#2B1600] font-black' : 'text-purple-900 font-black') : 'opacity-70 hover:opacity-100'
+                activeTab === 'faqs' ? (isWarm ? 'text-[#3A2A1C] font-black' : 'text-purple-900 font-black') : 'opacity-70 hover:opacity-100'
               }`}
             >
               <HelpCircle className="w-3.5 h-3.5" />
@@ -405,7 +405,7 @@ const MonetAssistant = ({ isMonetOpen, setIsMonetOpen }) => {
             {activeTab === 'guia' && (
               <div className="space-y-4">
                 <div className={`p-4 rounded-2xl border-2 ${
-                  isWarm ? 'bg-white border-[#2B1600] text-[#2B1600]' : 'bg-purple-50 border-purple-200 text-purple-950'
+                  isWarm ? 'bg-white border-[#3A2A1C] text-[#3A2A1C]' : 'bg-purple-50 border-purple-200 text-purple-950'
                 }`}>
                   <p className="font-semibold leading-snug">"{GREETING}"</p>
                 </div>
@@ -426,7 +426,7 @@ const MonetAssistant = ({ isMonetOpen, setIsMonetOpen }) => {
                   <button
                     onClick={() => { setActiveTab('chat'); enviarMensaje(PROMPT_Q); }}
                     className={`w-full py-2.5 px-3 rounded-xl border-2 text-xs font-bold flex items-center justify-between transition-all ${
-                      isWarm ? 'border-[#2B1600] bg-white text-[#2B1600] hover:bg-[#FFF7EF]' : 'border-purple-600 bg-white text-purple-900 hover:bg-purple-50'
+                      isWarm ? 'border-[#3A2A1C] bg-white text-[#3A2A1C] hover:bg-[#FBF4EC]' : 'border-purple-600 bg-white text-purple-900 hover:bg-purple-50'
                     }`}
                   >
                     <span>{PROMPT_Q}</span>
@@ -442,12 +442,12 @@ const MonetAssistant = ({ isMonetOpen, setIsMonetOpen }) => {
                   <div key={msg.id} className="space-y-2">
                     <div className={`flex gap-2.5 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
                       {msg.sender === 'monet' && (
-                        <MonetFace className="w-7 h-7 rounded-full object-cover shrink-0 mt-1 border-2 border-[#2B1600]" />
+                        <MonetFace className="w-7 h-7 rounded-full object-cover shrink-0 mt-1 border-2 border-[#3A2A1C]" />
                       )}
                       <div className={`max-w-[80%] p-3 rounded-2xl text-xs font-medium border-2 ${
                         msg.sender === 'user'
-                          ? isWarm ? 'bg-[#C75000] text-white border-[#2B1600]' : 'bg-purple-600 text-white border-purple-700'
-                          : isWarm ? 'bg-white text-[#2B1600] border-[#2B1600] shadow-sm' : 'bg-white text-purple-950 border-purple-200 shadow-sm'
+                          ? isWarm ? 'bg-[#B45309] text-white border-[#3A2A1C]' : 'bg-purple-600 text-white border-purple-700'
+                          : isWarm ? 'bg-white text-[#3A2A1C] border-[#3A2A1C] shadow-sm' : 'bg-white text-purple-950 border-purple-200 shadow-sm'
                       }`}>
                         <p>{msg.text}</p>
                         <span className="block text-[9px] opacity-60 text-right mt-1">{msg.time}</span>
@@ -459,12 +459,12 @@ const MonetAssistant = ({ isMonetOpen, setIsMonetOpen }) => {
                         {msg.convocatorias.map((c) => (
                           <div
                             key={c.id}
-                            className={`p-3 rounded-xl border-2 ${isWarm ? 'bg-white border-[#2B1600]' : 'bg-white border-purple-200'}`}
+                            className={`p-3 rounded-xl border-2 ${isWarm ? 'bg-white border-[#3A2A1C]' : 'bg-white border-purple-200'}`}
                           >
                             <div className="flex items-start justify-between gap-2">
                               <p className="font-extrabold text-xs leading-tight">{c.title}</p>
                               <span className={`text-[9px] font-black uppercase px-1.5 py-0.5 rounded-full shrink-0 ${
-                                isWarm ? 'bg-[#C75000] text-white' : 'bg-[#7C3AED] text-white'
+                                isWarm ? 'bg-[#B45309] text-white' : 'bg-[#7C3AED] text-white'
                               }`}>{c.category}</span>
                             </div>
                             <div className="flex items-center gap-3 mt-1.5 text-[10px] font-bold opacity-80">
@@ -475,7 +475,7 @@ const MonetAssistant = ({ isMonetOpen, setIsMonetOpen }) => {
                               <button
                                 onClick={() => irAConvocatoriaEspecifica(c)}
                                 className={`flex-1 py-1.5 px-2 rounded-lg text-[11px] font-black flex items-center justify-center gap-1 border-2 ${
-                                  isWarm ? 'bg-[#C75000] text-white border-[#2B1600] hover:bg-[#A93F00]' : 'bg-[#7C3AED] text-white border-[#6D28D9] hover:bg-[#6D28D9]'
+                                  isWarm ? 'bg-[#B45309] text-white border-[#3A2A1C] hover:bg-[#92400E]' : 'bg-[#7C3AED] text-white border-[#6D28D9] hover:bg-[#6D28D9]'
                                 }`}
                               >
                                 <span>Postularme</span>
@@ -484,7 +484,7 @@ const MonetAssistant = ({ isMonetOpen, setIsMonetOpen }) => {
                               <button
                                 onClick={() => irAConvocatoriaEspecifica(c)}
                                 className={`py-1.5 px-2 rounded-lg text-[11px] font-bold flex items-center justify-center gap-1 border-2 ${
-                                  isWarm ? 'border-[#2B1600] bg-white text-[#2B1600] hover:bg-amber-50' : 'border-purple-300 bg-white text-purple-900 hover:bg-purple-50'
+                                  isWarm ? 'border-[#3A2A1C] bg-white text-[#3A2A1C] hover:bg-amber-50' : 'border-purple-300 bg-white text-purple-900 hover:bg-purple-50'
                                 }`}
                               >
                                 <BookOpen className="w-3 h-3" />
@@ -499,9 +499,9 @@ const MonetAssistant = ({ isMonetOpen, setIsMonetOpen }) => {
                 ))}
                 {pensando && (
                   <div className="flex gap-2.5 justify-start">
-                    <MonetFace className="w-7 h-7 rounded-full object-cover shrink-0 mt-1 border-2 border-[#2B1600]" />
+                    <MonetFace className="w-7 h-7 rounded-full object-cover shrink-0 mt-1 border-2 border-[#3A2A1C]" />
                     <div className={`p-3 rounded-2xl text-xs font-medium border-2 ${
-                      isWarm ? 'bg-white text-[#2B1600] border-[#2B1600]' : 'bg-white text-purple-950 border-purple-200'
+                      isWarm ? 'bg-white text-[#3A2A1C] border-[#3A2A1C]' : 'bg-white text-purple-950 border-purple-200'
                     }`}>
                       <span className="opacity-70">Monet está escribiendo… 🐾</span>
                     </div>
@@ -515,7 +515,7 @@ const MonetAssistant = ({ isMonetOpen, setIsMonetOpen }) => {
               <div className="space-y-2.5">
                 {FAQS.map((faq, idx) => (
                   <div key={idx} className={`border-2 rounded-xl overflow-hidden ${
-                    isWarm ? 'border-[#2B1600] bg-white text-[#2B1600]' : 'border-purple-200 bg-white'
+                    isWarm ? 'border-[#3A2A1C] bg-white text-[#3A2A1C]' : 'border-purple-200 bg-white'
                   }`}>
                     <button
                       onClick={() => setSelectedFaq(selectedFaq === idx ? null : idx)}
@@ -536,7 +536,7 @@ const MonetAssistant = ({ isMonetOpen, setIsMonetOpen }) => {
           </div>
 
           {activeTab === 'chat' && (
-            <div className={`p-3 border-t-2 border-current/15 flex items-center gap-2 ${isWarm ? 'bg-[#FFF7EF]' : 'bg-black/5'}`}>
+            <div className={`p-3 border-t-2 border-current/15 flex items-center gap-2 ${isWarm ? 'bg-[#FBF4EC]' : 'bg-black/5'}`}>
               <input
                 type="text"
                 value={inputText}
@@ -544,13 +544,13 @@ const MonetAssistant = ({ isMonetOpen, setIsMonetOpen }) => {
                 onKeyDown={(e) => e.key === 'Enter' && enviarMensaje()}
                 placeholder="Escribe tu duda a Monet..."
                 className={`flex-1 px-3 py-2 rounded-xl text-xs font-bold border-2 outline-none ${
-                  isWarm ? 'bg-white text-[#2B1600] border-[#2B1600] placeholder:text-[#2B1600]/60' : 'bg-white text-purple-950 border-purple-300 placeholder:text-purple-400 focus:border-purple-600'
+                  isWarm ? 'bg-white text-[#3A2A1C] border-[#3A2A1C] placeholder:text-[#3A2A1C]/60' : 'bg-white text-purple-950 border-purple-300 placeholder:text-purple-400 focus:border-purple-600'
                 }`}
               />
               <button
                 onClick={() => enviarMensaje()}
                 className={`p-2 rounded-xl border-2 font-bold transition-transform active:scale-95 ${
-                  isWarm ? 'bg-[#C75000] text-white border-[#2B1600] hover:bg-[#A93F00]' : 'bg-purple-600 text-white border-purple-700'
+                  isWarm ? 'bg-[#B45309] text-white border-[#3A2A1C] hover:bg-[#92400E]' : 'bg-purple-600 text-white border-purple-700'
                 }`}
                 aria-label="Enviar mensaje a Monet"
               >

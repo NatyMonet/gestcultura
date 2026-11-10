@@ -51,11 +51,11 @@ export default function DashboardAdmin({ convocatorias = [], inscripciones = [] 
   const isWarm = modoEmpatico;
 
   const C = {
-    bg: isWarm ? '#FFF7EF' : '#FFFFFF',
-    texto: isWarm ? '#2B1600' : '#2E1065',
+    bg: isWarm ? '#FBF4EC' : '#FFFFFF',
+    texto: isWarm ? '#3A2A1C' : '#2E1065',
     textoSuave: isWarm ? '#5C4636' : '#6B5B8A',
-    acento: isWarm ? '#C75000' : '#6A1B9A',
-    borde: isWarm ? '#E7C9B3' : '#E9D5FF',
+    acento: isWarm ? '#B45309' : '#6A1B9A',
+    borde: isWarm ? '#EADCCB' : '#E9D5FF',
     grid: isWarm ? '#EAD8C8' : '#EDE4F7',
   };
   const fs = isWarm ? 15 : 13;

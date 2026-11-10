@@ -77,10 +77,10 @@ export default function RestablecerPassword() {
 
   const C = isWarm
     ? {
-        header: 'linear-gradient(135deg, #C75000, #2B1600)',
-        label: '#2B1600', inputBg: '#FFFDF9', inputBorder: '#2B1600', focus: '#C75000',
-        button: 'linear-gradient(135deg, #C75000, #A93F00)', buttonLoading: '#D98A5A',
-        link: '#C75000', help: '#5C4636',
+        header: 'linear-gradient(135deg, #B45309, #3A2A1C)',
+        label: '#3A2A1C', inputBg: '#FFFDF9', inputBorder: '#3A2A1C', focus: '#B45309',
+        button: 'linear-gradient(135deg, #B45309, #92400E)', buttonLoading: '#D98A5A',
+        link: '#B45309', help: '#5C4636',
       }
     : {
         header: 'linear-gradient(135deg, #7C3AED, #4A148C)',

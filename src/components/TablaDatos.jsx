@@ -41,11 +41,11 @@ export default function TablaDatos({
   const isWarm = modoEmpatico;
 
   const C = {
-    bg: isWarm ? '#FFF7EF' : '#FFFFFF',
-    texto: isWarm ? '#2B1600' : '#2E1065',
-    acento: isWarm ? '#C75000' : '#6A1B9A',
-    borde: isWarm ? '#E7C9B3' : '#E9D5FF',
-    fila: isWarm ? '#FCEBDD' : '#F5EEFB',
+    bg: isWarm ? '#FBF4EC' : '#FFFFFF',
+    texto: isWarm ? '#3A2A1C' : '#2E1065',
+    acento: isWarm ? '#B45309' : '#6A1B9A',
+    borde: isWarm ? '#EADCCB' : '#E9D5FF',
+    fila: isWarm ? '#FBEFE0' : '#F5EEFB',
     inputBg: isWarm ? '#FFFDF9' : '#FAF7FE',
   };
   const fs = isWarm ? '17px' : '15px';

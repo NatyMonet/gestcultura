@@ -27,10 +27,10 @@ export default function Perfil() {
     }
   }, []);
 
-  const bg = modoEmpatico ? '#FFF7EF' : '#FFFFFF';
-  const borde = modoEmpatico ? '3px solid #2B1600' : '1px solid #ddd';
-  const acento = modoEmpatico ? '#C75000' : '#6A1B9A';
-  const texto = modoEmpatico ? '#2B1600' : '#2E1065';
+  const bg = modoEmpatico ? '#FBF4EC' : '#FFFFFF';
+  const borde = modoEmpatico ? '3px solid #3A2A1C' : '1px solid #ddd';
+  const acento = modoEmpatico ? '#B45309' : '#6A1B9A';
+  const texto = modoEmpatico ? '#3A2A1C' : '#2E1065';
   const fs = modoEmpatico ? '16px' : '14px';
 
   if (!usuario) {
@@ -90,7 +90,7 @@ export default function Perfil() {
       <Fila etiqueta="Edad:" valor={edad != null ? `${edad} años` : 'No registrada'} />
 
       {modoEmpatico && (
-        <div style={{ marginTop: '16px', padding: '10px 14px', background: '#FCEBDD', border: '2px solid #C75000', borderRadius: '10px', color: '#2B1600', fontSize: fs, fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ marginTop: '16px', padding: '10px 14px', background: '#FBEFE0', border: '2px solid #B45309', borderRadius: '10px', color: '#3A2A1C', fontSize: fs, fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Heart size={18} style={{ flexShrink: 0 }} /> Tienes activo el Modo Acompañado: letra más grande y colores de alto contraste para tu comodidad.
         </div>
       )}

@@ -17,7 +17,7 @@ export default function NotFound() {
   const isWarm = modoEmpatico;
 
   const C = isWarm
-    ? { fondo: '#C75000', texto: '#2B1600', suave: '#5C4636', boton: 'linear-gradient(135deg, #C75000, #A93F00)' }
+    ? { fondo: '#B45309', texto: '#3A2A1C', suave: '#5C4636', boton: 'linear-gradient(135deg, #B45309, #92400E)' }
     : { fondo: '#7C3AED', texto: '#2E1065', suave: '#6B5B8A', boton: 'linear-gradient(135deg, #7C3AED, #4A148C)' };
 
   return (
@@ -25,7 +25,7 @@ export default function NotFound() {
       <div
         style={{
           background: '#fff',
-          border: `2px solid ${isWarm ? '#E7C9B3' : '#E9D5FF'}`,
+          border: `2px solid ${isWarm ? '#EADCCB' : '#E9D5FF'}`,
           borderRadius: '20px',
           padding: '40px 28px',
           boxShadow: '0 12px 34px rgba(106,27,154,0.15)',

@@ -74,7 +74,7 @@ setIsReading(!isReading);
 return (
 <div className={`min-h-screen transition-colors duration-200 ${
 modoEmpatico
-? 'bg-[#FFF7EF] text-[#2B1600]'
+? 'bg-[#FBF4EC] text-[#3A2A1C]'
 : 'bg-[#FAF5FF] text-[#2E1065]'
 }`}>
 <Router>
