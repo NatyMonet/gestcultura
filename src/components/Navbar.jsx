@@ -260,7 +260,7 @@ const Navbar = () => {
                   </div>
                   <div className="text-left leading-tight">
                     <p className="text-xs font-bold leading-none">{usuario?.nombre || 'Usuario'}</p>
-                    <p className="text-[10px] opacity-75">Postulante</p>
+                    <p className="text-[10px] opacity-75">{esAdmin ? 'Administradora' : 'Postulante'}</p>
                   </div>
                 </div>
 
