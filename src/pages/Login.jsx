@@ -63,7 +63,12 @@ export default function Login() {
         // Activamos el Modo Empático automáticamente para personas mayores de 50 años.
         if (fechaNacimiento && calcularEdad(fechaNacimiento) >= 50) {
           setModoEmpatico(true);
-          Swal.fire({ icon: 'info', title: 'Modo Empático activado', text: `Bienvenido, ${usuario.nombre}. Se ha activado automáticamente el Modo Empático para una mejor experiencia.`, timer: 2000 });
+          Swal.fire({
+            title: 'Modo Acompañado activado 🧡',
+            html: `Bienvenido/a, ${usuario.nombre}. Activamos automáticamente el <b>Modo Acompañado</b> para tu comodidad: <b>colores cálidos, letras más grandes y botones claros</b>.<br/><br/>Elegimos tonos cálidos porque son más amables con la vista y cansan menos al leer. <i>Porque creemos que la tecnología debe ser amable con todos.</i>`,
+            confirmButtonText: 'Entendido',
+            confirmButtonColor: '#B45309',
+          });
         } else {
           Swal.fire({ icon: 'success', title: 'Sesión iniciada', text: `¡Bienvenido, ${usuario.nombre}!`, timer: 1500 });
         }

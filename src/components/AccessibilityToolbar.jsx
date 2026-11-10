@@ -90,9 +90,9 @@ export const AccessibilityToolbar = ({
                   setModoEmpatico(true);
                   setTextScale('large');
                   Swal.fire({
-                    icon: 'success',
-                    title: 'Modo Acompañado activado',
-                    text: 'Adaptamos la página con texto más grande y acompañamiento para ti.',
+                    title: 'Modo Acompañado activado 🧡',
+                    html: 'Adaptamos la página para tu comodidad: <b>colores cálidos, letras más grandes y botones claros</b>.<br/><br/>Elegimos tonos cálidos porque son más amables con la vista y cansan menos al leer. <i>Porque creemos que la tecnología debe ser amable con todos.</i>',
+                    confirmButtonText: 'Entendido',
                     confirmButtonColor: '#B45309'
                   });
                 } else {
