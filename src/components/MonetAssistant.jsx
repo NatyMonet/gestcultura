@@ -154,6 +154,7 @@ const MonetAssistant = ({ isMonetOpen, setIsMonetOpen }) => {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [pensando, setPensando] = useState(false);
   const chatBottomRef = useRef(null);
+  const audioRef = useRef(null); // Audio de la voz natural (ElevenLabs)
 
   // Mientras la persona escribe en un campo, Monet se aparta para no estorbar.
   const [escribiendo, setEscribiendo] = useState(false);
@@ -181,26 +182,82 @@ const MonetAssistant = ({ isMonetOpen, setIsMonetOpen }) => {
     }
   }, [chatMessages, activeTab]);
 
-  const hablar = (texto) => {
-    if (!('speechSynthesis' in window)) return;
-    if (isSpeaking) {
-      window.speechSynthesis.cancel();
-      setIsSpeaking(false);
-      return;
-    }
+  // Precarga las voces del navegador (algunas cargan de forma asíncrona).
+  useEffect(() => {
+    if ('speechSynthesis' in window) { try { window.speechSynthesis.getVoices(); } catch (e) {} }
+  }, []);
+
+  // Elige la voz en español más natural que tenga el navegador (evita la robótica por defecto).
+  const elegirVozEspanol = () => {
+    const voces = (window.speechSynthesis.getVoices && window.speechSynthesis.getVoices()) || [];
+    const esp = voces.filter((v) => /es/i.test(v.lang));
+    const criterios = [
+      (v) => /google/i.test(v.name),
+      (v) => /(sabina|helena|laura|paulina|m[oó]nica|luc[ií]a|elena)/i.test(v.name),
+      (v) => /es-ES/i.test(v.lang),
+      () => true,
+    ];
+    for (const c of criterios) { const hit = esp.find(c); if (hit) return hit; }
+    return null;
+  };
+
+  // Detiene cualquier voz que esté sonando (audio natural o voz del navegador).
+  const detenerVoz = () => {
+    try {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.src = '';
+        audioRef.current = null;
+      }
+    } catch (e) {}
+    try { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); } catch (e) {}
+    setIsSpeaking(false);
+  };
+
+  // Respaldo: voz del navegador (por si el servidor de voz natural no responde).
+  const hablarConNavegador = (texto) => {
+    if (!('speechSynthesis' in window)) { setIsSpeaking(false); return; }
     const u = new SpeechSynthesisUtterance(texto);
-    u.lang = 'es-ES';
-    u.rate = 0.95;
+    const voz = elegirVozEspanol();
+    if (voz) u.voice = voz;
+    u.lang = (voz && voz.lang) || 'es-ES';
+    u.rate = 1;
+    u.pitch = 1.05;
     u.onend = () => setIsSpeaking(false);
     setIsSpeaking(true);
     window.speechSynthesis.speak(u);
   };
 
-  const cerrar = () => {
-    if (isSpeaking) {
-      window.speechSynthesis.cancel();
-      setIsSpeaking(false);
+  // Lee el texto con la voz natural de Monet (ElevenLabs desde el servidor).
+  // Si el servidor no está disponible, usa la voz del navegador como respaldo.
+  const hablar = async (texto) => {
+    // Si ya está hablando, este clic sirve para detener.
+    if (isSpeaking) { detenerVoz(); return; }
+    if (!texto || !texto.trim()) return;
+
+    setIsSpeaking(true);
+    try {
+      const r = await fetch(`${API_URL}/api/voz`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ texto }),
+      });
+      if (!r.ok) throw new Error('voz-no-disponible');
+      const blob = await r.blob();
+      const url = URL.createObjectURL(blob);
+      const audio = new Audio(url);
+      audioRef.current = audio;
+      audio.onended = () => { setIsSpeaking(false); URL.revokeObjectURL(url); };
+      audio.onerror = () => { setIsSpeaking(false); URL.revokeObjectURL(url); };
+      await audio.play();
+    } catch (e) {
+      // Si falla la voz natural, usamos la del navegador para no dejar a la persona sin audio.
+      hablarConNavegador(texto);
     }
+  };
+
+  const cerrar = () => {
+    if (isSpeaking) detenerVoz();
     setIsMonetOpen(false);
   };
 
