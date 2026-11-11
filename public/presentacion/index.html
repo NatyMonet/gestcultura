@@ -209,8 +209,11 @@
 
   /* ---------- financiera: barras con volumen ---------- */
   .fin{display:grid;grid-template-columns:1.15fr 1fr;gap:2.8vw;align-items:center}
-  .chartcap{color:var(--ink-2);font-weight:700;margin-bottom:1.6vh;font-size:clamp(13px,1.4vw,18px)}
-  .chart{display:flex;align-items:flex-end;gap:1.4vw;height:38vh}
+  .chartcap{color:var(--ink);font-weight:700;margin-bottom:1.6vh;font-size:clamp(13px,1.4vw,18px)}
+  .chartcap small{display:block;font-weight:600;color:var(--orange-d);font-size:.78em;margin-top:.2vh}
+  .yr small{display:block;font-weight:700;color:var(--violet-d);font-size:.92em}
+  .chartnote{margin-top:1.6vh;color:var(--ink-2);font-size:clamp(11px,1.1vw,14px);line-height:1.35}
+  .chart{display:flex;align-items:flex-end;gap:1.4vw;height:33vh}
   .bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
   .bar .fill{--dz:14px;width:58%;height:0;position:relative;background:linear-gradient(180deg,#8E52F8,#6D28D9);
     transition:height 1s steps(12,end);box-shadow:0 14px 14px -6px rgba(55,18,122,.5)}
@@ -220,7 +223,7 @@
   .bar:last-child .fill::before{background:#FFC197} .bar:last-child .fill::after{background:#B84812}
   .bar .valn{font-family:var(--f-display);font-weight:800;color:var(--violet-d);margin-bottom:calc(.7vh + 14px);font-size:clamp(13px,1.35vw,18px);font-variant-numeric:tabular-nums}
   .bar:last-child .valn{color:var(--orange-d)}
-  .bar .yr{color:var(--ink-2);font-size:clamp(11px,1.2vw,15px);margin-top:.9vh}
+  .bar .yr{color:var(--ink-2);font-size:clamp(11px,1.2vw,15px);margin-top:.9vh;text-align:center;line-height:1.25}
   .inds{display:flex;flex-direction:column;gap:2.4vh}
   .capital{font-weight:800;font-size:clamp(22px,2.6vw,34px);font-variant-numeric:tabular-nums}
   .capital .lbl{display:block;font-family:var(--f-body);font-size:clamp(12px,1.3vw,16px);color:var(--on-stage-2);font-weight:500;margin-top:.4vh}
@@ -472,8 +475,8 @@
     </div>
     <div class="mstat">
       <div class="tile o reveal d4"><div class="n">Cinefilia</div><div class="t">Cliente piloto · programa LabGuion</div></div>
-      <div class="tile o reveal d5"><div class="n" data-count="18673" data-sep="1">18.673</div><div class="t">Organizaciones (mercado potencial)</div></div>
-      <div class="tile o reveal d6"><div class="n" data-count="187">187</div><div class="t">Meta de captación</div></div>
+      <div class="tile o reveal d5"><div class="n" data-count="18673" data-sep="1">18.673</div><div class="t">Organizaciones culturales (mercado total)</div></div>
+      <div class="tile o reveal d6"><div class="n" data-count="187">187</div><div class="t">Organizaciones · meta de captación (1% del mercado)</div></div>
     </div>
   </section>
 
@@ -499,23 +502,24 @@
     <h2 class="reveal">Viabilidad <span class="grad">financiera</span> <a class="chip" href="https://script.google.com/macros/s/AKfycbxIf1Cdb3Trfk2Z1mhF674yXVM2RLboKL2mZXHVSEfW4WjdsJIq1x-QmPWpp_3QqsOUsQ/exec" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg> Ver dashboard interactivo</a></h2>
     <div class="fin">
       <div class="tile reveal d1">
-        <div class="chartcap">Proyección de suscripciones (5 años)</div>
+        <div class="chartcap">Suscripciones pagadas por año <small>pagos mensuales, no organizaciones</small></div>
         <div class="chart" id="finchart">
-          <div class="bar"><div class="valn">288</div><div class="fill" data-h="20"></div><div class="yr">Año 1</div></div>
-          <div class="bar"><div class="valn">480</div><div class="fill" data-h="33.3"></div><div class="yr">Año 2</div></div>
-          <div class="bar"><div class="valn">720</div><div class="fill" data-h="50"></div><div class="yr">Año 3</div></div>
-          <div class="bar"><div class="valn">960</div><div class="fill" data-h="66.7"></div><div class="yr">Año 4</div></div>
-          <div class="bar"><div class="valn">1200</div><div class="fill" data-h="83.3"></div><div class="yr">Año 5</div></div>
+          <div class="bar"><div class="valn">288</div><div class="fill" data-h="20"></div><div class="yr">Año 1<small>24 al mes</small></div></div>
+          <div class="bar"><div class="valn">480</div><div class="fill" data-h="33.3"></div><div class="yr">Año 2<small>40 al mes</small></div></div>
+          <div class="bar"><div class="valn">720</div><div class="fill" data-h="50"></div><div class="yr">Año 3<small>60 al mes</small></div></div>
+          <div class="bar"><div class="valn">960</div><div class="fill" data-h="66.7"></div><div class="yr">Año 4<small>80 al mes</small></div></div>
+          <div class="bar"><div class="valn">1.200</div><div class="fill" data-h="83.3"></div><div class="yr">Año 5<small>100 al mes</small></div></div>
         </div>
+        <div class="chartnote">Cada organización paga 12 suscripciones al año. En el año 5 son 100 organizaciones activas, dentro de la meta de 187.</div>
       </div>
       <div class="inds">
-        <div class="capital reveal d2"><span data-count="20452000" data-sep="1" data-prefix="$">$20.452.000</span><span class="lbl">Capital requerido · 50/50 propios y convocatorias · 0% crédito</span></div>
+        <div class="capital reveal d2"><span data-count="20452000" data-sep="1" data-prefix="$">$20.452.000</span><span class="lbl">Capital requerido · 50% recursos propios + 50% convocatorias · 0% crédito</span></div>
         <div class="tile o indcard reveal d3">
           <div class="indhead">INDICADORES DE VIABILIDAD</div>
-          <div class="ind"><span class="lab">VPN</span><span class="num" data-count="47486434" data-sep="1" data-prefix="$+">$+47.486.434</span></div>
+          <div class="ind"><span class="lab">VPN</span><span class="num" data-count="47486434" data-sep="1" data-prefix="$">$47.486.434</span></div>
           <div class="ind"><span class="lab">TIR</span><span class="num" data-count="60.5" data-dec="1" data-suffix="%">60,5%</span></div>
           <div class="ind"><span class="lab">B/C</span><span class="num" data-count="1.35" data-dec="2">1,35</span></div>
-          <div class="indfoot">Recupera la inversión en el <b>año 4</b></div>
+          <div class="indfoot">La inversión se recupera en el <b>año 4</b></div>
           <div class="ribbon block">✓ Proyecto rentable y viable</div>
         </div>
       </div>
