@@ -21,6 +21,8 @@ import Swal from 'sweetalert2';
 import jsPDF from 'jspdf';
 import { LOGO_CINEFILIA_BLANCO, piePdfCinefilia } from '../assets/cinefilia';
 import { ArrowLeft, ArrowRight, Check, Eraser, User, Compass, Film, Paperclip, FileSignature, ScrollText, PenLine, ClipboardCheck, Upload, MessageCircle, AlertTriangle, CheckCircle } from 'lucide-react';
+import RevisorOrtografia from '../components/RevisorOrtografia';
+import { aplicarCorreccion } from '../utils/corrector';
 
 const API = `${API_URL}/api`;
 const TOTAL_PASOS = 8;
@@ -841,8 +843,19 @@ export default function Postular() {
             />
             <p style={{ color: C.texto, opacity: 0.6, fontSize: '13px', marginTop: '6px' }}>
               {motivacion.trim().length} caracteres (mínimo 15).
-              {corrector && ' · El corrector subrayará las palabras con posibles errores.'}
+              {corrector && ' · Toca “Revisar ortografía” para ver sugerencias.'}
             </p>
+            {corrector && (
+              <RevisorOrtografia
+                texto={motivacion}
+                onCorregir={(palabra, correccion) =>
+                  setMotivacion((t) => aplicarCorreccion(t, palabra, correccion))
+                }
+                isWarm={isWarm}
+                C={C}
+                fs={fs}
+              />
+            )}
           </div>
         )}
 
