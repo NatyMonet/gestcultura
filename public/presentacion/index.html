@@ -331,7 +331,7 @@
   #musicBtn:focus-visible{outline:3px solid #fff;outline-offset:3px}
   body:not(.music-zone) #musicBtn{opacity:0;pointer-events:none}
   body.cover-on .brand{opacity:0}
-  body.host-on #nav,body.host-on #count,body.host-on .brand{opacity:0;pointer-events:none}
+  body.host-on .brand{opacity:0;pointer-events:none}
 
   @media(max-width:820px){
     .fin,.val,.ps,.host,.arch,.cover2,.infowrap{grid-template-columns:1fr}
@@ -348,6 +348,7 @@
     .slide{padding:8vh 7vw 17vh;justify-content:flex-start}
     .fin,.val,.ps{gap:4vh} .grid3,.obranch,.vstats,.mstat{gap:14px 12px} .panel{padding:3vh 18px}
     .prop{opacity:.5}
+    #musicBtn{bottom:auto;top:2vh;left:4vw}
     .flow{display:grid;grid-template-columns:1fr 1fr;gap:24px 14px} .sep{display:none} .node{min-width:0}
   }
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
